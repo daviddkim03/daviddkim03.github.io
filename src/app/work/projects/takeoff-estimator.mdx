@@ -1,0 +1,33 @@
+---
+title: "Takeoff Estimator"
+publishedAt: "2026-05-01"
+summary: "An estimation platform that automates construction takeoff workflows from project plans — OCR, document parsing, and automated quantity calculations. Deployed as production-ready software for internal and external users."
+images:
+  - "/images/projects/takeoff-estimator.jpg"
+team:
+  - name: "David Kim"
+    role: "Lead Software Developer"
+    avatar: "/images/avatar.jpg"
+    linkedIn: "https://www.linkedin.com/in/daviddkim03/"
+---
+
+## Overview
+
+Construction takeoffs — extracting quantities and measurements from project plans — were a slow, manual process. The Takeoff Estimator automates that workflow end to end: it reads project plans, recognizes symbols and text with OCR, parses documents, and produces automated quantity calculations that feed directly into estimation.
+
+## Technical Highlights
+
+- **OCR pipeline**: PaddleOCR-based recognition of symbols and labels on construction plans.
+- **Document parsing**: extracts structure and measurements from project plan PDFs.
+- **Automated quantity calculations**: turns parsed plan data into estimation-ready quantities.
+- **Desktop deployment**: shipped as a cross-platform app with Tauri (Rust + Node.js).
+
+## Outcome
+
+Reduced manual estimation effort significantly and deployed as production-ready software used by both internal staff and external users.
+
+## Technologies Used
+
+- **JavaScript / Node.js**: application logic and pipeline orchestration
+- **Rust + Tauri**: cross-platform desktop packaging
+- **Python + PaddleOCR**: OCR and document recognition
