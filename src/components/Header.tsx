@@ -73,8 +73,7 @@ export const Header = () => {
         }}
       >
         <Row
-          paddingLeft="24"
-          paddingTop="8"
+          paddingLeft="40"
           fillWidth
           vertical="center"
           textVariant="body-default-s"
