@@ -1,0 +1,77 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e7]:
+    - generic [ref=e9]: Atlanta / Duluth, GA
+    - generic [ref=e12]:
+      - link [ref=e13] [cursor=pointer]:
+        - /url: /
+        - img [ref=e15]
+      - link "About" [ref=e20] [cursor=pointer]:
+        - /url: /about
+        - img [ref=e22]
+        - generic [ref=e25]: About
+      - link "Work" [ref=e27] [cursor=pointer]:
+        - /url: /work
+        - img [ref=e29]
+        - generic [ref=e32]: Work
+      - link "Freelance" [ref=e34] [cursor=pointer]:
+        - /url: /freelance
+        - img [ref=e36]
+        - generic [ref=e38]: Freelance
+      - button "Switch to dark mode" [ref=e40] [cursor=pointer]:
+        - img [ref=e42]
+  - generic [ref=e47]:
+    - heading "Projects" [level=1] [ref=e48]
+    - generic [ref=e49]:
+      - generic [ref=e50]:
+        - img "RestBroker" [ref=e55]
+        - generic [ref=e59]:
+          - heading "RestBroker" [level=2] [ref=e60]
+          - img [ref=e62]:
+            - img "Avatar" [ref=e64]
+          - generic [ref=e65]: An on-demand staffing platform connecting restaurants with temporary service workers — booking systems, POS workflows, and scheduling unified into one operational platform.
+          - link "Read case study" [ref=e67] [cursor=pointer]:
+            - /url: /work/restbroker
+            - generic [ref=e68]: Read case study
+            - img [ref=e70]
+      - generic [ref=e72]:
+        - img "Takeoff Estimator" [ref=e77]
+        - generic [ref=e81]:
+          - heading "Takeoff Estimator" [level=2] [ref=e82]
+          - img [ref=e84]:
+            - img "Avatar" [ref=e86]
+          - generic [ref=e87]: An estimation platform that automates construction takeoff workflows from project plans — OCR, document parsing, and automated quantity calculations. Deployed as production-ready software for internal and external users.
+          - link "Read case study" [ref=e89] [cursor=pointer]:
+            - /url: /work/takeoff-estimator
+            - generic [ref=e90]: Read case study
+            - img [ref=e92]
+      - generic [ref=e94]:
+        - img "Report Generator" [ref=e99]
+        - generic [ref=e103]:
+          - heading "Report Generator" [level=2] [ref=e104]
+          - img [ref=e106]:
+            - img "Avatar" [ref=e108]
+          - generic [ref=e109]: An automated reporting pipeline integrating the ClassMarker and Google Sheets APIs — eliminating a repetitive manual grading workflow through data scraping and report automation.
+          - link "Read case study" [ref=e111] [cursor=pointer]:
+            - /url: /work/report-generator
+            - generic [ref=e112]: Read case study
+            - img [ref=e114]
+  - contentinfo [ref=e116]:
+    - generic [ref=e117]:
+      - generic [ref=e118]:
+        - generic [ref=e119]: © 2026 /
+        - text: David Kim
+        - generic [ref=e120]:
+          - text: / Build your portfolio with
+          - link "Once UI" [ref=e121] [cursor=pointer]:
+            - /url: https://once-ui.com/products/magic-portfolio
+      - generic [ref=e122]:
+        - link "GitHub" [ref=e124] [cursor=pointer]:
+          - /url: https://github.com/daviddkim03
+          - img [ref=e127]
+        - link "LinkedIn" [ref=e130] [cursor=pointer]:
+          - /url: https://www.linkedin.com/in/daviddkim03/
+          - img [ref=e133]
+        - link "Email" [ref=e136] [cursor=pointer]:
+          - /url: mailto:daviddkim03@gmail.com
+          - img [ref=e139]
+  - alert [ref=e142]

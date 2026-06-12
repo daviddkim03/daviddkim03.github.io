@@ -1,0 +1,87 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e7]:
+    - generic [ref=e9]: Atlanta / Duluth, GA
+    - generic [ref=e12]:
+      - link [ref=e13] [cursor=pointer]:
+        - /url: /
+        - img [ref=e15]
+      - link "About" [ref=e20] [cursor=pointer]:
+        - /url: /about
+        - img [ref=e22]
+        - generic [ref=e25]: About
+      - link "Work" [ref=e27] [cursor=pointer]:
+        - /url: /work
+        - img [ref=e29]
+        - generic [ref=e32]: Work
+      - link "Freelance" [ref=e34] [cursor=pointer]:
+        - /url: /freelance
+        - img [ref=e36]
+        - generic [ref=e38]: Freelance
+      - button "Switch to dark mode" [ref=e40] [cursor=pointer]:
+        - img [ref=e42]
+  - generic [ref=e47]:
+    - generic [ref=e49]:
+      - link "Takeoff Estimator Featured work" [ref=e51] [cursor=pointer]:
+        - /url: /work/takeoff-estimator
+        - generic [ref=e54]:
+          - strong [ref=e55]: Takeoff Estimator
+          - generic [ref=e57]: Featured work
+      - heading "Software, automation, and thoughtful execution" [level=1] [ref=e59]
+      - generic [ref=e61]:
+        - text: I'm David, lead software developer at Young Corporation and founder of HyberTec, where I build automation and estimation systems.
+        - text: I also tutor SAT Math and AP Calculus in Korean and English.
+      - link "About – David Kim" [ref=e63] [cursor=pointer]:
+        - /url: /about
+        - generic [ref=e65]:
+          - img [ref=e66]:
+            - img "Avatar" [ref=e68]
+          - text: About – David Kim
+    - generic [ref=e71]:
+      - generic [ref=e75]:
+        - img "RestBroker"
+      - generic [ref=e79]:
+        - heading "RestBroker" [level=2] [ref=e80]
+        - generic [ref=e81]: An on-demand staffing platform connecting restaurants with temporary service workers — booking systems, POS workflows, and scheduling unified into one operational platform.
+        - link "Read case study" [ref=e83] [cursor=pointer]:
+          - /url: /work/restbroker
+          - generic [ref=e84]: Read case study
+          - img [ref=e86]
+    - generic [ref=e88]:
+      - generic [ref=e89]:
+        - generic [ref=e93]:
+          - img "Takeoff Estimator"
+        - generic [ref=e97]:
+          - heading "Takeoff Estimator" [level=2] [ref=e98]
+          - generic [ref=e99]: An estimation platform that automates construction takeoff workflows from project plans — OCR, document parsing, and automated quantity calculations. Deployed as production-ready software for internal and external users.
+          - link "Read case study" [ref=e101] [cursor=pointer]:
+            - /url: /work/takeoff-estimator
+            - generic [ref=e102]: Read case study
+            - img [ref=e104]
+      - generic [ref=e106]:
+        - generic [ref=e110]:
+          - img "Report Generator"
+        - generic [ref=e114]:
+          - heading "Report Generator" [level=2] [ref=e115]
+          - generic [ref=e116]: An automated reporting pipeline integrating the ClassMarker and Google Sheets APIs — eliminating a repetitive manual grading workflow through data scraping and report automation.
+          - link "Read case study" [ref=e118] [cursor=pointer]:
+            - /url: /work/report-generator
+            - generic [ref=e119]: Read case study
+            - img [ref=e121]
+  - contentinfo [ref=e123]:
+    - generic [ref=e124]:
+      - generic [ref=e125]:
+        - generic [ref=e126]: © 2026 /
+        - text: David Kim
+      - generic [ref=e127]:
+        - link "GitHub" [ref=e129] [cursor=pointer]:
+          - /url: https://github.com/daviddkim03
+          - img [ref=e132]
+        - link "LinkedIn" [ref=e135] [cursor=pointer]:
+          - /url: https://www.linkedin.com/in/daviddkim03/
+          - img [ref=e138]
+        - link "Email" [ref=e141] [cursor=pointer]:
+          - /url: mailto:daviddkim03@gmail.com
+          - img [ref=e144]
+        - link "HyberTec" [ref=e147] [cursor=pointer]:
+          - /url: https://hybertec.com
+  - alert [ref=e148]
