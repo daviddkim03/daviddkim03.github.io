@@ -67,22 +67,41 @@
   /*
 }*/
 
-/* CSS-driven entrance for above-the-fold content: starts at first paint,
-   no hydration dependency (unlike RevealFx) */
+/* CSS replica of Once UI's RevealFx (gradient mask wipe + blur + rise):
+   starts at first paint, no hydration dependency. The mask flips to none
+   in the final keyframe segment, mirroring RevealFx removing its mask
+   after the transition completes. */
 @keyframes page-reveal {
   from {
-    opacity: 0;
-    transform: translateY(0.75rem);
+    -webkit-mask-image: linear-gradient(to right, black 0%, black 25%, transparent 50%);
+    mask-image: linear-gradient(to right, black 0%, black 25%, transparent 50%);
+    -webkit-mask-size: 400% 100%;
+    mask-size: 400% 100%;
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+    filter: blur(1rem);
+    transform: translateY(0.5rem);
+  }
+  99% {
+    -webkit-mask-image: linear-gradient(to right, black 0%, black 25%, transparent 50%);
+    mask-image: linear-gradient(to right, black 0%, black 25%, transparent 50%);
+    -webkit-mask-size: 400% 100%;
+    mask-size: 400% 100%;
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+    filter: blur(0);
+    transform: none;
   }
   to {
-    opacity: 1;
+    -webkit-mask-image: none;
+    mask-image: none;
+    filter: none;
     transform: none;
   }
 }
 
 .page-reveal {
-  opacity: 0;
-  animation: page-reveal 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: page-reveal 2s ease-in-out both;
 }
 
 .page-reveal-1 {
@@ -100,6 +119,5 @@
 @media (prefers-reduced-motion: reduce) {
   .page-reveal {
     animation: none;
-    opacity: 1;
   }
 }
