@@ -1,6 +1,6 @@
 import { Projects } from "@/components/work/Projects";
 import { about, baseURL, person, work } from "@/resources";
-import { Column, Flex, Heading, Meta, Schema } from "@once-ui-system/core";
+import { Column, Heading, Meta, Schema } from "@once-ui-system/core";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -28,12 +28,10 @@ export default function Work() {
           image: `${baseURL}${person.avatar}`,
         }}
       />
-      <Heading className="page-reveal" marginBottom="l" variant="display-strong-s" align="center">
+      <Heading marginBottom="l" variant="display-strong-s" align="center">
         Projects
       </Heading>
-      <Flex fillWidth className="page-reveal page-reveal-1">
-        <Projects />
-      </Flex>
+      <Projects />
     </Column>
   );
 }
