@@ -6,9 +6,9 @@ import {
   Badge,
   Button,
   Column,
+  Flex,
   Heading,
   Meta,
-  RevealFx,
   Row,
   Schema,
   Text,
@@ -43,8 +43,8 @@ export default function Home() {
       <Column fillWidth horizontal="center" gap="m">
         <Column maxWidth="m" horizontal="center" align="center">
           {home.featured.display && (
-            <RevealFx
-              speed={600}
+            <Flex
+              className="page-reveal"
               fillWidth
               horizontal="center"
               paddingTop="16"
@@ -62,17 +62,15 @@ export default function Home() {
               >
                 <Row paddingY="2">{home.featured.title}</Row>
               </Badge>
-            </RevealFx>
+            </Flex>
           )}
-          <RevealFx speed={600} translateY="4" fillWidth horizontal="center" paddingBottom="16">
+          <Flex className="page-reveal" fillWidth horizontal="center" paddingBottom="16">
             <Heading wrap="balance" variant="display-strong-l">
               {home.headline}
             </Heading>
-          </RevealFx>
-          <RevealFx
-            speed={600}
-            translateY="8"
-            delay={0.1}
+          </Flex>
+          <Flex
+            className="page-reveal page-reveal-1"
             fillWidth
             horizontal="center"
             paddingBottom="32"
@@ -80,8 +78,8 @@ export default function Home() {
             <Text wrap="balance" onBackground="neutral-weak" variant="heading-default-xl">
               {home.subline}
             </Text>
-          </RevealFx>
-          <RevealFx speed={600} paddingTop="12" delay={0.2} horizontal="center" paddingLeft="12">
+          </Flex>
+          <Flex className="page-reveal page-reveal-2" paddingTop="12" horizontal="center" paddingLeft="12">
             <Button
               id="about"
               data-border="rounded"
@@ -103,12 +101,12 @@ export default function Home() {
                 {about.title}
               </Row>
             </Button>
-          </RevealFx>
+          </Flex>
         </Column>
       </Column>
-      <RevealFx speed={600} translateY="16" delay={0.3}>
+      <Flex fillWidth className="page-reveal page-reveal-3">
         <Projects range={[1, 1]} />
-      </RevealFx>
+      </Flex>
       <Projects range={[2]} />
       <Mailchimp />
     </Column>

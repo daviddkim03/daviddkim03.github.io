@@ -66,3 +66,40 @@
   --scheme-neutral-600-50: rgba(137,152,159,0.5);
   /*
 }*/
+
+/* CSS-driven entrance for above-the-fold content: starts at first paint,
+   no hydration dependency (unlike RevealFx) */
+@keyframes page-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.page-reveal {
+  opacity: 0;
+  animation: page-reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.page-reveal-1 {
+  animation-delay: 0.1s;
+}
+
+.page-reveal-2 {
+  animation-delay: 0.2s;
+}
+
+.page-reveal-3 {
+  animation-delay: 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-reveal {
+    animation: none;
+    opacity: 1;
+  }
+}

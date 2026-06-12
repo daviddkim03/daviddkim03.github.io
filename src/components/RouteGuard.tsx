@@ -3,63 +3,51 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { routes, protectedRoutes } from "@/resources";
-import { Flex, Spinner, Button, Heading, Column, PasswordInput } from "@once-ui-system/core";
+import { Button, Column, Heading, PasswordInput } from "@once-ui-system/core";
 import NotFound from "@/app/not-found";
 
 interface RouteGuardProps {
   children: React.ReactNode;
 }
 
+const checkRouteEnabled = (pathname: string | null): boolean => {
+  if (!pathname) return false;
+
+  if (pathname in routes) {
+    return routes[pathname as keyof typeof routes];
+  }
+
+  const dynamicRoutes = ["/blog", "/work"] as const;
+  for (const route of dynamicRoutes) {
+    if (pathname.startsWith(route) && routes[route]) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
   const pathname = usePathname();
-  const [isRouteEnabled, setIsRouteEnabled] = useState(false);
-  const [isPasswordRequired, setIsPasswordRequired] = useState(false);
+  // Synchronous checks against static config so pages render during prerender/SSR
+  const isRouteEnabled = checkRouteEnabled(pathname);
+  const isPasswordRequired = Boolean(
+    protectedRoutes[pathname as keyof typeof protectedRoutes],
+  );
+
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const performChecks = async () => {
-      setLoading(true);
-      setIsRouteEnabled(false);
-      setIsPasswordRequired(false);
-      setIsAuthenticated(false);
-
-      const checkRouteEnabled = () => {
-        if (!pathname) return false;
-
-        if (pathname in routes) {
-          return routes[pathname as keyof typeof routes];
-        }
-
-        const dynamicRoutes = ["/blog", "/work"] as const;
-        for (const route of dynamicRoutes) {
-          if (pathname?.startsWith(route) && routes[route]) {
-            return true;
-          }
-        }
-
-        return false;
-      };
-
-      const routeEnabled = checkRouteEnabled();
-      setIsRouteEnabled(routeEnabled);
-
-      if (protectedRoutes[pathname as keyof typeof protectedRoutes]) {
-        setIsPasswordRequired(true);
-
-        const response = await fetch("/api/check-auth");
-        if (response.ok) {
-          setIsAuthenticated(true);
-        }
-      }
-
-      setLoading(false);
-    };
-
-    performChecks();
-  }, [pathname]);
+    if (!isPasswordRequired) return;
+    setIsAuthenticated(false);
+    fetch("/api/check-auth")
+      .then((response) => {
+        if (response.ok) setIsAuthenticated(true);
+      })
+      .catch(() => {});
+  }, [isPasswordRequired, pathname]);
 
   const handlePasswordSubmit = async () => {
     const response = await fetch("/api/authenticate", {
@@ -75,14 +63,6 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
       setError("Incorrect password");
     }
   };
-
-  if (loading) {
-    return (
-      <Flex fillWidth paddingY="128" horizontal="center">
-        <Spinner />
-      </Flex>
-    );
-  }
 
   if (!isRouteEnabled) {
     return <NotFound />;
