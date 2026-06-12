@@ -69,7 +69,14 @@ export default function Home() {
               {home.headline}
             </Heading>
           </RevealFx>
-          <RevealFx speed={600} translateY="8" delay={0.1} fillWidth horizontal="center" paddingBottom="32">
+          <RevealFx
+            speed={600}
+            translateY="8"
+            delay={0.1}
+            fillWidth
+            horizontal="center"
+            paddingBottom="32"
+          >
             <Text wrap="balance" onBackground="neutral-weak" variant="heading-default-xl">
               {home.subline}
             </Text>

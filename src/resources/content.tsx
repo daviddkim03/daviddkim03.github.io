@@ -79,8 +79,8 @@ const home: Home = {
       <Text as="span" size="xl" weight="strong">
         Young Corporation
       </Text>{" "}
-      and founder of HyberTec, where I build automation and estimation systems. <br /> I also tutor
-      SAT Math and AP Calculus in Korean and English.
+      and founder of HyberTec, where I build web and automation systems. <br /> I also tutor
+      SAT Math and play all racket sports.
     </>
   ),
 };
