@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { Fade, Flex, Line, Row, ToggleButton } from "@once-ui-system/core";
+import { Fade, Flex, Icon, Line, Row, ToggleButton } from "@once-ui-system/core";
 
 import { about, display, freelance, gallery, person, routes, work } from "@/resources";
 import styles from "./Header.module.scss";
@@ -74,7 +74,10 @@ export const Header = () => {
       >
         <Row paddingLeft="40" fillWidth vertical="center" textVariant="body-default-s">
           {display.location && (
-            <Row s={{ hide: true }}>{person.displayLocation ?? person.location}</Row>
+            <Row s={{ hide: true }} gap="8" vertical="center">
+              <Icon onBackground="brand-weak" name="globe" />
+              {person.displayLocation ?? person.location}
+            </Row>
           )}
         </Row>
         <Row fillWidth horizontal="center">
