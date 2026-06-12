@@ -16,7 +16,7 @@ const person: Person = {
   lastName: "Kim",
   name: `David Kim`,
   role: "Lead Software Developer",
-  avatar: "/images/avatar.jpg",
+  avatar: "/trademarks/icon.png",
   email: "daviddkim03@gmail.com",
   location: "America/New_York", // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
   displayLocation: "Atlanta / Duluth, GA", // Human-readable location shown in the header and about page
