@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  AvatarGroup,
   Carousel,
   Column,
   Flex,
@@ -17,7 +16,6 @@ interface ProjectCardProps {
   title: string;
   content: string;
   description: string;
-  avatars: { src: string }[];
   link: string;
 }
 
@@ -27,7 +25,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   title,
   content,
   description,
-  avatars,
   link,
 }) => {
   return (
@@ -49,7 +46,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             {title}
           </Heading>
         )}
-        {avatars?.length > 0 && <AvatarGroup avatars={avatars} size="m" reverse />}
         {description?.trim() && (
           <Text wrap="balance" variant="body-default-s" onBackground="neutral-weak">
             {description}
