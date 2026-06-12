@@ -1,21 +1,5 @@
 @use "./breakpoints.scss" as breakpoints;
 
-.hybertec {
-    display: inline-block;
-    width: 20px;
-    height: 22px;
-    background-color: var(--neutral-on-background-strong);
-    -webkit-mask: url("/images/hybertec-logo.png") center / contain no-repeat;
-    mask: url("/images/hybertec-logo.png") center / contain no-repeat;
-    opacity: 0.65;
-    transition: opacity 0.2s ease;
-}
-
-.hybertec:hover,
-.hybertec:focus-visible {
-    opacity: 1;
-}
-
 @media (max-width: breakpoints.$s) {
     .mobile {
         text-align: center;

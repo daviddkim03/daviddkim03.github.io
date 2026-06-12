@@ -26,6 +26,13 @@ export const Footer = () => {
           <Text paddingX="4">{person.name}</Text>
         </Text>
         <Row gap="16" vertical="center">
+          <IconButton
+            href="https://hybertec.com"
+            icon="hybertec"
+            tooltip="HyberTec"
+            size="s"
+            variant="ghost"
+          />
           {social.map(
             (item) =>
               item.link && (
@@ -39,14 +46,6 @@ export const Footer = () => {
                 />
               ),
           )}
-          <a
-            href="https://hybertec.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="HyberTec"
-            title="HyberTec"
-            className={styles.hybertec}
-          />
         </Row>
       </Row>
       <Row height="80" hide s={{ hide: false }} />
