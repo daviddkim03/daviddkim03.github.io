@@ -82,19 +82,19 @@
 
 .page-reveal {
   opacity: 0;
-  animation: page-reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: page-reveal 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .page-reveal-1 {
-  animation-delay: 0.1s;
-}
-
-.page-reveal-2 {
   animation-delay: 0.2s;
 }
 
+.page-reveal-2 {
+  animation-delay: 0.4s;
+}
+
 .page-reveal-3 {
-  animation-delay: 0.3s;
+  animation-delay: 0.6s;
 }
 
 @media (prefers-reduced-motion: reduce) {

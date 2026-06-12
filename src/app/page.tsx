@@ -79,7 +79,12 @@ export default function Home() {
               {home.subline}
             </Text>
           </Flex>
-          <Flex className="page-reveal page-reveal-2" paddingTop="12" horizontal="center" paddingLeft="12">
+          <Flex
+            className="page-reveal page-reveal-2"
+            paddingTop="12"
+            horizontal="center"
+            paddingLeft="12"
+          >
             <Button
               id="about"
               data-border="rounded"

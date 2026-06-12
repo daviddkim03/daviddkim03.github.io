@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import { routes, protectedRoutes } from "@/resources";
-import { Button, Column, Heading, PasswordInput } from "@once-ui-system/core";
 import NotFound from "@/app/not-found";
+import { protectedRoutes, routes } from "@/resources";
+import { Button, Column, Heading, PasswordInput } from "@once-ui-system/core";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface RouteGuardProps {
   children: React.ReactNode;
@@ -31,9 +31,7 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
   const pathname = usePathname();
   // Synchronous checks against static config so pages render during prerender/SSR
   const isRouteEnabled = checkRouteEnabled(pathname);
-  const isPasswordRequired = Boolean(
-    protectedRoutes[pathname as keyof typeof protectedRoutes],
-  );
+  const isPasswordRequired = Boolean(protectedRoutes[pathname as keyof typeof protectedRoutes]);
 
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
