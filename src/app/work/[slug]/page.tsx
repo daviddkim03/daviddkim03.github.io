@@ -16,6 +16,7 @@ import {
   Row,
   Schema,
   SmartLink,
+  Tag,
   Text,
 } from "@once-ui-system/core";
 import type { Metadata } from "next";
@@ -100,6 +101,7 @@ export default async function Project({
           {post.metadata.publishedAt && formatDate(post.metadata.publishedAt)}
         </Text>
         <Heading variant="display-strong-m">{post.metadata.title}</Heading>
+        {post.metadata.company && <Tag size="l">{post.metadata.company}</Tag>}
       </Column>
       <Row marginBottom="32" horizontal="center">
         <Row gap="16" vertical="center">

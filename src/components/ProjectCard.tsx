@@ -1,12 +1,13 @@
 "use client";
 
-import { Carousel, Column, Flex, Heading, SmartLink, Text } from "@once-ui-system/core";
+import { Carousel, Column, Flex, Heading, SmartLink, Tag, Text } from "@once-ui-system/core";
 
 interface ProjectCardProps {
   href: string;
   priority?: boolean;
   images: string[];
   title: string;
+  company?: string;
   content: string;
   description: string;
   link: string;
@@ -16,6 +17,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   href,
   images = [],
   title,
+  company,
   content,
   description,
   link,
@@ -35,9 +37,12 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       )}
       <Column flex={7} gap="16" paddingX="s" paddingY="12">
         {title && (
-          <Heading as="h2" wrap="balance" variant="heading-strong-l">
-            {title}
-          </Heading>
+          <Flex gap="12" vertical="center" wrap>
+            <Heading as="h2" wrap="balance" variant="heading-strong-l">
+              {title}
+            </Heading>
+            {company && <Tag size="l">{company}</Tag>}
+          </Flex>
         )}
         {description?.trim() && (
           <Text wrap="balance" variant="body-default-s" onBackground="neutral-weak">

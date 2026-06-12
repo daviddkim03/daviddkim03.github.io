@@ -32,6 +32,7 @@ export function Projects({ range, exclude }: ProjectsProps) {
           href={`/work/${post.slug}`}
           images={post.metadata.images}
           title={post.metadata.title}
+          company={post.metadata.company}
           description={post.metadata.summary}
           content={post.content}
           link={post.metadata.link || ""}
