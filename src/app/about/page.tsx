@@ -49,9 +49,19 @@ export default function About() {
       display: about.technical.display,
       items: about.technical.skills.map((skill) => skill.title),
     },
+    {
+      title: about.training.title,
+      display: about.training.display,
+      items: [],
+    },
   ];
   return (
-    <Column maxWidth={72}>
+    <Column
+      maxWidth={72}
+      paddingLeft="80"
+      s={{ paddingLeft: "0" }}
+      style={{ marginRight: "auto" }}
+    >
       <Schema
         as="webPage"
         baseURL={baseURL}
@@ -87,10 +97,10 @@ export default function About() {
             s={{ position: "relative", style: { top: "auto" } }}
             xs={{ style: { top: "auto" } }}
             minWidth="160"
-            paddingX="l"
+            paddingX="m"
             paddingBottom="xl"
             gap="m"
-            flex={3}
+            flex={2}
             horizontal="center"
           >
             <Avatar src={person.avatar} size="xl" />
@@ -192,6 +202,25 @@ export default function About() {
                         </React.Fragment>
                       ),
                   )}
+              </Row>
+            )}
+            {about.resume.display && about.resume.link && (
+              <Row
+                className={styles.blockAlign}
+                paddingTop="8"
+                horizontal="center"
+                fitWidth
+                data-border="rounded"
+              >
+                <Button
+                  href={about.resume.link}
+                  prefixIcon="document"
+                  suffixIcon="arrowUpRight"
+                  label={about.resume.label}
+                  size="s"
+                  weight="default"
+                  variant="primary"
+                />
               </Row>
             )}
           </Column>
@@ -333,6 +362,64 @@ export default function About() {
                   </Column>
                 ))}
               </Column>
+            </>
+          )}
+
+          {about.training.display && (
+            <>
+              <Heading
+                as="h2"
+                id={about.training.title}
+                variant="display-strong-s"
+                marginTop="40"
+                marginBottom="m"
+              >
+                {about.training.title}
+              </Heading>
+              {about.training.description && (
+                <Text variant="body-default-m" onBackground="neutral-weak" marginBottom="m">
+                  {about.training.description}
+                </Text>
+              )}
+              {about.training.images && about.training.images.length > 0 ? (
+                <Row fillWidth paddingTop="m" gap="12" wrap>
+                  {about.training.images.map((image, index) => (
+                    <Row
+                      key={index}
+                      border="neutral-medium"
+                      radius="m"
+                      minWidth={image.width}
+                      height={image.height}
+                    >
+                      <Media
+                        enlarge
+                        radius="m"
+                        sizes={image.width.toString()}
+                        alt={image.alt}
+                        src={image.src}
+                      />
+                    </Row>
+                  ))}
+                </Row>
+              ) : (
+                <Column
+                  fillWidth
+                  horizontal="center"
+                  vertical="center"
+                  gap="12"
+                  paddingY="xl"
+                  paddingX="l"
+                  radius="l"
+                  border="neutral-alpha-medium"
+                  background="neutral-alpha-weak"
+                  style={{ borderStyle: "dashed" }}
+                >
+                  <Icon name="document" size="l" onBackground="neutral-weak" />
+                  <Text variant="body-default-s" onBackground="neutral-weak">
+                    {about.training.placeholder ?? "Progress photos coming soon."}
+                  </Text>
+                </Column>
+              )}
             </>
           )}
         </Column>

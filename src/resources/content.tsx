@@ -79,8 +79,8 @@ const home: Home = {
       <Text as="span" size="xl" weight="strong">
         Young Corporation
       </Text>{" "}
-      and founder of HyberTec, where I build web and automation systems. <br /> I also tutor
-      SAT Math and play all racket sports.
+      and founder of HyberTec, where I build web and automation systems. <br /> I also tutor SAT
+      Math and play all racket sports.
     </>
   ),
 };
@@ -100,6 +100,11 @@ const about: About = {
   calendar: {
     display: false,
     link: "https://cal.com",
+  },
+  resume: {
+    display: true,
+    link: "/resumes/david-kim-main.pdf",
+    label: "Download résumé",
   },
   intro: {
     display: true,
@@ -282,6 +287,17 @@ const about: About = {
         images: [],
       },
     ],
+  },
+  training: {
+    display: true, // set to false to hide this section
+    title: "Training",
+    description: (
+      <>
+        Outside of software — racket sports and the gym. A running log of progress; photos to come.
+      </>
+    ),
+    placeholder: "Progress photos coming soon.",
+    images: [], // add { src, alt, width, height } entries as photos are uploaded
   },
 };
 

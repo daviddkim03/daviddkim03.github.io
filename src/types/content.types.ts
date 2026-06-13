@@ -129,6 +129,15 @@ export interface About extends BasePageConfig {
     /** Link to the calendar */
     link: string;
   };
+  /** Résumé download configuration */
+  resume: {
+    /** Whether to display the résumé download button */
+    display: boolean;
+    /** Path to the résumé PDF (served from /public) */
+    link: string;
+    /** Label shown on the button */
+    label: string;
+  };
   /** Introduction section */
   intro: {
     /** Whether to display the introduction */
@@ -209,6 +218,28 @@ export interface About extends BasePageConfig {
         /** Image height ratio */
         height: number;
       }>;
+    }>;
+  };
+  /** Training / workout progress section */
+  training: {
+    /** Whether to display the training section */
+    display: boolean;
+    /** Title for the training section */
+    title: string;
+    /** Optional intro line for the section */
+    description?: React.ReactNode;
+    /** Placeholder text shown while there are no images yet */
+    placeholder?: string;
+    /** Progress images (leave empty until photos are added) */
+    images: Array<{
+      /** Image source path */
+      src: string;
+      /** Image alt text */
+      alt: string;
+      /** Image width ratio */
+      width: number;
+      /** Image height ratio */
+      height: number;
     }>;
   };
 }

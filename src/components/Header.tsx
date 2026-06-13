@@ -171,12 +171,6 @@ export const Header = () => {
                   </Row>
                 </>
               )}
-              {display.themeSwitcher && (
-                <>
-                  <Line background="neutral-alpha-medium" vert maxHeight="24" />
-                  <ThemeToggle />
-                </>
-              )}
             </Row>
           </Row>
         </Row>
@@ -191,6 +185,7 @@ export const Header = () => {
             <Flex s={{ hide: true }}>
               {display.time && <TimeDisplay timeZone={person.location} />}
             </Flex>
+            {display.themeSwitcher && <ThemeToggle />}
           </Flex>
         </Flex>
       </Row>
