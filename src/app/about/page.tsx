@@ -56,12 +56,7 @@ export default function About() {
     },
   ];
   return (
-    <Column
-      maxWidth={72}
-      paddingLeft="80"
-      s={{ paddingLeft: "0" }}
-      style={{ marginRight: "auto" }}
-    >
+    <Column maxWidth={72} paddingLeft="128" s={{ paddingLeft: "0" }} style={{ marginRight: "auto" }}>
       <Schema
         as="webPage"
         baseURL={baseURL}
@@ -104,7 +99,7 @@ export default function About() {
             horizontal="center"
           >
             <Avatar src={person.avatar} size="xl" />
-            <Row gap="8" vertical="center">
+            <Row gap="8" vertical="center" style={{ whiteSpace: "nowrap" }}>
               <Icon onBackground="brand-weak" name="globe" />
               {person.displayLocation ?? person.location}
             </Row>
@@ -214,6 +209,8 @@ export default function About() {
               >
                 <Button
                   href={about.resume.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   prefixIcon="document"
                   suffixIcon="arrowUpRight"
                   label={about.resume.label}
