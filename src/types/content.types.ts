@@ -220,28 +220,6 @@ export interface About extends BasePageConfig {
       }>;
     }>;
   };
-  /** Training / workout progress section */
-  training: {
-    /** Whether to display the training section */
-    display: boolean;
-    /** Title for the training section */
-    title: string;
-    /** Optional intro line for the section */
-    description?: React.ReactNode;
-    /** Placeholder text shown while there are no images yet */
-    placeholder?: string;
-    /** Progress images (leave empty until photos are added) */
-    images: Array<{
-      /** Image source path */
-      src: string;
-      /** Image alt text */
-      alt: string;
-      /** Image width ratio */
-      width: number;
-      /** Image height ratio */
-      height: number;
-    }>;
-  };
 }
 
 /**
@@ -262,6 +240,28 @@ export interface Work extends BasePageConfig {}
  */
 export interface Gallery extends BasePageConfig {
   /** List of images in the gallery */
+  images: Array<{
+    /** Image source path */
+    src: string;
+    /** Image alt text */
+    alt: string;
+    /** Image orientation (horizontal/vertical) */
+    orientation: string;
+  }>;
+}
+
+/**
+ * Training page configuration.
+ * @description Configuration for the Training page — a log of gym/workout progress with a photo gallery.
+ */
+export interface Training extends BasePageConfig {
+  /** Headline shown at the top of the page */
+  headline?: React.ReactNode;
+  /** Intro line beneath the headline */
+  intro?: React.ReactNode;
+  /** Placeholder text shown while there are no images yet */
+  placeholder?: string;
+  /** Progress images (leave empty until photos are added) */
   images: Array<{
     /** Image source path */
     src: string;

@@ -7,6 +7,7 @@ import type {
   Newsletter,
   Person,
   Social,
+  Training,
   Work,
 } from "@/types";
 import { Line, Row, Text } from "@once-ui-system/core";
@@ -288,17 +289,6 @@ const about: About = {
       },
     ],
   },
-  training: {
-    display: true, // set to false to hide this section
-    title: "Training",
-    description: (
-      <>
-        Outside of software — racket sports and the gym. A running log of progress; photos to come.
-      </>
-    ),
-    placeholder: "Progress photos coming soon.",
-    images: [], // add { src, alt, width, height } entries as photos are uploaded
-  },
 };
 
 const blog: Blog = {
@@ -377,4 +367,16 @@ const gallery: Gallery = {
   ],
 };
 
-export { person, social, newsletter, home, about, blog, work, freelance, gallery };
+const training: Training = {
+  path: "/training",
+  label: "Training",
+  title: `Training – ${person.name}`,
+  description: `Gym and workout progress log by ${person.name}`,
+  headline: <>Training log</>,
+  intro: <>Tracking gym workouts and progress over time. Photos coming soon.</>,
+  placeholder: "Progress photos coming soon.",
+  // Add { src, alt, orientation } entries as progress photos are uploaded.
+  images: [],
+};
+
+export { person, social, newsletter, home, about, blog, work, freelance, gallery, training };

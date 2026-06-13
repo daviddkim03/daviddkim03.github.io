@@ -9,6 +9,7 @@ export {
   work,
   freelance,
   gallery,
+  training,
 } from "./content";
 
 export {

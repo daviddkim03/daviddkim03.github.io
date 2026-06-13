@@ -15,6 +15,7 @@ import {
 } from "react-icons/hi2";
 
 import {
+  PiBarbellDuotone,
   PiBookBookmarkDuotone,
   PiGridFourDuotone,
   PiHouseDuotone,
@@ -61,6 +62,7 @@ export const iconLibrary: Record<string, IconType> = {
   globe: HiOutlineGlobeAsiaAustralia,
   person: PiUserCircleDuotone,
   grid: PiGridFourDuotone,
+  dumbbell: PiBarbellDuotone,
   book: PiBookBookmarkDuotone,
   openLink: HiOutlineLink,
   calendar: HiCalendarDays,
