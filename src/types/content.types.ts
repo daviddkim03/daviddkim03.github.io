@@ -157,6 +157,8 @@ export interface About extends BasePageConfig {
     experiences: Array<{
       /** Company name */
       company: string;
+      /** Optional logo image path (falls back to a monogram of the company name) */
+      logo?: string;
       /** Timeframe of employment */
       timeframe: string;
       /** Role or job title */
@@ -186,39 +188,22 @@ export interface About extends BasePageConfig {
     institutions: Array<{
       /** Institution name */
       name: string;
+      /** Optional logo image path (falls back to a monogram of the institution name) */
+      logo?: string;
+      /** Timeframe / graduation date */
+      timeframe?: string;
       /** Description of studies */
       description: React.ReactNode;
     }>;
   };
-  /** Technical skills section */
+  /** Skills section (rendered as a row of pills) */
   technical: {
-    /** Whether to display technical skills section */
+    /** Whether to display the skills section */
     display: boolean;
-    /** Title for the technical skills section */
+    /** Title for the skills section */
     title: string;
-    /** List of technical skills */
-    skills: Array<{
-      /** Skill title */
-      title: string;
-      /** Skill description */
-      description?: React.ReactNode;
-      /** Skill tags */
-      tags?: Array<{
-        name: string;
-        icon?: string;
-      }>;
-      /** Images related to the skill */
-      images?: Array<{
-        /** Image source path */
-        src: string;
-        /** Image alt text */
-        alt: string;
-        /** Image width ratio */
-        width: number;
-        /** Image height ratio */
-        height: number;
-      }>;
-    }>;
+    /** Flat list of skill labels shown as pills */
+    skills: string[];
   };
 }
 

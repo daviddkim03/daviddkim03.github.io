@@ -220,71 +220,45 @@ const about: About = {
   },
   studies: {
     display: true, // set to false to hide this section
-    title: "Studies",
+    title: "Education",
     institutions: [
       {
         name: "Georgia Institute of Technology",
-        description: (
-          <>
-            BS Computer Science, December 2025 — 3.65 GPA. Coursework in Data Structures, Systems
-            Architecture, and Information &amp; Network Security.
-          </>
-        ),
+        timeframe: "Dec 2025",
+        description: <>B.S. Computer Science · 3.65 GPA</>,
       },
       {
         name: "CompTIA Security+",
-        description: <>Certification expected July 2026.</>,
+        timeframe: "Expected Jul 2026",
+        description: <>Security certification</>,
       },
       {
         name: "CompTIA Linux+",
-        description: <>Certification expected December 2026.</>,
+        timeframe: "Expected Dec 2026",
+        description: <>Linux certification</>,
       },
     ],
   },
   technical: {
     display: true, // set to false to hide this section
-    title: "Technical skills",
+    title: "Skills",
     skills: [
-      {
-        title: "Automation & estimation systems",
-        description: (
-          <>
-            Production estimation platforms that automate construction takeoff workflows — OCR,
-            document parsing, and automated quantity calculations with Python, JavaScript, Rust, and
-            Tauri.
-          </>
-        ),
-        tags: [],
-        images: [],
-      },
-      {
-        title: "Full-stack web platforms",
-        description: (
-          <>
-            SaaS products at HyberTec — POS systems, waitlist managers, scheduling tools, and
-            business automation built with JavaScript, Node.js, and Python.
-          </>
-        ),
-        tags: [],
-        images: [],
-      },
-      {
-        title: "Cybersecurity & systems",
-        description: (
-          <>
-            Firmware reverse engineering with Ghidra, side-channel attack research, networking, and
-            Linux administration.
-          </>
-        ),
-        tags: [],
-        images: [],
-      },
-      {
-        title: "Languages",
-        description: <>Python, Java, C, JavaScript, SQL, Bash, Assembly, and HTML/CSS.</>,
-        tags: [],
-        images: [],
-      },
+      "Python",
+      "Java",
+      "C",
+      "JavaScript",
+      "SQL",
+      "Bash",
+      "Assembly",
+      "HTML/CSS",
+      "Node.js",
+      "Rust",
+      "Tauri",
+      "Linux",
+      "Ghidra",
+      "Software Engineering",
+      "Cybersecurity",
+      "Networking",
     ],
   },
 };
