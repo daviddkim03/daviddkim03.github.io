@@ -8,7 +8,9 @@ import styles from "./selectedWork.module.scss";
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
   if (Number.isNaN(date.getTime())) return "";
-  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+  // Force UTC so the server build and the browser render the same string
+  // (otherwise a date like 2026-06-01 can show a different month per timezone).
+  return date.toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
 }
 
 export function SelectedWork({ projects }: { projects: ClientProject[] }) {
