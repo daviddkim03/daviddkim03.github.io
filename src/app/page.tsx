@@ -75,7 +75,7 @@ export default function Home() {
             horizontal="center"
             paddingBottom="32"
           >
-            <Text wrap="balance" onBackground="neutral-weak" variant="heading-default-xl">
+            <Text wrap="balance" onBackground="neutral-weak" variant="body-default-l">
               {home.subline}
             </Text>
           </Flex>

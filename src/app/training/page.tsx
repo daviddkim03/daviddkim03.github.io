@@ -1,6 +1,6 @@
-import { Column, Heading, Icon, Meta, Schema, Text } from "@once-ui-system/core";
 import TrainingView from "@/components/training/TrainingView";
 import { baseURL, person, training } from "@/resources";
+import { Column, Heading, Icon, Meta, Schema, Text } from "@once-ui-system/core";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -30,13 +30,7 @@ export default function Training() {
           image: `${baseURL}${person.avatar}`,
         }}
       />
-      <Column
-        maxWidth="s"
-        fillWidth
-        gap="m"
-        horizontal="center"
-        style={{ textAlign: "center" }}
-      >
+      <Column maxWidth="s" fillWidth gap="m" horizontal="center" style={{ textAlign: "center" }}>
         <Heading variant="display-strong-l">{training.headline ?? training.label}</Heading>
         {training.intro && (
           <Text variant="body-default-l" onBackground="neutral-weak">

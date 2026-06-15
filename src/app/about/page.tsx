@@ -8,6 +8,7 @@ import {
   Heading,
   Icon,
   IconButton,
+  Line,
   Media,
   Meta,
   Row,
@@ -16,6 +17,23 @@ import {
   Text,
 } from "@once-ui-system/core";
 import React from "react";
+
+function SectionTitle({ id, children }: { id: string; children: React.ReactNode }) {
+  return (
+    <Column fillWidth gap="12" marginBottom="24">
+      <Text
+        as="h2"
+        id={id}
+        variant="label-strong-s"
+        onBackground="neutral-medium"
+        style={{ textTransform: "uppercase", letterSpacing: "0.14em" }}
+      >
+        {children}
+      </Text>
+      <Line background="neutral-alpha-medium" />
+    </Column>
+  );
+}
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -231,24 +249,26 @@ export default function About() {
 
           {about.work.display && (
             <>
-              <Heading as="h2" id={about.work.title} variant="display-strong-s" marginBottom="m">
-                {about.work.title}
-              </Heading>
-              <Column fillWidth gap="l" marginBottom="40">
+              <SectionTitle id={about.work.title}>{about.work.title}</SectionTitle>
+              <Column fillWidth gap="32" marginBottom="40">
                 {about.work.experiences.map((experience, index) => (
                   <Column key={`${experience.company}-${experience.role}-${index}`} fillWidth>
-                    <Row fillWidth horizontal="between" vertical="end" marginBottom="4">
-                      <Text id={experience.company} variant="heading-strong-l">
+                    <Row fillWidth horizontal="between" vertical="end" gap="16" marginBottom="2">
+                      <Text id={experience.company} variant="heading-strong-m">
                         {experience.company}
                       </Text>
-                      <Text variant="heading-default-xs" onBackground="neutral-weak">
+                      <Text
+                        variant="label-default-s"
+                        onBackground="neutral-weak"
+                        style={{ whiteSpace: "nowrap" }}
+                      >
                         {experience.timeframe}
                       </Text>
                     </Row>
-                    <Text variant="body-default-s" onBackground="brand-weak" marginBottom="m">
+                    <Text variant="body-default-s" onBackground="brand-weak" marginBottom="12">
                       {experience.role}
                     </Text>
-                    <Column as="ul" gap="16">
+                    <Column as="ul" gap="8">
                       {experience.achievements.map(
                         (achievement: React.ReactNode, index: number) => (
                           <Text
@@ -290,16 +310,14 @@ export default function About() {
 
           {about.studies.display && (
             <>
-              <Heading as="h2" id={about.studies.title} variant="display-strong-s" marginBottom="m">
-                {about.studies.title}
-              </Heading>
-              <Column fillWidth gap="l" marginBottom="40">
+              <SectionTitle id={about.studies.title}>{about.studies.title}</SectionTitle>
+              <Column fillWidth gap="20" marginBottom="40">
                 {about.studies.institutions.map((institution, index) => (
                   <Column key={`${institution.name}-${index}`} fillWidth gap="4">
-                    <Text id={institution.name} variant="heading-strong-l">
+                    <Text id={institution.name} variant="heading-strong-m">
                       {institution.name}
                     </Text>
-                    <Text variant="heading-default-xs" onBackground="neutral-weak">
+                    <Text variant="body-default-s" onBackground="neutral-weak">
                       {institution.description}
                     </Text>
                   </Column>
@@ -310,21 +328,14 @@ export default function About() {
 
           {about.technical.display && (
             <>
-              <Heading
-                as="h2"
-                id={about.technical.title}
-                variant="display-strong-s"
-                marginBottom="40"
-              >
-                {about.technical.title}
-              </Heading>
-              <Column fillWidth gap="l">
+              <SectionTitle id={about.technical.title}>{about.technical.title}</SectionTitle>
+              <Column fillWidth gap="20">
                 {about.technical.skills.map((skill, index) => (
                   <Column key={`${skill}-${index}`} fillWidth gap="4">
-                    <Text id={skill.title} variant="heading-strong-l">
+                    <Text id={skill.title} variant="heading-strong-m">
                       {skill.title}
                     </Text>
-                    <Text variant="body-default-m" onBackground="neutral-weak">
+                    <Text variant="body-default-s" onBackground="neutral-weak">
                       {skill.description}
                     </Text>
                     {skill.tags && skill.tags.length > 0 && (

@@ -1,7 +1,7 @@
 "use client";
 
-import { MasonryGrid, Media } from "@once-ui-system/core";
 import { training } from "@/resources";
+import { MasonryGrid, Media } from "@once-ui-system/core";
 
 export default function TrainingView() {
   return (
