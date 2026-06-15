@@ -4,7 +4,17 @@ import { useContent } from "@/components/content/ContentProvider";
 import { SelectedWork } from "@/components/work/SelectedWork";
 import type { ClientProject } from "@/lib/projects";
 import { about, person } from "@/resources";
-import { Avatar, Badge, Button, Column, Flex, Heading, Line, Row, Text } from "@once-ui-system/core";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Column,
+  Flex,
+  Heading,
+  Line,
+  Row,
+  Text,
+} from "@once-ui-system/core";
 
 export function HomeView({ projects }: { projects: ClientProject[] }) {
   const content = useContent();

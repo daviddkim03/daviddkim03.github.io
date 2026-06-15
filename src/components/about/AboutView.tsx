@@ -28,7 +28,13 @@ export function AboutView() {
   return (
     <Column maxWidth={48} fillWidth horizontal="center" gap="xl" paddingTop="80" paddingBottom="80">
       {/* Header: name/role/location on the left, avatar on the right */}
-      <Row fillWidth horizontal="between" vertical="center" gap="32" s={{ direction: "column-reverse" }}>
+      <Row
+        fillWidth
+        horizontal="between"
+        vertical="center"
+        gap="32"
+        s={{ direction: "column-reverse" }}
+      >
         <Column flex={1} fillWidth gap="12">
           <Heading variant="display-strong-l">{content.person.name}</Heading>
           <Text variant="display-default-xs" onBackground="neutral-weak">

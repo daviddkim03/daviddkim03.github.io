@@ -85,9 +85,7 @@ export default async function Project({
         description={post.metadata.summary}
         datePublished={post.metadata.publishedAt}
         dateModified={post.metadata.publishedAt}
-        image={
-          post.metadata.image || post.metadata.images[0] || "/images/og/home.jpg"
-        }
+        image={post.metadata.image || post.metadata.images[0] || "/images/og/home.jpg"}
         author={{
           name: person.name,
           url: `${baseURL}${about.path}`,
