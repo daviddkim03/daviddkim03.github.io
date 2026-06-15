@@ -17,6 +17,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Use the github-pages environment so this job can read the
+    # NEXT_PUBLIC_SUPABASE_* secrets stored on that environment at build time.
+    environment: github-pages
     steps:
       - uses: actions/checkout@v4
 
