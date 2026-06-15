@@ -133,25 +133,6 @@ export const Header = () => {
                   </Row>
                 </>
               )}
-              {routes["/training"] && (
-                <>
-                  <Row s={{ hide: true }}>
-                    <ToggleButton
-                      prefixIcon="dumbbell"
-                      href="/training"
-                      label={training.label}
-                      selected={pathname.startsWith("/training")}
-                    />
-                  </Row>
-                  <Row hide s={{ hide: false }}>
-                    <ToggleButton
-                      prefixIcon="dumbbell"
-                      href="/training"
-                      selected={pathname.startsWith("/training")}
-                    />
-                  </Row>
-                </>
-              )}
               {routes["/freelance"] && (
                 <>
                   <Row s={{ hide: true }}>
@@ -167,6 +148,25 @@ export const Header = () => {
                       prefixIcon="rocket"
                       href="/freelance"
                       selected={pathname.startsWith("/freelance")}
+                    />
+                  </Row>
+                </>
+              )}
+              {routes["/training"] && (
+                <>
+                  <Row s={{ hide: true }}>
+                    <ToggleButton
+                      prefixIcon="dumbbell"
+                      href="/training"
+                      label={training.label}
+                      selected={pathname.startsWith("/training")}
+                    />
+                  </Row>
+                  <Row hide s={{ hide: false }}>
+                    <ToggleButton
+                      prefixIcon="dumbbell"
+                      href="/training"
+                      selected={pathname.startsWith("/training")}
                     />
                   </Row>
                 </>
