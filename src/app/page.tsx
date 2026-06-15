@@ -110,9 +110,8 @@ export default function Home() {
         </Column>
       </Column>
       <Flex fillWidth className="page-reveal page-reveal-3">
-        <Projects range={[1, 1]} />
+        <Projects />
       </Flex>
-      <Projects range={[2]} />
       <Mailchimp />
     </Column>
   );

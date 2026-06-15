@@ -1,0 +1,51 @@
+.viewport {
+  position: relative;
+  width: 100%;
+}
+
+.slide {
+  animation: projectSlideIn 450ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes projectSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: var(--neutral-alpha-medium);
+  cursor: pointer;
+  transition:
+    width 200ms ease,
+    background 200ms ease;
+}
+
+.dot:hover {
+  background: var(--neutral-on-background-weak);
+}
+
+.dotActive {
+  width: 24px;
+  background: var(--neutral-on-background-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide {
+    animation: none;
+  }
+
+  .dot {
+    transition: none;
+  }
+}

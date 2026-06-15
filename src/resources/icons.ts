@@ -1,6 +1,7 @@
 import { GenIcon, type IconType } from "react-icons";
 
 import {
+  HiArrowLeft,
   HiArrowRight,
   HiArrowTopRightOnSquare,
   HiArrowUpRight,
@@ -58,6 +59,7 @@ export const iconLibrary: Record<string, IconType> = {
   hybertec: HyberTecIcon,
   arrowUpRight: HiArrowUpRight,
   arrowRight: HiArrowRight,
+  arrowLeft: HiArrowLeft,
   email: HiEnvelope,
   globe: HiOutlineGlobeAsiaAustralia,
   person: PiUserCircleDuotone,
