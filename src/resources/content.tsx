@@ -274,7 +274,7 @@ const blog: Blog = {
 
 const work: Work = {
   path: "/work",
-  label: "Work",
+  label: "Projects",
   title: `Projects – ${person.name}`,
   description: `Automation, systems, and software projects by ${person.name}`,
   // Create new project pages by adding a new .mdx file to app/blog/posts
