@@ -125,23 +125,31 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
             description="Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to enable the editor."
           />
         )}
-        <Input
-          id="email"
-          label="Email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <PasswordInput
-          id="password"
-          label="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          errorMessage={authError}
-        />
-        <Button fillWidth onClick={signIn} disabled={!isSupabaseConfigured}>
-          Sign in
-        </Button>
+        <form
+          style={{ width: "100%", display: "flex", flexDirection: "column", gap: "16px" }}
+          onSubmit={(e) => {
+            e.preventDefault();
+            signIn();
+          }}
+        >
+          <Input
+            id="email"
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <PasswordInput
+            id="password"
+            label="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            errorMessage={authError}
+          />
+          <Button type="submit" fillWidth disabled={!isSupabaseConfigured}>
+            Sign in
+          </Button>
+        </form>
       </Column>
     );
   }
