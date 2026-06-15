@@ -60,7 +60,7 @@ const home: Home = {
   label: "Home",
   title: `${person.name}'s Portfolio`,
   description: `Portfolio website showcasing my work as a ${person.role}`,
-  headline: <>Software, automation, and thoughtful execution</>,
+  headline: <>Thoughtful software & automation</>,
   featured: {
     display: true,
     title: (
@@ -105,19 +105,17 @@ const about: About = {
   resume: {
     display: true,
     link: "/resumes/david-kim-main.pdf",
-    label: "Download résumé",
+    label: "Résumé",
   },
   intro: {
     display: true,
     title: "Introduction",
     description: (
       <>
-        David is an Atlanta-based software developer and Georgia Tech Computer Science graduate (BS,
-        December 2025, 3.65 GPA). He leads estimation-automation software at Young Corporation and
-        is the founder of HyberTec LLC, a software services company delivering SaaS products and
-        custom solutions to small businesses. His background spans construction-estimation
-        automation, full-stack web platforms, and embedded security research. He is fully bilingual
-        in Korean and English, and tutors SAT Math, AP Calculus, and college-level math on the side.
+        David is an Atlanta-based software developer and Georgia Tech Computer Science graduate. He
+        leads estimation-automation software at Young Corporation and founded HyberTec LLC, building
+        SaaS products and custom solutions for small businesses across full-stack web, automation,
+        and embedded security.
       </>
     ),
   },
