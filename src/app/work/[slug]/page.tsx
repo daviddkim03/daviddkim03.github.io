@@ -1,5 +1,6 @@
 import { CustomMDX, ScrollToHash } from "@/components";
-import { Projects } from "@/components/work/Projects";
+import { ProjectsView } from "@/components/work/ProjectsView";
+import { getLeanProjects } from "@/lib/projects";
 import { about, baseURL, person, work } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
 import { getPosts } from "@/utils/utils";
@@ -131,7 +132,7 @@ export default async function Project({
         <Heading as="h2" variant="heading-strong-xl" marginBottom="24">
           Related projects
         </Heading>
-        <Projects exclude={[post.slug]} range={[2]} />
+        <ProjectsView projects={getLeanProjects().filter((p) => p.slug !== post.slug)} />
       </Column>
       <ScrollToHash />
     </Column>

@@ -1,4 +1,5 @@
-import { Projects } from "@/components/work/Projects";
+import { ProjectsView } from "@/components/work/ProjectsView";
+import { getLeanProjects } from "@/lib/projects";
 import { about, baseURL, person, work } from "@/resources";
 import { Column, Heading, Meta, Schema } from "@once-ui-system/core";
 
@@ -13,6 +14,8 @@ export async function generateMetadata() {
 }
 
 export default function Work() {
+  const projects = getLeanProjects();
+
   return (
     <Column maxWidth="l" paddingTop="24">
       <Schema
@@ -31,7 +34,7 @@ export default function Work() {
       <Heading marginBottom="l" variant="display-strong-s" align="center">
         Projects
       </Heading>
-      <Projects />
+      <ProjectsView projects={projects} />
     </Column>
   );
 }

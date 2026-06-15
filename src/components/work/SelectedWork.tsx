@@ -1,4 +1,7 @@
-import { getPosts } from "@/utils/utils";
+"use client";
+
+import { useContent } from "@/components/content/ContentProvider";
+import type { ClientProject } from "@/lib/projects";
 import { Column, Heading, Media, Row, SmartLink, Text } from "@once-ui-system/core";
 import styles from "./selectedWork.module.scss";
 
@@ -8,15 +11,17 @@ function formatDate(dateStr: string): string {
   return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 }
 
-export function SelectedWork({ count = 2 }: { count?: number }) {
-  const projects = getPosts(["src", "app", "work", "projects"])
-    .sort(
-      (a, b) =>
-        new Date(b.metadata.publishedAt).getTime() - new Date(a.metadata.publishedAt).getTime(),
-    )
-    .slice(0, count);
+export function SelectedWork({ projects }: { projects: ClientProject[] }) {
+  const content = useContent();
+  const bySlug = new Map(projects.map((p) => [p.slug, p]));
 
-  if (projects.length === 0) return null;
+  // Use the admin-selected slugs (in order); fall back to the newest projects.
+  const selected = content.home.selectedSlugs
+    .map((slug) => bySlug.get(slug))
+    .filter((p): p is ClientProject => Boolean(p));
+  const shown = selected.length > 0 ? selected : projects.slice(0, 2);
+
+  if (shown.length === 0) return null;
 
   return (
     <Column fillWidth gap="24" paddingX="l" marginBottom="80">
@@ -32,7 +37,7 @@ export function SelectedWork({ count = 2 }: { count?: number }) {
       </Row>
 
       <Row fillWidth gap="24" s={{ direction: "column" }}>
-        {projects.map((post) => (
+        {shown.map((post) => (
           <Column key={post.slug} flex={1} fillWidth style={{ minWidth: 0 }}>
             <SmartLink href={`/work/${post.slug}`} style={{ width: "100%" }}>
               <Column className={styles.card} fillWidth gap="12">
@@ -41,15 +46,15 @@ export function SelectedWork({ count = 2 }: { count?: number }) {
                   radius="l"
                   aspectRatio="16 / 9"
                   sizes="(max-width: 960px) 100vw, 50vw"
-                  src={post.metadata.images[0]}
-                  alt={post.metadata.title}
+                  src={post.images[0]}
+                  alt={post.title}
                 />
                 <Column gap="4" paddingX="4">
                   <Text variant="heading-strong-s" onBackground="neutral-strong">
-                    {post.metadata.title}
+                    {post.title}
                   </Text>
                   <Text variant="label-default-s" onBackground="neutral-weak">
-                    {formatDate(post.metadata.publishedAt)}
+                    {formatDate(post.publishedAt)}
                   </Text>
                 </Column>
               </Column>
