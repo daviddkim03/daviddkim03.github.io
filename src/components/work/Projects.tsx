@@ -1,6 +1,6 @@
 import { ProjectCard } from "@/components";
 import { getPosts } from "@/utils/utils";
-import { ProjectsCarousel } from "./ProjectsCarousel";
+import { Column } from "@once-ui-system/core";
 
 interface ProjectsProps {
   range?: [number, number?];
@@ -24,7 +24,7 @@ export function Projects({ range, exclude }: ProjectsProps) {
     : sortedProjects;
 
   return (
-    <ProjectsCarousel>
+    <Column fillWidth gap="xl" marginBottom="80" paddingX="l">
       {displayedProjects.map((post, index) => (
         <ProjectCard
           priority={index < 2}
@@ -38,6 +38,6 @@ export function Projects({ range, exclude }: ProjectsProps) {
           link={post.metadata.link || ""}
         />
       ))}
-    </ProjectsCarousel>
+    </Column>
   );
 }

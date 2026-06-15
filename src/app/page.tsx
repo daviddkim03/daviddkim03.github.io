@@ -1,5 +1,5 @@
 import { Mailchimp } from "@/components";
-import { Projects } from "@/components/work/Projects";
+import { SelectedWork } from "@/components/work/SelectedWork";
 import { about, baseURL, home, person } from "@/resources";
 import {
   Avatar,
@@ -110,7 +110,7 @@ export default function Home() {
         </Column>
       </Column>
       <Flex fillWidth className="page-reveal page-reveal-3">
-        <Projects />
+        <SelectedWork count={2} />
       </Flex>
       <Mailchimp />
     </Column>

@@ -256,11 +256,7 @@ export default function About() {
                     gap="16"
                     vertical="start"
                   >
-                    <Avatar
-                      size="l"
-                      value={monogram(experience.company)}
-                      src={experience.logo}
-                    />
+                    <Avatar size="l" value={monogram(experience.company)} src={experience.logo} />
                     <Column flex={1} gap="8">
                       <Row fillWidth horizontal="between" vertical="start" gap="12">
                         <Column gap="2">
@@ -307,12 +303,7 @@ export default function About() {
               <SectionTitle id={about.studies.title}>{about.studies.title}</SectionTitle>
               <Column fillWidth gap="24" marginBottom="40">
                 {about.studies.institutions.map((institution, index) => (
-                  <Row
-                    key={`${institution.name}-${index}`}
-                    fillWidth
-                    gap="16"
-                    vertical="center"
-                  >
+                  <Row key={`${institution.name}-${index}`} fillWidth gap="16" vertical="center">
                     <Avatar size="l" value={monogram(institution.name)} src={institution.logo} />
                     <Column flex={1} gap="2">
                       <Row fillWidth horizontal="between" vertical="start" gap="12">
