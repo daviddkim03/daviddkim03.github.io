@@ -27,12 +27,14 @@ export interface EditableContent {
       company: string;
       role: string;
       timeframe: string;
+      logo?: string;
       achievements: string[];
     }>;
     studies: Array<{
       name: string;
       timeframe: string;
       description: string;
+      logo?: string;
     }>;
     skills: string[];
   };

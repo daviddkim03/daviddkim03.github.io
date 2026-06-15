@@ -104,7 +104,7 @@ export function AboutView() {
           <Column fillWidth gap="32">
             {content.about.work.map((experience, index) => (
               <Row key={`${experience.company}-${index}`} fillWidth gap="16" vertical="start">
-                <Avatar size="l" value={monogram(experience.company)} />
+                <Avatar size="l" src={experience.logo} value={monogram(experience.company)} />
                 <Column flex={1} gap="8">
                   <Row fillWidth horizontal="between" vertical="start" gap="12">
                     <Column gap="2">
@@ -135,7 +135,7 @@ export function AboutView() {
           <Column fillWidth gap="24">
             {content.about.studies.map((institution, index) => (
               <Row key={`${institution.name}-${index}`} fillWidth gap="16" vertical="center">
-                <Avatar size="l" value={monogram(institution.name)} />
+                <Avatar size="l" src={institution.logo} value={monogram(institution.name)} />
                 <Column flex={1} gap="2">
                   <Row fillWidth horizontal="between" vertical="start" gap="12">
                     <Text variant="heading-strong-s">{institution.name}</Text>

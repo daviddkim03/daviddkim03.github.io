@@ -9,25 +9,148 @@ import {
 } from "@/lib/content";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase";
 import {
+  Avatar,
   Button,
   Checkbox,
   Column,
   Feedback,
   Heading,
+  IconButton,
   Input,
   PasswordInput,
   Row,
   Select,
   Spinner,
   Switch,
-  TagInput,
   Text,
   Textarea,
 } from "@once-ui-system/core";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type ProjectRef = { slug: string; title: string };
 type Phase = "loading" | "login" | "editor";
+
+/** Initials fallback for an avatar when no logo image is set. */
+function monogram(name: string): string {
+  const cleaned = name.replace(/\(.*?\)/g, " ").replace(/\b(LLC|Inc|Ltd|Co)\.?\b/gi, " ");
+  const words = cleaned.split(/\s+/).filter((w) => /[a-z0-9]/i.test(w));
+  if (words.length === 0) return "•";
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+  return (words[0][0] + words[1][0]).toUpperCase();
+}
+
+/** Add/remove a list of string "chips" (used for skills and languages). */
+function ChipInput({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string[];
+  onChange: (v: string[]) => void;
+}) {
+  const [text, setText] = useState("");
+  const commit = () => {
+    const t = text.trim();
+    if (t && !value.includes(t)) onChange([...value, t]);
+    setText("");
+  };
+  return (
+    <Column fillWidth gap="8">
+      <Text variant="label-default-s" onBackground="neutral-weak">
+        {label}
+      </Text>
+      {value.length > 0 && (
+        <Row fillWidth wrap gap="8">
+          {value.map((v) => (
+            <Row
+              key={v}
+              vertical="center"
+              gap="4"
+              paddingLeft="12"
+              paddingRight="4"
+              paddingY="2"
+              radius="full"
+              background="neutral-alpha-weak"
+              border="neutral-alpha-medium"
+            >
+              <Text variant="label-default-s">{v}</Text>
+              <IconButton
+                icon="close"
+                size="s"
+                variant="ghost"
+                tooltip="Remove"
+                onClick={() => onChange(value.filter((x) => x !== v))}
+              />
+            </Row>
+          ))}
+        </Row>
+      )}
+      <Row fillWidth gap="8" vertical="center">
+        <Row fillWidth>
+          <Input
+            id={`chip-${label}`}
+            placeholder={`Add ${label.toLowerCase()} and press Enter`}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                commit();
+              }
+            }}
+          />
+        </Row>
+        <Button size="m" variant="secondary" onClick={commit}>
+          Add
+        </Button>
+      </Row>
+    </Column>
+  );
+}
+
+/** Avatar preview + image upload for a work/education logo. */
+function LogoUpload({
+  name,
+  url,
+  onChange,
+}: {
+  name: string;
+  url?: string;
+  onChange: (url: string | undefined) => void;
+}) {
+  const ref = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState(false);
+  const pick = async (file: File) => {
+    setBusy(true);
+    const { url: uploaded } = await uploadAsset(file, `logos/${Date.now()}-${file.name}`);
+    setBusy(false);
+    if (uploaded) onChange(uploaded);
+  };
+  return (
+    <Row vertical="center" gap="12">
+      <Avatar size="m" src={url} value={monogram(name || "?")} />
+      <input
+        ref={ref}
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) pick(f);
+        }}
+      />
+      <Button size="s" variant="secondary" loading={busy} onClick={() => ref.current?.click()}>
+        {url ? "Change logo" : "Upload logo"}
+      </Button>
+      {url && (
+        <Button size="s" variant="tertiary" onClick={() => onChange(undefined)}>
+          Remove
+        </Button>
+      )}
+    </Row>
+  );
+}
 
 export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
   const [phase, setPhase] = useState<Phase>("loading");
@@ -37,6 +160,8 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
   const [draft, setDraft] = useState<EditableContent>(defaultContent);
   const [message, setMessage] = useState<{ kind: "success" | "danger"; text: string } | null>(null);
   const [saving, setSaving] = useState(false);
+  const resumeRef = useRef<HTMLInputElement>(null);
+  const [resumeBusy, setResumeBusy] = useState(false);
 
   useEffect(() => {
     const supabase = getSupabase();
@@ -73,10 +198,10 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
     setPassword("");
   };
 
-  const save = async () => {
+  const save = async (next: EditableContent = draft) => {
     setSaving(true);
     setMessage(null);
-    const { error } = await saveContent(draft);
+    const { error } = await saveContent(next);
     setSaving(false);
     setMessage(
       error
@@ -86,17 +211,27 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
   };
 
   const onResumeUpload = async (file: File) => {
+    setResumeBusy(true);
     setMessage(null);
     const { url, error } = await uploadAsset(file, `resume/${Date.now()}-${file.name}`);
     if (error || !url) {
+      setResumeBusy(false);
       setMessage({ kind: "danger", text: error ?? "Upload failed" });
       return;
     }
-    setDraft((d) => ({ ...d, resume: { ...d.resume, url } }));
-    setMessage({ kind: "success", text: "Résumé uploaded — remember to Save." });
+    const next = { ...draft, resume: { ...draft.resume, url } };
+    setDraft(next);
+    // Upload + persist to the database in one step.
+    const { error: saveErr } = await saveContent(next);
+    setResumeBusy(false);
+    setMessage(
+      saveErr
+        ? { kind: "danger", text: saveErr }
+        : { kind: "success", text: "Résumé uploaded and saved." },
+    );
   };
 
-  // --- helpers to update nested draft state immutably ---
+  // immutable nested setters
   const setPerson = (patch: Partial<EditableContent["person"]>) =>
     setDraft((d) => ({ ...d, person: { ...d.person, ...patch } }));
   const setHome = (patch: Partial<EditableContent["home"]>) =>
@@ -162,7 +297,7 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
           <Button variant="secondary" size="s" onClick={signOut}>
             Sign out
           </Button>
-          <Button size="s" loading={saving} onClick={save}>
+          <Button size="s" loading={saving} onClick={() => save()}>
             Save
           </Button>
         </Row>
@@ -171,7 +306,7 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
       {message && <Feedback variant={message.kind} description={message.text} />}
 
       {/* Profile */}
-      <Column fillWidth gap="12">
+      <Column fillWidth gap="16">
         <Heading as="h2" variant="heading-strong-m">
           Profile
         </Heading>
@@ -193,8 +328,7 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
           value={draft.person.location}
           onChange={(e) => setPerson({ location: e.target.value })}
         />
-        <TagInput
-          id="languages"
+        <ChipInput
           label="Languages"
           value={draft.person.languages}
           onChange={(v) => setPerson({ languages: v })}
@@ -202,7 +336,7 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
       </Column>
 
       {/* Home */}
-      <Column fillWidth gap="12">
+      <Column fillWidth gap="16">
         <Heading as="h2" variant="heading-strong-m">
           Home page
         </Heading>
@@ -251,19 +385,18 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
       </Column>
 
       {/* About */}
-      <Column fillWidth gap="12">
+      <Column fillWidth gap="16">
         <Heading as="h2" variant="heading-strong-m">
           About
         </Heading>
         <Textarea
           id="intro"
           label="Intro"
-          lines={4}
+          lines={5}
           value={draft.about.intro}
           onChange={(e) => setAbout({ intro: e.target.value })}
         />
-        <TagInput
-          id="skills"
+        <ChipInput
           label="Skills"
           value={draft.about.skills}
           onChange={(v) => setAbout({ skills: v })}
@@ -279,7 +412,6 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
           <Button
             size="s"
             variant="secondary"
-            prefixIcon="plus"
             onClick={() =>
               setAbout({
                 work: [
@@ -293,11 +425,15 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
           </Button>
         </Row>
         {draft.about.work.map((exp, i) => (
-          <Column key={i} fillWidth gap="8" padding="16" radius="m" border="neutral-alpha-medium">
+          <Column key={i} fillWidth gap="12" padding="16" radius="m" border="neutral-alpha-medium">
             <Row fillWidth horizontal="between" vertical="center">
-              <Text variant="label-default-s" onBackground="neutral-weak">
-                #{i + 1}
-              </Text>
+              <LogoUpload
+                name={exp.company}
+                url={exp.logo}
+                onChange={(logo) =>
+                  setAbout({ work: draft.about.work.map((w, j) => (j === i ? { ...w, logo } : w)) })
+                }
+              />
               <Button
                 size="s"
                 variant="danger"
@@ -342,21 +478,6 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
                 })
               }
             />
-            <Textarea
-              id={`work-ach-${i}`}
-              label="Achievements (one per line)"
-              lines={4}
-              value={exp.achievements.join("\n")}
-              onChange={(e) =>
-                setAbout({
-                  work: draft.about.work.map((w, j) =>
-                    j === i
-                      ? { ...w, achievements: e.target.value.split("\n").filter((l) => l.trim()) }
-                      : w,
-                  ),
-                })
-              }
-            />
           </Column>
         ))}
       </Column>
@@ -370,7 +491,6 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
           <Button
             size="s"
             variant="secondary"
-            prefixIcon="plus"
             onClick={() =>
               setAbout({
                 studies: [...draft.about.studies, { name: "", timeframe: "", description: "" }],
@@ -381,11 +501,17 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
           </Button>
         </Row>
         {draft.about.studies.map((edu, i) => (
-          <Column key={i} fillWidth gap="8" padding="16" radius="m" border="neutral-alpha-medium">
+          <Column key={i} fillWidth gap="12" padding="16" radius="m" border="neutral-alpha-medium">
             <Row fillWidth horizontal="between" vertical="center">
-              <Text variant="label-default-s" onBackground="neutral-weak">
-                #{i + 1}
-              </Text>
+              <LogoUpload
+                name={edu.name}
+                url={edu.logo}
+                onChange={(logo) =>
+                  setAbout({
+                    studies: draft.about.studies.map((s, j) => (j === i ? { ...s, logo } : s)),
+                  })
+                }
+              />
               <Button
                 size="s"
                 variant="danger"
@@ -485,20 +611,33 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
           onChange={(e) => setResume({ label: e.target.value })}
         />
         <Text variant="label-default-s" onBackground="neutral-weak">
-          Current: {draft.resume.url || "none"}
+          Current file: {draft.resume.url || "none"}
         </Text>
         <input
+          ref={resumeRef}
           type="file"
           accept="application/pdf"
+          style={{ display: "none" }}
           onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) onResumeUpload(file);
+            const f = e.target.files?.[0];
+            if (f) onResumeUpload(f);
           }}
         />
+        <Row gap="8">
+          <Button
+            size="s"
+            variant="secondary"
+            prefixIcon="document"
+            loading={resumeBusy}
+            onClick={() => resumeRef.current?.click()}
+          >
+            Upload &amp; save PDF
+          </Button>
+        </Row>
       </Column>
 
       <Row fillWidth horizontal="end" paddingTop="16">
-        <Button loading={saving} onClick={save}>
+        <Button loading={saving} onClick={() => save()}>
           Save changes
         </Button>
       </Row>
