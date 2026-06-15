@@ -93,11 +93,7 @@ export function AboutView() {
       )}
 
       {/* Intro */}
-      <Text
-        variant="body-default-l"
-        onBackground="neutral-weak"
-        style={{ lineHeight: 1.7, maxWidth: "40rem" }}
-      >
+      <Text variant="body-default-l" onBackground="neutral-weak" style={{ lineHeight: 1.7 }}>
         {content.about.intro}
       </Text>
 
