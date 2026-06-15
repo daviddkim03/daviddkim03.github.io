@@ -15,7 +15,7 @@ export function ProjectsCarousel({ children }: { children: ReactNode }) {
   const go = (next: number) => setIndex(((next % count) + count) % count);
 
   return (
-    <Column fillWidth gap="32" paddingX="l">
+    <Column fillWidth gap="32" paddingX="l" marginBottom="80">
       <div className={styles.viewport}>
         {/* key forces the enter animation to replay on each slide change */}
         <div key={active} className={styles.slide}>
