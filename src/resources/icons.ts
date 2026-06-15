@@ -6,7 +6,6 @@ import {
   HiArrowTopRightOnSquare,
   HiArrowUpRight,
   HiCalendarDays,
-  HiXMark,
   HiEnvelope,
   HiOutlineDocument,
   HiOutlineEye,
@@ -14,6 +13,7 @@ import {
   HiOutlineGlobeAsiaAustralia,
   HiOutlineLink,
   HiOutlineRocketLaunch,
+  HiXMark,
 } from "react-icons/hi2";
 
 import {

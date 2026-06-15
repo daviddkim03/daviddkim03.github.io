@@ -129,7 +129,7 @@ function LogoUpload({
   };
   return (
     <Row vertical="center" gap="12">
-      <Avatar size="m" src={url} value={monogram(name || "?")} />
+      <Avatar size="m" src={url} value={url ? undefined : monogram(name || "?")} />
       <input
         ref={ref}
         type="file"
