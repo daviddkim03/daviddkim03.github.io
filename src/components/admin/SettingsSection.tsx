@@ -39,9 +39,9 @@ export function SettingsSection({ onSaved }: { onSaved?: () => void }) {
         Settings — AI cover generator
       </Heading>
       <Text variant="body-default-s" onBackground="neutral-weak">
-        Add a Claude API key to auto-generate project cover images. The key is
-        stored only in this browser and is sent only to api.anthropic.com — never
-        to the database or git. Get one at console.anthropic.com.
+        Add a Claude API key to auto-generate project cover images. The key is stored only in this
+        browser and is sent only to api.anthropic.com — never to the database or git. Get one at
+        console.anthropic.com.
       </Text>
       <PasswordInput
         id="claude-key"

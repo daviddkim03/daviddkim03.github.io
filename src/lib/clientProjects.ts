@@ -43,10 +43,7 @@ export function projectHref(p: ClientProject): string {
  * date (newest first). Used by every project listing so dynamic projects show
  * up live without a rebuild.
  */
-export function mergeProjects(
-  mdx: ClientProject[],
-  dynamic: DynamicProject[],
-): ClientProject[] {
+export function mergeProjects(mdx: ClientProject[], dynamic: DynamicProject[]): ClientProject[] {
   return [...mdx, ...dynamic.map(toClientProject)].sort(
     (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
   );

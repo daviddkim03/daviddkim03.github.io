@@ -50,9 +50,23 @@ function blankProject(ownerName: string): DynamicProject {
   };
 }
 
+/** Read-only reference to a built-in (MDX) project, shown for context. */
+export interface BuiltinProjectRef {
+  slug: string;
+  title: string;
+  company: string;
+  summary: string;
+  image: string;
+}
+
 interface ProjectsSectionProps {
   value: DynamicProject[];
   onChange: (next: DynamicProject[]) => void;
+  /** Built-in MDX projects (defined in code), shown read-only for context. */
+  builtins: BuiltinProjectRef[];
+  /** Per-slug overrides keyed by slug; only the summary is editable here. */
+  summaryOverrides: Record<string, { summary?: string; company?: string }>;
+  onSummaryChange: (slug: string, summary: string) => void;
   /** Built-in MDX slugs, to warn on collisions. */
   reservedSlugs: string[];
   ownerName: string;
@@ -62,6 +76,9 @@ interface ProjectsSectionProps {
 export function ProjectsSection({
   value,
   onChange,
+  builtins,
+  summaryOverrides,
+  onSummaryChange,
   reservedSlugs,
   ownerName,
   onMessage,
@@ -114,7 +131,10 @@ export function ProjectsSection({
       return;
     }
     update(i, { image: url, slug });
-    onMessage({ kind: "success", text: `Cover generated for “${p.title || slug}”. Save to keep it.` });
+    onMessage({
+      kind: "success",
+      text: `Cover generated for “${p.title || slug}”. Save to keep it.`,
+    });
   };
 
   const upload = async (i: number, file: File) => {
@@ -131,38 +151,96 @@ export function ProjectsSection({
   };
 
   return (
-    <Column fillWidth gap="16">
-      <Row fillWidth horizontal="between" vertical="center">
-        <Heading as="h2" variant="heading-strong-m">
-          Projects
-        </Heading>
-        <Button size="s" variant="secondary" prefixIcon="plus" onClick={add}>
-          Add project
-        </Button>
-      </Row>
-      <Text variant="body-default-s" onBackground="neutral-weak">
-        Projects added here appear alongside the built-in ones, live, without a
-        rebuild. Generate a cover with Claude (needs a key in Settings) or upload
-        your own.
-      </Text>
+    <Column fillWidth gap="24">
+      <Heading as="h2" variant="heading-strong-m">
+        Projects
+      </Heading>
 
-      {value.length === 0 && (
-        <Text variant="label-default-s" onBackground="neutral-weak">
-          No added projects yet. Click “Add project”.
-        </Text>
+      {/* Built-in projects (defined in code) — read-only, summary editable */}
+      {builtins.length > 0 && (
+        <Column fillWidth gap="12">
+          <Text variant="label-strong-s">Built-in projects</Text>
+          <Text variant="body-default-s" onBackground="neutral-weak">
+            These live in code. You can edit the summary shown on cards here; their covers and
+            case-study pages are defined in each project&rsquo;s MDX file.
+          </Text>
+          {builtins.map((b) => (
+            <Row
+              key={b.slug}
+              fillWidth
+              gap="16"
+              padding="16"
+              radius="m"
+              border="neutral-alpha-medium"
+              s={{ direction: "column" }}
+            >
+              <Column style={{ width: "200px", flexShrink: 0 }}>
+                {b.image ? (
+                  <Media
+                    radius="m"
+                    aspectRatio="16 / 9"
+                    src={b.image}
+                    alt={b.title}
+                    border="neutral-alpha-weak"
+                  />
+                ) : (
+                  <Column
+                    horizontal="center"
+                    vertical="center"
+                    radius="m"
+                    background="neutral-alpha-weak"
+                    border="neutral-alpha-medium"
+                    style={{ aspectRatio: "16 / 9" }}
+                  >
+                    <Text variant="label-default-s" onBackground="neutral-weak">
+                      No cover
+                    </Text>
+                  </Column>
+                )}
+              </Column>
+              <Column fillWidth gap="8">
+                <Text variant="heading-strong-xs">{b.title}</Text>
+                {b.company && (
+                  <Text variant="label-default-s" onBackground="neutral-weak">
+                    {b.company}
+                  </Text>
+                )}
+                <Textarea
+                  id={`bi-sum-${b.slug}`}
+                  label="Summary (shown on cards)"
+                  lines={2}
+                  value={summaryOverrides[b.slug]?.summary ?? b.summary}
+                  onChange={(e) => onSummaryChange(b.slug, e.target.value)}
+                />
+              </Column>
+            </Row>
+          ))}
+        </Column>
       )}
 
-      {value.map((p, i) => {
+      {/* Added projects (admin-authored, fully editable, AI covers) */}
+      <Column fillWidth gap="12">
+        <Row fillWidth horizontal="between" vertical="center">
+          <Text variant="label-strong-s">Added projects</Text>
+          <Button size="s" variant="secondary" prefixIcon="plus" onClick={add}>
+            Add project
+          </Button>
+        </Row>
+        <Text variant="body-default-s" onBackground="neutral-weak">
+          Projects added here appear alongside the built-in ones, live, without a rebuild. Generate a
+          cover with Claude (needs a key in Settings) or upload your own.
+        </Text>
+
+        {value.length === 0 && (
+          <Text variant="label-default-s" onBackground="neutral-weak">
+            No added projects yet. Click &ldquo;Add project&rdquo;.
+          </Text>
+        )}
+
+        {value.map((p, i) => {
         const running = busy?.i === i;
         return (
-          <Column
-            key={i}
-            fillWidth
-            gap="12"
-            padding="16"
-            radius="m"
-            border="neutral-alpha-medium"
-          >
+          <Column key={i} fillWidth gap="12" padding="16" radius="m" border="neutral-alpha-medium">
             {/* Cover */}
             <Row fillWidth gap="16" s={{ direction: "column" }}>
               <Column style={{ width: "260px", flexShrink: 0 }} gap="8">
@@ -326,6 +404,7 @@ export function ProjectsSection({
           </Column>
         );
       })}
+      </Column>
     </Column>
   );
 }

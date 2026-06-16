@@ -7,6 +7,5 @@ export const metadata = {
 };
 
 export default function AdminPage() {
-  const projects = getLeanProjects().map((p) => ({ slug: p.slug, title: p.title }));
-  return <AdminEditor projects={projects} />;
+  return <AdminEditor projects={getLeanProjects()} />;
 }

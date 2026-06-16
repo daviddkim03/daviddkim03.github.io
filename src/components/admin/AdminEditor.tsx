@@ -3,6 +3,7 @@
 import { ChipInput } from "@/components/admin/ChipInput";
 import { ProjectsSection } from "@/components/admin/ProjectsSection";
 import { SettingsSection } from "@/components/admin/SettingsSection";
+import type { ClientProject } from "@/lib/clientProjects";
 import {
   type EditableContent,
   defaultContent,
@@ -30,7 +31,6 @@ import {
 } from "@once-ui-system/core";
 import { useEffect, useRef, useState } from "react";
 
-type ProjectRef = { slug: string; title: string };
 type Phase = "loading" | "login" | "editor";
 
 /** Initials fallback for an avatar when no logo image is set. */
@@ -85,7 +85,7 @@ function LogoUpload({
   );
 }
 
-export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
+export function AdminEditor({ projects }: { projects: ClientProject[] }) {
   const [phase, setPhase] = useState<Phase>("loading");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -499,44 +499,24 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
         ))}
       </Column>
 
-      {/* Project descriptions */}
-      <Column fillWidth gap="16">
-        <Heading as="h2" variant="heading-strong-m">
-          Project descriptions
-        </Heading>
-        {projects.map((p) => (
-          <Column
-            key={p.slug}
-            fillWidth
-            gap="8"
-            padding="16"
-            radius="m"
-            border="neutral-alpha-medium"
-          >
-            <Text variant="heading-strong-xs">{p.title}</Text>
-            <Textarea
-              id={`proj-sum-${p.slug}`}
-              label="Summary"
-              lines={2}
-              value={draft.projects[p.slug]?.summary ?? ""}
-              onChange={(e) =>
-                setDraft((d) => ({
-                  ...d,
-                  projects: {
-                    ...d.projects,
-                    [p.slug]: { ...d.projects[p.slug], summary: e.target.value },
-                  },
-                }))
-              }
-            />
-          </Column>
-        ))}
-      </Column>
-
-      {/* Projects (admin-authored, with AI cover generation) */}
+      {/* Projects — built-in (MDX) + admin-authored, with AI cover generation */}
       <ProjectsSection
         value={draft.dynamicProjects}
         onChange={(next) => setDraft((d) => ({ ...d, dynamicProjects: next }))}
+        builtins={projects.map((p) => ({
+          slug: p.slug,
+          title: p.title,
+          company: p.company,
+          summary: p.summary,
+          image: p.images[0] ?? "",
+        }))}
+        summaryOverrides={draft.projects}
+        onSummaryChange={(slug, summary) =>
+          setDraft((d) => ({
+            ...d,
+            projects: { ...d.projects, [slug]: { ...d.projects[slug], summary } },
+          }))
+        }
         reservedSlugs={projects.map((p) => p.slug)}
         ownerName={draft.person.name}
         onMessage={(msg) => setMessage(msg)}
