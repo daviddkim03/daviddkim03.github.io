@@ -1,15 +1,10 @@
+import type { ClientProject } from "@/lib/clientProjects";
 import { getPosts } from "@/utils/utils";
 
-/** Serializable project shape passed from server pages to client views. */
-export interface ClientProject {
-  slug: string;
-  title: string;
-  summary: string;
-  company: string;
-  images: string[];
-  publishedAt: string;
-  link: string;
-}
+// Re-export the client-safe project type so server pages can keep importing
+// it from here. The runtime helpers live in `@/lib/clientProjects` (no `fs`).
+export type { ClientProject } from "@/lib/clientProjects";
+export { toClientProject, projectHref, mergeProjects } from "@/lib/clientProjects";
 
 /** Read all projects (newest first) as plain serializable objects. */
 export function getLeanProjects(): ClientProject[] {

@@ -1,5 +1,38 @@
 import { ASSETS_BUCKET, getSupabase } from "@/lib/supabase";
 
+/** A team member credited on a project (mirrors the MDX `team` frontmatter). */
+export interface ProjectTeamMember {
+  name: string;
+  role: string;
+  avatar: string;
+  linkedIn: string;
+}
+
+/**
+ * A project authored entirely from the /admin page and stored in Supabase
+ * (as opposed to the built-in MDX case studies in `src/app/work/projects`).
+ * These appear in every project listing and render on a single client route
+ * (`/work/p?slug=…`) since the static export can't pre-render unknown slugs.
+ */
+export interface DynamicProject {
+  slug: string;
+  title: string;
+  company: string;
+  summary: string;
+  /** ISO date (YYYY-MM-DD); controls ordering alongside MDX projects. */
+  publishedAt: string;
+  tech: string[];
+  /** Hex accent the generated cover card is built around, e.g. "#38bdf8". */
+  accent: string;
+  /** Public URL of the cover image (uploaded/generated), shown in cards + hero. */
+  image: string;
+  /** Optional external link shown on the card. */
+  link: string;
+  /** Markdown case-study body rendered on the detail route. */
+  body: string;
+  team: ProjectTeamMember[];
+}
+
 /**
  * Editable content shape persisted as a single JSONB row in Supabase
  * (`site_content.data`). Everything here can be changed from the /admin page
@@ -46,6 +79,8 @@ export interface EditableContent {
   };
   /** Per-project overrides keyed by slug (summary shown in lists). */
   projects: Record<string, { summary?: string; company?: string }>;
+  /** Projects authored from /admin (in addition to the built-in MDX ones). */
+  dynamicProjects: DynamicProject[];
 }
 
 export const defaultContent: EditableContent = {
@@ -158,6 +193,7 @@ export const defaultContent: EditableContent = {
     url: "/resumes/david-kim-main.pdf",
   },
   projects: {},
+  dynamicProjects: [],
 };
 
 /** Deep-merge a partial override from Supabase over the built-in defaults. */
@@ -178,6 +214,8 @@ export function mergeContent(
     },
     resume: { ...defaultContent.resume, ...override.resume },
     projects: { ...defaultContent.projects, ...override.projects },
+    // array replaced wholesale when present, so admin deletions stick
+    dynamicProjects: override.dynamicProjects ?? defaultContent.dynamicProjects,
   };
 }
 

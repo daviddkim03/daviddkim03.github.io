@@ -1,7 +1,7 @@
 "use client";
 
 import { useContent } from "@/components/content/ContentProvider";
-import type { ClientProject } from "@/lib/projects";
+import { type ClientProject, mergeProjects, projectHref } from "@/lib/clientProjects";
 import { Column, Heading, Media, Row, SmartLink, Text } from "@once-ui-system/core";
 import styles from "./selectedWork.module.scss";
 
@@ -15,13 +15,14 @@ function formatDate(dateStr: string): string {
 
 export function SelectedWork({ projects }: { projects: ClientProject[] }) {
   const content = useContent();
-  const bySlug = new Map(projects.map((p) => [p.slug, p]));
+  const allProjects = mergeProjects(projects, content.dynamicProjects);
+  const bySlug = new Map(allProjects.map((p) => [p.slug, p]));
 
   // Use the admin-selected slugs (in order); fall back to the newest projects.
   const selected = content.home.selectedSlugs
     .map((slug) => bySlug.get(slug))
     .filter((p): p is ClientProject => Boolean(p));
-  const shown = selected.length > 0 ? selected : projects.slice(0, 2);
+  const shown = selected.length > 0 ? selected : allProjects.slice(0, 2);
 
   if (shown.length === 0) return null;
 
@@ -41,7 +42,7 @@ export function SelectedWork({ projects }: { projects: ClientProject[] }) {
       <Row fillWidth gap="24" s={{ direction: "column" }}>
         {shown.map((post) => (
           <Column key={post.slug} flex={1} fillWidth style={{ minWidth: 0 }}>
-            <SmartLink href={`/work/${post.slug}`} style={{ width: "100%" }}>
+            <SmartLink href={projectHref(post)} style={{ width: "100%" }}>
               <Column className={styles.card} fillWidth gap="12">
                 <Media
                   border="neutral-alpha-weak"

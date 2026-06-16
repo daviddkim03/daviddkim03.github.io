@@ -1,5 +1,8 @@
 "use client";
 
+import { ChipInput } from "@/components/admin/ChipInput";
+import { ProjectsSection } from "@/components/admin/ProjectsSection";
+import { SettingsSection } from "@/components/admin/SettingsSection";
 import {
   type EditableContent,
   defaultContent,
@@ -37,76 +40,6 @@ function monogram(name: string): string {
   if (words.length === 0) return "•";
   if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
   return (words[0][0] + words[1][0]).toUpperCase();
-}
-
-/** Add/remove a list of string "chips" (used for skills and languages). */
-function ChipInput({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: string[];
-  onChange: (v: string[]) => void;
-}) {
-  const [text, setText] = useState("");
-  const commit = () => {
-    const t = text.trim();
-    if (t && !value.includes(t)) onChange([...value, t]);
-    setText("");
-  };
-  return (
-    <Column fillWidth gap="8">
-      <Text variant="label-default-s" onBackground="neutral-weak">
-        {label}
-      </Text>
-      {value.length > 0 && (
-        <Row fillWidth wrap gap="8">
-          {value.map((v) => (
-            <Row
-              key={v}
-              vertical="center"
-              gap="4"
-              paddingLeft="12"
-              paddingRight="4"
-              paddingY="2"
-              radius="full"
-              background="neutral-alpha-weak"
-              border="neutral-alpha-medium"
-            >
-              <Text variant="label-default-s">{v}</Text>
-              <IconButton
-                icon="close"
-                size="s"
-                variant="ghost"
-                tooltip="Remove"
-                onClick={() => onChange(value.filter((x) => x !== v))}
-              />
-            </Row>
-          ))}
-        </Row>
-      )}
-      <Row fillWidth gap="8" vertical="center">
-        <Row fillWidth>
-          <Input
-            id={`chip-${label}`}
-            placeholder={`Add ${label.toLowerCase()} and press Enter`}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                commit();
-              }
-            }}
-          />
-        </Row>
-        <Button size="m" variant="secondary" onClick={commit}>
-          Add
-        </Button>
-      </Row>
-    </Column>
-  );
 }
 
 /** Avatar preview + image upload for a work/education logo. */
@@ -241,6 +174,12 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
   const setResume = (patch: Partial<EditableContent["resume"]>) =>
     setDraft((d) => ({ ...d, resume: { ...d.resume, ...patch } }));
 
+  // Built-in MDX projects plus admin-added ones, for the featured/selected pickers.
+  const dynamicRefs = draft.dynamicProjects
+    .map((p) => ({ slug: p.slug, title: p.title || "(untitled project)" }))
+    .filter((r) => r.slug);
+  const projectChoices = [...projects, ...dynamicRefs];
+
   if (phase === "loading") {
     return (
       <Column fillWidth horizontal="center" paddingY="128">
@@ -356,7 +295,7 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
         <Select
           id="featured"
           label="Featured project (hero badge)"
-          options={projects.map((p) => ({ label: p.title, value: p.slug }))}
+          options={projectChoices.map((p) => ({ label: p.title, value: p.slug }))}
           value={draft.home.featuredSlug}
           onSelect={(value) => setHome({ featuredSlug: String(value) })}
         />
@@ -364,7 +303,7 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
           Selected Work (home grid)
         </Text>
         <Column fillWidth gap="8">
-          {projects.map((p) => {
+          {projectChoices.map((p) => {
             const checked = draft.home.selectedSlugs.includes(p.slug);
             return (
               <Checkbox
@@ -594,6 +533,15 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
         ))}
       </Column>
 
+      {/* Projects (admin-authored, with AI cover generation) */}
+      <ProjectsSection
+        value={draft.dynamicProjects}
+        onChange={(next) => setDraft((d) => ({ ...d, dynamicProjects: next }))}
+        reservedSlugs={projects.map((p) => p.slug)}
+        ownerName={draft.person.name}
+        onMessage={(msg) => setMessage(msg)}
+      />
+
       {/* Résumé */}
       <Column fillWidth gap="12">
         <Heading as="h2" variant="heading-strong-m">
@@ -635,6 +583,9 @@ export function AdminEditor({ projects }: { projects: ProjectRef[] }) {
           </Button>
         </Row>
       </Column>
+
+      {/* Settings — Claude API key for AI cover generation */}
+      <SettingsSection />
 
       <Row fillWidth horizontal="end" paddingTop="16">
         <Button loading={saving} onClick={() => save()}>

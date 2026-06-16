@@ -2,7 +2,7 @@
 
 import { useContent } from "@/components/content/ContentProvider";
 import { SelectedWork } from "@/components/work/SelectedWork";
-import type { ClientProject } from "@/lib/projects";
+import { type ClientProject, mergeProjects, projectHref } from "@/lib/clientProjects";
 import { about, person } from "@/resources";
 import {
   Avatar,
@@ -18,7 +18,8 @@ import {
 
 export function HomeView({ projects }: { projects: ClientProject[] }) {
   const content = useContent();
-  const featured = projects.find((p) => p.slug === content.home.featuredSlug);
+  const allProjects = mergeProjects(projects, content.dynamicProjects);
+  const featured = allProjects.find((p) => p.slug === content.home.featuredSlug);
 
   return (
     <Column maxWidth="l" gap="xl" paddingY="12" horizontal="center">
@@ -40,7 +41,7 @@ export function HomeView({ projects }: { projects: ClientProject[] }) {
                 onBackground="neutral-strong"
                 textVariant="label-default-s"
                 arrow={false}
-                href={`/work/${featured.slug}`}
+                href={projectHref(featured)}
               >
                 <Row paddingY="2" gap="12" vertical="center">
                   <strong className="ml-4">{featured.title}</strong>
