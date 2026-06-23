@@ -17,7 +17,7 @@ import {
   Text,
 } from "@once-ui-system/core";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense } from "react";
 
 function DynamicProjectView() {
   const params = useSearchParams();
@@ -25,22 +25,7 @@ function DynamicProjectView() {
   const content = useContent();
   const project = content.dynamicProjects.find((p) => p.slug === slug);
 
-  // Content loads async (defaults first, Supabase after). Give it a moment
-  // before deciding a slug is genuinely missing, so valid links don't flash.
-  const [settled, setSettled] = useState(false);
-  useEffect(() => {
-    const t = setTimeout(() => setSettled(true), 1500);
-    return () => clearTimeout(t);
-  }, []);
-
   if (!project) {
-    if (!settled) {
-      return (
-        <Column fillWidth horizontal="center" paddingY="128">
-          <Spinner />
-        </Column>
-      );
-    }
     return (
       <Column fillWidth horizontal="center" gap="16" paddingY="128" align="center">
         <Heading variant="heading-strong-l">Project not found</Heading>

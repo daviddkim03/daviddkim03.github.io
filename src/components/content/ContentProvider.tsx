@@ -1,32 +1,18 @@
 "use client";
 
-import { type EditableContent, defaultContent, loadContent } from "@/lib/content";
-import { createContext, useContext, useEffect, useState } from "react";
+import { type EditableContent, defaultContent } from "@/lib/content";
+import { createContext, useContext } from "react";
 
 const ContentContext = createContext<EditableContent>(defaultContent);
 
 /**
- * Provides the editable content to the app. Starts with the built-in defaults
- * (so the statically-prerendered HTML is correct and SEO-friendly), then loads
- * any Supabase overrides on the client and swaps them in.
+ * Provides the site content (edited in `src/lib/content.ts`) to the app.
  */
 export function ContentProvider({ children }: { children: React.ReactNode }) {
-  const [content, setContent] = useState<EditableContent>(defaultContent);
-
-  useEffect(() => {
-    let active = true;
-    loadContent().then((loaded) => {
-      if (active) setContent(loaded);
-    });
-    return () => {
-      active = false;
-    };
-  }, []);
-
-  return <ContentContext.Provider value={content}>{children}</ContentContext.Provider>;
+  return <ContentContext.Provider value={defaultContent}>{children}</ContentContext.Provider>;
 }
 
-/** Read the live (Supabase-overridden) editable content. */
+/** Read the site content. */
 export function useContent(): EditableContent {
   return useContext(ContentContext);
 }

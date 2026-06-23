@@ -25,7 +25,7 @@ import {
   PiUserCircleDuotone,
 } from "react-icons/pi";
 
-import { SiFigma, SiJavascript, SiNextdotjs, SiSupabase } from "react-icons/si";
+import { SiFigma, SiJavascript, SiNextdotjs } from "react-icons/si";
 
 import {
   FaDiscord,
@@ -85,7 +85,6 @@ export const iconLibrary: Record<string, IconType> = {
   rocket: HiOutlineRocketLaunch,
   javascript: SiJavascript,
   nextjs: SiNextdotjs,
-  supabase: SiSupabase,
   figma: SiFigma,
   facebook: FaFacebook,
   pinterest: FaPinterest,

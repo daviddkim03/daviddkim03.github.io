@@ -1,5 +1,3 @@
-import { ASSETS_BUCKET, getSupabase } from "@/lib/supabase";
-
 /** A team member credited on a project (mirrors the MDX `team` frontmatter). */
 export interface ProjectTeamMember {
   name: string;
@@ -9,10 +7,11 @@ export interface ProjectTeamMember {
 }
 
 /**
- * A project authored entirely from the /admin page and stored in Supabase
- * (as opposed to the built-in MDX case studies in `src/app/work/projects`).
- * These appear in every project listing and render on a single client route
- * (`/work/p?slug=…`) since the static export can't pre-render unknown slugs.
+ * A code-authored project (as opposed to the built-in MDX case studies in
+ * `src/app/work/projects`). Add entries to `defaultContent.dynamicProjects` to
+ * surface them. They appear in every project listing and render on a single
+ * client route (`/work/p?slug=…`) since the static export can't pre-render
+ * unknown slugs.
  */
 export interface DynamicProject {
   slug: string;
@@ -34,10 +33,9 @@ export interface DynamicProject {
 }
 
 /**
- * Editable content shape persisted as a single JSONB row in Supabase
- * (`site_content.data`). Everything here can be changed from the /admin page
- * and is read live by the site. Rich/JSX content (case-study bodies) stays in
- * code; this is the structured, frequently-edited subset.
+ * The site's structured content. Edit `defaultContent` below to change what the
+ * site shows. Rich/JSX content (case-study bodies) stays in MDX; this is the
+ * structured, frequently-edited subset.
  */
 export interface EditableContent {
   person: {
@@ -74,12 +72,12 @@ export interface EditableContent {
   resume: {
     display: boolean;
     label: string;
-    /** public URL of the uploaded résumé PDF (Supabase storage or /public) */
+    /** public URL of the résumé PDF (e.g. a file in /public) */
     url: string;
   };
   /** Per-project overrides keyed by slug (summary shown in lists). */
   projects: Record<string, { summary?: string; company?: string }>;
-  /** Projects authored from /admin (in addition to the built-in MDX ones). */
+  /** Code-authored projects (in addition to the built-in MDX ones). */
   dynamicProjects: DynamicProject[];
 }
 
@@ -195,70 +193,3 @@ export const defaultContent: EditableContent = {
   projects: {},
   dynamicProjects: [],
 };
-
-/** Deep-merge a partial override from Supabase over the built-in defaults. */
-export function mergeContent(
-  override: Partial<EditableContent> | null | undefined,
-): EditableContent {
-  if (!override) return defaultContent;
-  return {
-    person: { ...defaultContent.person, ...override.person },
-    home: { ...defaultContent.home, ...override.home },
-    about: {
-      ...defaultContent.about,
-      ...override.about,
-      // arrays are replaced wholesale when present (so deletions stick)
-      work: override.about?.work ?? defaultContent.about.work,
-      studies: override.about?.studies ?? defaultContent.about.studies,
-      skills: override.about?.skills ?? defaultContent.about.skills,
-    },
-    resume: { ...defaultContent.resume, ...override.resume },
-    projects: { ...defaultContent.projects, ...override.projects },
-    // array replaced wholesale when present, so admin deletions stick
-    dynamicProjects: override.dynamicProjects ?? defaultContent.dynamicProjects,
-  };
-}
-
-const ROW_ID = 1;
-
-/** Fetch the override row and merge over defaults. Falls back to defaults. */
-export async function loadContent(): Promise<EditableContent> {
-  const supabase = getSupabase();
-  if (!supabase) return defaultContent;
-  try {
-    const { data, error } = await supabase
-      .from("site_content")
-      .select("data")
-      .eq("id", ROW_ID)
-      .maybeSingle();
-    if (error) return defaultContent;
-    return mergeContent((data?.data as Partial<EditableContent>) ?? null);
-  } catch {
-    return defaultContent;
-  }
-}
-
-/** Persist the full editable content (requires an authenticated session). */
-export async function saveContent(content: EditableContent): Promise<{ error: string | null }> {
-  const supabase = getSupabase();
-  if (!supabase) return { error: "Supabase is not configured." };
-  const { error } = await supabase
-    .from("site_content")
-    .upsert({ id: ROW_ID, data: content, updated_at: new Date().toISOString() });
-  return { error: error?.message ?? null };
-}
-
-/** Upload the résumé PDF (or an image) to storage and return its public URL. */
-export async function uploadAsset(
-  file: File,
-  path: string,
-): Promise<{ url: string | null; error: string | null }> {
-  const supabase = getSupabase();
-  if (!supabase) return { url: null, error: "Supabase is not configured." };
-  const { error } = await supabase.storage
-    .from(ASSETS_BUCKET)
-    .upload(path, file, { upsert: true, contentType: file.type || undefined });
-  if (error) return { url: null, error: error.message };
-  const { data } = supabase.storage.from(ASSETS_BUCKET).getPublicUrl(path);
-  return { url: data.publicUrl, error: null };
-}
