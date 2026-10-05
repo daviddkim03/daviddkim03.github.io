@@ -1,54 +1,51 @@
+import { cn } from "cn";
+import { buttonVariants } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { person, social } from "@/resources";
-import { IconButton, Row, Text } from "@once-ui-system/core";
-import styles from "./Footer.module.scss";
+import { iconLibrary } from "@/resources/icons";
 
-export const Footer = () => {
+const links = [
+  { name: "HyberTec", href: "https://hybertec.com", icon: iconLibrary.hybertec },
+  ...social
+    .filter((item) => item.link)
+    .map((item) => ({ name: item.name, href: item.link, icon: iconLibrary[item.icon] })),
+];
+
+export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <Row as="footer" fillWidth padding="8" horizontal="center" s={{ direction: "column" }}>
-      <Row
-        className={styles.mobile}
-        maxWidth="l"
-        paddingY="8"
-        paddingX="16"
-        gap="16"
-        horizontal="between"
-        vertical="center"
-        s={{
-          direction: "column",
-          horizontal: "center",
-          align: "center",
-        }}
-      >
-        <Text variant="body-default-s" onBackground="neutral-strong">
-          <Text onBackground="neutral-weak">© {currentYear} /</Text>
-          <Text paddingX="4">{person.name}</Text>
-        </Text>
-        <Row gap="16" vertical="center">
-          <IconButton
-            href="https://hybertec.com"
-            icon="hybertec"
-            tooltip="HyberTec"
-            size="s"
-            variant="ghost"
-          />
-          {social.map(
-            (item) =>
-              item.link && (
-                <IconButton
-                  key={item.name}
-                  href={item.link}
-                  icon={item.icon}
-                  tooltip={item.name}
-                  size="s"
-                  variant="ghost"
-                />
-              ),
-          )}
-        </Row>
-      </Row>
-      <Row height="80" hide s={{ hide: false }} />
-    </Row>
+    // Extra bottom padding on mobile keeps the content clear of the floating nav.
+    <footer className="w-full px-6">
+      <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-3 pt-6 pb-28 md:flex-row md:justify-between md:pb-6">
+        <p className="text-sm text-muted-foreground">
+          © {currentYear} / <span className="text-foreground">{person.name}</span>
+        </p>
+        <div className="flex items-center gap-1 md:-mr-2">
+          {links.map(({ name, href, icon: Icon }) => (
+            <Tooltip key={name}>
+              <TooltipTrigger
+                render={
+                  <a
+                    href={href}
+                    aria-label={name}
+                    {...(href.startsWith("http")
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                  />
+                }
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "icon" }),
+                  "rounded-full text-muted-foreground hover:text-foreground",
+                )}
+              >
+                <Icon />
+              </TooltipTrigger>
+              <TooltipContent>{name}</TooltipContent>
+            </Tooltip>
+          ))}
+        </div>
+      </div>
+    </footer>
   );
-};
+}

@@ -1,69 +1,43 @@
 "use client";
 
-import React, { JSX } from "react";
-import { Heading, Flex, IconButton, useToast } from "@once-ui-system/core";
-
-import styles from "@/components/HeadingLink.module.scss";
+import { cn } from "cn";
+import { LuLink } from "react-icons/lu";
+import { toast } from "sonner";
+import { prose } from "@/components/prose";
 
 interface HeadingLinkProps {
   id: string;
   level: 1 | 2 | 3 | 4 | 5 | 6;
   children: React.ReactNode;
-  style?: React.CSSProperties;
+  className?: string;
 }
 
-export const HeadingLink: React.FC<HeadingLinkProps> = ({ id, level, children, style }) => {
-  const { addToast } = useToast();
+/** A content heading that copies a link to itself when clicked. */
+export function HeadingLink({ id, level, children, className }: HeadingLinkProps) {
+  const Heading = `h${level}` as const;
 
-  const copyURL = (id: string): void => {
+  const copyLink = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
     const url = `${window.location.origin}${window.location.pathname}#${id}`;
     navigator.clipboard.writeText(url).then(
-      () => {
-        addToast({
-          variant: "success",
-          message: "Link copied to clipboard.",
-        });
-      },
-      () => {
-        addToast({
-          variant: "danger",
-          message: "Failed to copy link.",
-        });
-      },
+      () => toast.success("Link copied to clipboard."),
+      () => toast.error("Failed to copy link."),
     );
   };
 
-  const variantMap = {
-    1: "display-strong-xs",
-    2: "heading-strong-xl",
-    3: "heading-strong-l",
-    4: "heading-strong-m",
-    5: "heading-strong-s",
-    6: "heading-strong-xs",
-  } as const;
-
-  const variant = variantMap[level];
-  const asTag = `h${level}` as keyof JSX.IntrinsicElements;
-
   return (
-    <Flex
-      style={style}
-      onClick={() => copyURL(id)}
-      className={styles.control}
-      vertical="center"
-      gap="4"
-    >
-      <Heading className={styles.text} id={id} variant={variant} as={asTag}>
+    <Heading id={id} className={cn(prose[Heading], className)}>
+      <a
+        href={`#${id}`}
+        onClick={copyLink}
+        className="group inline-flex items-center gap-2 decoration-border decoration-1 underline-offset-[0.25em] hover:underline"
+      >
         {children}
-      </Heading>
-      <IconButton
-        className={styles.visibility}
-        size="s"
-        icon="openLink"
-        variant="ghost"
-        tooltip="Copy"
-        tooltipPosition="right"
-      />
-    </Flex>
+        <LuLink
+          aria-hidden
+          className="size-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+        />
+      </a>
+    </Heading>
   );
-};
+}

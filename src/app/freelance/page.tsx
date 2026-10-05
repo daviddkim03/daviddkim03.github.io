@@ -1,104 +1,95 @@
-import { baseURL, freelance, person } from "@/resources";
-import { Button, Column, Heading, Icon, Meta, Row, Schema, Text } from "@once-ui-system/core";
+import { cn } from "cn";
+import { LuArrowRight, LuCodeXml, LuDatabase, LuMail, LuStore } from "react-icons/lu";
+import { JsonLd, PageHeader } from "@/components";
+import { buttonVariants } from "@/components/ui/button";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { pageMetadata } from "@/lib/seo";
+import { freelance, person } from "@/resources";
 
-export async function generateMetadata() {
-  return Meta.generate({
-    title: freelance.title,
-    description: freelance.description,
-    baseURL: baseURL,
-    image: "/images/og/home.jpg",
-    path: freelance.path,
-  });
-}
+export const metadata = pageMetadata({
+  title: freelance.title,
+  description: freelance.description,
+  path: freelance.path,
+});
 
 const services = [
   {
     title: "Business platforms",
     description:
       "POS systems, waitlist managers, scheduling tools, and business automation for restaurants, salons, real estate, and education.",
+    icon: LuStore,
   },
   {
     title: "Full-stack web development",
     description:
       "Custom web solutions built end to end — from data pipelines and APIs to the interface your team actually uses.",
+    icon: LuCodeXml,
   },
   {
     title: "Data cleaning & reporting",
     description:
       "Messy upstream inputs turned into clean, structured outputs — API integrations, scraping, and automated reports.",
+    icon: LuDatabase,
   },
 ];
 
 export default function Freelance() {
   return (
-    <Column maxWidth="l" paddingTop="24" gap="xl">
-      <Schema
-        as="webPage"
-        baseURL={baseURL}
+    <div className="flex w-full max-w-5xl flex-col gap-20 pt-4 pb-20 md:pt-8">
+      <JsonLd
+        type="WebPage"
         path={freelance.path}
         title={freelance.title}
         description={freelance.description}
-        image={"/images/og/home.jpg"}
-        author={{
-          name: person.name,
-          url: `${baseURL}${freelance.path}`,
-          image: `${baseURL}${person.avatar}`,
-        }}
       />
-      <Column gap="m" horizontal="center" align="center">
-        <Heading variant="display-strong-l">Freelance requests</Heading>
-        <Column maxWidth="m">
-          <Text align="center" variant="body-default-l" onBackground="neutral-weak" wrap="balance">
-            I take on scoped freelance work through HyberTec — automation, estimation systems, and
-            full-stack platforms for small teams. Short discovery call, scoped proposal, weekly
-            demos, clean handoff.
-          </Text>
-        </Column>
-        <Row gap="12" paddingTop="16" wrap horizontal="center" data-border="rounded">
-          <Button
+      <PageHeader
+        title="Freelance requests"
+        description="I take on scoped freelance work through HyberTec — automation, estimation systems, and full-stack platforms for small teams. Short discovery call, scoped proposal, weekly demos, clean handoff."
+      >
+        <div className="flex flex-wrap justify-center gap-3 pt-3">
+          <a
             href="https://hybertec.com"
-            variant="primary"
-            size="l"
-            arrowIcon
-            label="Request a project at HyberTec"
-          />
-          <Button
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(buttonVariants({ size: "lg" }), "h-10 rounded-full px-5")}
+          >
+            Request a project at HyberTec
+            <LuArrowRight data-icon="inline-end" />
+          </a>
+          <a
             href={`mailto:${person.email}`}
-            variant="secondary"
-            size="l"
-            prefixIcon="email"
-            label="Email me directly"
-          />
-        </Row>
-      </Column>
-      <Column gap="l" paddingTop="24">
-        <Heading as="h2" variant="heading-strong-xl" align="center">
+            className={cn(
+              buttonVariants({ variant: "outline", size: "lg" }),
+              "h-10 rounded-full px-5",
+            )}
+          >
+            <LuMail data-icon="inline-start" />
+            Email me directly
+          </a>
+        </div>
+      </PageHeader>
+
+      <section aria-labelledby="services" className="flex flex-col gap-8">
+        <h2
+          id="services"
+          className="text-center font-heading text-2xl font-semibold tracking-tight"
+        >
           What I take on
-        </Heading>
-        <Row gap="16" wrap horizontal="center">
-          {services.map((service) => (
-            <Column
-              key={service.title}
-              background="surface"
-              border="neutral-alpha-weak"
-              radius="l"
-              padding="l"
-              gap="8"
-              minWidth={20}
-              maxWidth={24}
-              flex={1}
-            >
-              <Row gap="8" vertical="center">
-                <Icon name="rocket" onBackground="brand-weak" />
-                <Text variant="heading-strong-m">{service.title}</Text>
-              </Row>
-              <Text variant="body-default-s" onBackground="neutral-weak">
-                {service.description}
-              </Text>
-            </Column>
+        </h2>
+        <div className="grid gap-4 md:grid-cols-3">
+          {services.map(({ title, description, icon: Icon }) => (
+            <Card key={title} className="[--card-spacing:--spacing(6)]">
+              <CardHeader className="gap-2">
+                <div className="mb-2 flex size-9 items-center justify-center rounded-lg bg-muted">
+                  <Icon className="size-4" />
+                </div>
+                <CardTitle className="text-lg font-semibold">{title}</CardTitle>
+                <CardDescription className="leading-relaxed">{description}</CardDescription>
+              </CardHeader>
+            </Card>
           ))}
-        </Row>
-      </Column>
-    </Column>
+        </div>
+      </section>
+    </div>
   );
 }

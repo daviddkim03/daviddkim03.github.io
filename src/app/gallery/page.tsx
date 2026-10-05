@@ -1,34 +1,24 @@
-import { Flex, Meta, Schema } from "@once-ui-system/core";
-import GalleryView from "@/components/gallery/GalleryView";
-import { baseURL, gallery, person } from "@/resources";
+import { JsonLd, PageHeader, PhotoGrid } from "@/components";
+import { pageMetadata } from "@/lib/seo";
+import { gallery } from "@/resources";
 
-export async function generateMetadata() {
-  return Meta.generate({
-    title: gallery.title,
-    description: gallery.description,
-    baseURL: baseURL,
-    image: "/images/og/home.jpg",
-    path: gallery.path,
-  });
-}
+export const metadata = pageMetadata({
+  title: gallery.title,
+  description: gallery.description,
+  path: gallery.path,
+});
 
 export default function Gallery() {
   return (
-    <Flex maxWidth="l">
-      <Schema
-        as="webPage"
-        baseURL={baseURL}
+    <div className="flex w-full max-w-5xl flex-col gap-14 pt-4 pb-20 md:pt-8">
+      <JsonLd
+        type="WebPage"
+        path={gallery.path}
         title={gallery.title}
         description={gallery.description}
-        path={gallery.path}
-        image={"/images/og/home.jpg"}
-        author={{
-          name: person.name,
-          url: `${baseURL}${gallery.path}`,
-          image: `${baseURL}${person.avatar}`,
-        }}
       />
-      <GalleryView />
-    </Flex>
+      <PageHeader title={gallery.label} />
+      <PhotoGrid images={gallery.images} />
+    </div>
   );
 }

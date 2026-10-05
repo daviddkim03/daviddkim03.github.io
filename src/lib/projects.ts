@@ -4,7 +4,7 @@ import { getPosts } from "@/utils/utils";
 // Re-export the client-safe project type so server pages can keep importing
 // it from here. The runtime helpers live in `@/lib/clientProjects` (no `fs`).
 export type { ClientProject } from "@/lib/clientProjects";
-export { toClientProject, projectHref, mergeProjects } from "@/lib/clientProjects";
+export { mergeProjects, projectHref, toClientProject } from "@/lib/clientProjects";
 
 /** Read all projects (newest first) as plain serializable objects. */
 export function getLeanProjects(): ClientProject[] {

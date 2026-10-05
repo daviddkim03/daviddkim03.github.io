@@ -1,7 +1,7 @@
 "use client";
 
-import { type EditableContent, defaultContent } from "@/lib/content";
 import { createContext, useContext } from "react";
+import { defaultContent, type EditableContent } from "@/lib/content";
 
 const ContentContext = createContext<EditableContent>(defaultContent);
 

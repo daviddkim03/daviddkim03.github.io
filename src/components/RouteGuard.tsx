@@ -1,14 +1,8 @@
 "use client";
 
-import NotFound from "@/app/not-found";
-import { protectedRoutes, routes } from "@/resources";
-import { Button, Column, Heading, PasswordInput } from "@once-ui-system/core";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-
-interface RouteGuardProps {
-  children: React.ReactNode;
-}
+import NotFound from "@/app/not-found";
+import { routes } from "@/resources";
 
 const checkRouteEnabled = (pathname: string | null): boolean => {
   if (!pathname) return false;
@@ -27,66 +21,13 @@ const checkRouteEnabled = (pathname: string | null): boolean => {
   return false;
 };
 
-const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
+/** Renders the 404 page for routes disabled in `site.config.ts`. */
+export function RouteGuard({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  // Synchronous checks against static config so pages render during prerender/SSR
-  const isRouteEnabled = checkRouteEnabled(pathname);
-  const isPasswordRequired = Boolean(protectedRoutes[pathname as keyof typeof protectedRoutes]);
 
-  const [password, setPassword] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [error, setError] = useState<string | undefined>(undefined);
-
-  useEffect(() => {
-    if (!isPasswordRequired) return;
-    setIsAuthenticated(false);
-    fetch("/api/check-auth")
-      .then((response) => {
-        if (response.ok) setIsAuthenticated(true);
-      })
-      .catch(() => {});
-  }, [isPasswordRequired, pathname]);
-
-  const handlePasswordSubmit = async () => {
-    const response = await fetch("/api/authenticate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
-
-    if (response.ok) {
-      setIsAuthenticated(true);
-      setError(undefined);
-    } else {
-      setError("Incorrect password");
-    }
-  };
-
-  if (!isRouteEnabled) {
+  if (!checkRouteEnabled(pathname)) {
     return <NotFound />;
   }
 
-  if (isPasswordRequired && !isAuthenticated) {
-    return (
-      <Column paddingY="128" maxWidth={24} gap="24" center>
-        <Heading align="center" wrap="balance">
-          This page is password protected
-        </Heading>
-        <Column fillWidth gap="8" horizontal="center">
-          <PasswordInput
-            id="password"
-            label="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            errorMessage={error}
-          />
-          <Button onClick={handlePasswordSubmit}>Submit</Button>
-        </Column>
-      </Column>
-    );
-  }
-
   return <>{children}</>;
-};
-
-export { RouteGuard };
+}

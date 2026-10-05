@@ -1,65 +1,40 @@
-import TrainingView from "@/components/training/TrainingView";
-import { baseURL, person, training } from "@/resources";
-import { Column, Heading, Icon, Meta, Schema, Text } from "@once-ui-system/core";
+import { LuDumbbell } from "react-icons/lu";
+import { JsonLd, PageHeader, PhotoGrid } from "@/components";
+import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { pageMetadata } from "@/lib/seo";
+import { training } from "@/resources";
 
-export async function generateMetadata() {
-  return Meta.generate({
-    title: training.title,
-    description: training.description,
-    baseURL: baseURL,
-    image: "/images/og/home.jpg",
-    path: training.path,
-  });
-}
+export const metadata = pageMetadata({
+  title: training.title,
+  description: training.description,
+  path: training.path,
+});
 
 export default function Training() {
-  const hasImages = training.images && training.images.length > 0;
-
   return (
-    <Column maxWidth="l" fillWidth gap="xl" horizontal="center" paddingY="l">
-      <Schema
-        as="webPage"
-        baseURL={baseURL}
+    <div className="flex w-full max-w-5xl flex-col gap-14 pt-4 pb-20 md:pt-8">
+      <JsonLd
+        type="WebPage"
+        path={training.path}
         title={training.title}
         description={training.description}
-        path={training.path}
-        image={"/images/og/home.jpg"}
-        author={{
-          name: person.name,
-          url: `${baseURL}${training.path}`,
-          image: `${baseURL}${person.avatar}`,
-        }}
       />
-      <Column maxWidth="s" fillWidth gap="m" horizontal="center" style={{ textAlign: "center" }}>
-        <Heading variant="display-strong-l">{training.headline ?? training.label}</Heading>
-        {training.intro && (
-          <Text variant="body-default-l" onBackground="neutral-weak">
-            {training.intro}
-          </Text>
-        )}
-      </Column>
+      <PageHeader title={training.headline ?? training.label} description={training.intro} />
 
-      {hasImages ? (
-        <TrainingView />
+      {training.images.length > 0 ? (
+        <PhotoGrid images={training.images} />
       ) : (
-        <Column
-          fillWidth
-          horizontal="center"
-          vertical="center"
-          gap="16"
-          paddingY="80"
-          paddingX="l"
-          radius="l"
-          border="neutral-alpha-medium"
-          background="neutral-alpha-weak"
-          style={{ borderStyle: "dashed" }}
-        >
-          <Icon name="dumbbell" size="l" onBackground="neutral-weak" />
-          <Text variant="heading-default-m" onBackground="neutral-weak">
-            {training.placeholder ?? "Progress photos coming soon."}
-          </Text>
-        </Column>
+        <Empty className="flex-none border bg-muted/30 py-20">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <LuDumbbell />
+            </EmptyMedia>
+            <EmptyTitle className="text-base text-muted-foreground">
+              {training.placeholder ?? "Progress photos coming soon."}
+            </EmptyTitle>
+          </EmptyHeader>
+        </Empty>
       )}
-    </Column>
+    </div>
   );
 }

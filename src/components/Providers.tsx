@@ -1,60 +1,17 @@
 "use client";
 
-import {
-  type BorderStyle,
-  type ChartMode,
-  type ChartVariant,
-  DataThemeProvider,
-  IconProvider,
-  LayoutProvider,
-  type NeutralColor,
-  type ScalingSize,
-  type Schemes,
-  type SolidStyle,
-  type SolidType,
-  type SurfaceStyle,
-  ThemeProvider,
-  ToastProvider,
-  type TransitionStyle,
-} from "@once-ui-system/core";
-import { dataStyle, style } from "../resources";
-import { iconLibrary } from "../resources/icons";
-import { ContentProvider } from "./content/ContentProvider";
+import { ThemeProvider } from "next-themes";
+import { ContentProvider } from "@/components/content/ContentProvider";
+import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <LayoutProvider>
-      <ThemeProvider
-        brand={style.brand as Schemes}
-        accent={style.accent as Schemes}
-        neutral={style.neutral as NeutralColor}
-        solid={style.solid as SolidType}
-        solidStyle={style.solidStyle as SolidStyle}
-        border={style.border as BorderStyle}
-        surface={style.surface as SurfaceStyle}
-        transition={style.transition as TransitionStyle}
-        scaling={style.scaling as ScalingSize}
-      >
-        <DataThemeProvider
-          variant={dataStyle.variant as ChartVariant}
-          mode={dataStyle.mode as ChartMode}
-          height={dataStyle.height}
-          axis={{
-            stroke: dataStyle.axis.stroke,
-          }}
-          tick={{
-            fill: dataStyle.tick.fill,
-            fontSize: dataStyle.tick.fontSize,
-            line: dataStyle.tick.line,
-          }}
-        >
-          <ToastProvider>
-            <IconProvider icons={iconLibrary}>
-              <ContentProvider>{children}</ContentProvider>
-            </IconProvider>
-          </ToastProvider>
-        </DataThemeProvider>
-      </ThemeProvider>
-    </LayoutProvider>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <TooltipProvider>
+        <ContentProvider>{children}</ContentProvider>
+        <Toaster />
+      </TooltipProvider>
+    </ThemeProvider>
   );
 }

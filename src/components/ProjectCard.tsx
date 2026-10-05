@@ -1,77 +1,67 @@
-"use client";
-
-import { Carousel, Column, Flex, Heading, SmartLink, Tag, Text } from "@once-ui-system/core";
+import { cn } from "cn";
+import Link from "next/link";
+import { LuArrowRight, LuArrowUpRight } from "react-icons/lu";
+import { ProjectMedia } from "@/components/ProjectMedia";
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 
 interface ProjectCardProps {
   href: string;
-  priority?: boolean;
   images: string[];
   title: string;
   company?: string;
-  content: string;
   description: string;
-  link: string;
+  /** Optional external link to the live project. */
+  link?: string;
+  /** Load the cover eagerly (for cards that start above the fold). */
+  eager?: boolean;
 }
 
-export const ProjectCard: React.FC<ProjectCardProps> = ({
+const linkClass = cn(buttonVariants({ variant: "link" }), "h-auto px-0");
+
+export function ProjectCard({
   href,
-  images = [],
+  images,
   title,
   company,
-  content,
   description,
   link,
-}) => {
+  eager = false,
+}: ProjectCardProps) {
   return (
-    <Flex fillWidth gap="l" vertical="center" s={{ direction: "column" }}>
+    <article className="flex flex-col gap-6 md:flex-row md:items-center md:gap-10">
       {images.length > 0 && (
-        <Flex flex={5} fillWidth style={{ minWidth: 0 }}>
-          <Carousel
-            sizes="(max-width: 960px) 100vw, 420px"
-            items={images.map((image) => ({
-              slide: image,
-              alt: title,
-            }))}
-          />
-        </Flex>
+        <ProjectMedia
+          images={images}
+          alt={title}
+          sizes="(max-width: 768px) 100vw, 420px"
+          loading={eager ? "eager" : undefined}
+          className="w-full min-w-0 md:basis-5/12"
+        />
       )}
-      <Column flex={7} gap="16" paddingX="s" paddingY="12">
-        {title && (
-          <Flex gap="12" vertical="center" wrap>
-            <Heading as="h2" wrap="balance" variant="heading-strong-l">
-              {title}
-            </Heading>
-            {company && <Tag size="l">{company}</Tag>}
-          </Flex>
+      <div className="flex min-w-0 flex-col gap-3 md:basis-7/12">
+        <div className="flex flex-wrap items-center gap-3">
+          <h2 className="font-heading text-xl font-semibold tracking-tight text-balance">
+            {title}
+          </h2>
+          {company && <Badge variant="outline">{company}</Badge>}
+        </div>
+        {description.trim() && (
+          <p className="text-sm/6 text-pretty text-muted-foreground">{description}</p>
         )}
-        {description?.trim() && (
-          <Text wrap="balance" variant="body-default-s" onBackground="neutral-weak">
-            {description}
-          </Text>
-        )}
-        {(content?.trim() || link) && (
-          <Flex gap="24" wrap>
-            {content?.trim() && (
-              <SmartLink
-                suffixIcon="arrowRight"
-                style={{ margin: "0", width: "fit-content" }}
-                href={href}
-              >
-                <Text variant="body-default-s">Read case study</Text>
-              </SmartLink>
-            )}
-            {link && (
-              <SmartLink
-                suffixIcon="arrowUpRightFromSquare"
-                style={{ margin: "0", width: "fit-content" }}
-                href={link}
-              >
-                <Text variant="body-default-s">View project</Text>
-              </SmartLink>
-            )}
-          </Flex>
-        )}
-      </Column>
-    </Flex>
+        <div className="flex flex-wrap gap-6 pt-1">
+          <Link href={href} className={linkClass}>
+            Read case study
+            <LuArrowRight data-icon="inline-end" />
+          </Link>
+          {link && (
+            <a href={link} target="_blank" rel="noopener noreferrer" className={linkClass}>
+              View project
+              <LuArrowUpRight data-icon="inline-end" />
+            </a>
+          )}
+        </div>
+      </div>
+    </article>
   );
-};
+}

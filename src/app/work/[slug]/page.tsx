@@ -1,27 +1,19 @@
-import { CustomMDX, ScrollToHash } from "@/components";
-import { ProjectsView } from "@/components/work/ProjectsView";
-import { getLeanProjects } from "@/lib/projects";
-import { about, baseURL, person, work } from "@/resources";
-import { formatDate } from "@/utils/formatDate";
-import { getPosts } from "@/utils/utils";
-import {
-  Avatar,
-  AvatarGroup,
-  Button,
-  Column,
-  Flex,
-  Heading,
-  Line,
-  Media,
-  Meta,
-  Row,
-  Schema,
-  SmartLink,
-  Tag,
-  Text,
-} from "@once-ui-system/core";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { CustomMDX, JsonLd, ScrollToHash } from "@/components";
+import { ProjectDetail } from "@/components/work/ProjectDetail";
+import { ProjectsView } from "@/components/work/ProjectsView";
+import { getLeanProjects } from "@/lib/projects";
+import { pageMetadata } from "@/lib/seo";
+import { work } from "@/resources";
+import { getPosts } from "@/utils/utils";
+
+type Params = Promise<{ slug: string | string[] }>;
+
+function findPost(slug: string | string[]) {
+  const slugPath = Array.isArray(slug) ? slug.join("/") : slug || "";
+  return getPosts(["src", "app", "work", "projects"]).find((post) => post.slug === slugPath);
+}
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const posts = getPosts(["src", "app", "work", "projects"]);
@@ -30,109 +22,48 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
   }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string | string[] }>;
-}): Promise<Metadata> {
-  const routeParams = await params;
-  const slugPath = Array.isArray(routeParams.slug)
-    ? routeParams.slug.join("/")
-    : routeParams.slug || "";
-
-  const posts = getPosts(["src", "app", "work", "projects"]);
-  const post = posts.find((post) => post.slug === slugPath);
-
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const post = findPost((await params).slug);
   if (!post) return {};
 
-  return Meta.generate({
+  return pageMetadata({
     title: post.metadata.title,
     description: post.metadata.summary,
-    baseURL: baseURL,
-    image: post.metadata.image || post.metadata.images[0] || "/images/og/home.jpg",
     path: `${work.path}/${post.slug}`,
+    image: post.metadata.image || post.metadata.images[0],
   });
 }
 
-export default async function Project({
-  params,
-}: {
-  params: Promise<{ slug: string | string[] }>;
-}) {
-  const routeParams = await params;
-  const slugPath = Array.isArray(routeParams.slug)
-    ? routeParams.slug.join("/")
-    : routeParams.slug || "";
-
-  const post = getPosts(["src", "app", "work", "projects"]).find((post) => post.slug === slugPath);
+export default async function Project({ params }: { params: Params }) {
+  const post = findPost((await params).slug);
 
   if (!post) {
     notFound();
   }
 
-  const avatars =
-    post.metadata.team?.map((person) => ({
-      src: person.avatar,
-    })) || [];
+  const image = post.metadata.image || post.metadata.images[0];
 
   return (
-    <Column as="section" maxWidth="l" horizontal="center" gap="l">
-      <Schema
-        as="blogPosting"
-        baseURL={baseURL}
+    <>
+      <JsonLd
+        type="BlogPosting"
         path={`${work.path}/${post.slug}`}
         title={post.metadata.title}
         description={post.metadata.summary}
+        image={image}
         datePublished={post.metadata.publishedAt}
-        dateModified={post.metadata.publishedAt}
-        image={post.metadata.image || post.metadata.images[0] || "/images/og/home.jpg"}
-        author={{
-          name: person.name,
-          url: `${baseURL}${about.path}`,
-          image: `${baseURL}${person.avatar}`,
-        }}
       />
-      <Column maxWidth="s" gap="16" horizontal="center" align="center">
-        <SmartLink href="/work">
-          <Text variant="label-strong-m">Projects</Text>
-        </SmartLink>
-        <Text variant="body-default-xs" onBackground="neutral-weak" marginBottom="12">
-          {post.metadata.publishedAt && formatDate(post.metadata.publishedAt)}
-        </Text>
-        <Heading variant="display-strong-m">{post.metadata.title}</Heading>
-        {post.metadata.company && <Tag size="l">{post.metadata.company}</Tag>}
-      </Column>
-      <Row marginBottom="32" horizontal="center">
-        <Row gap="16" vertical="center">
-          {post.metadata.team && <AvatarGroup reverse avatars={avatars} size="s" />}
-          <Text variant="label-default-m" onBackground="brand-weak">
-            {post.metadata.team?.map((member, idx) => (
-              <span key={idx}>
-                {idx > 0 && (
-                  <Text as="span" onBackground="neutral-weak">
-                    ,{" "}
-                  </Text>
-                )}
-                <SmartLink href={member.linkedIn}>{member.name}</SmartLink>
-              </span>
-            ))}
-          </Text>
-        </Row>
-      </Row>
-      {post.metadata.images.length > 0 && (
-        <Media priority aspectRatio="16 / 9" radius="m" alt="image" src={post.metadata.images[0]} />
-      )}
-      <Column style={{ margin: "auto" }} as="article" maxWidth="s">
+      <ProjectDetail
+        title={post.metadata.title}
+        company={post.metadata.company}
+        publishedAt={post.metadata.publishedAt}
+        team={post.metadata.team}
+        image={post.metadata.images[0]}
+        related={<ProjectsView projects={getLeanProjects().filter((p) => p.slug !== post.slug)} />}
+      >
         <CustomMDX source={post.content} />
-      </Column>
-      <Column fillWidth gap="40" horizontal="center" marginTop="40">
-        <Line maxWidth="40" />
-        <Heading as="h2" variant="heading-strong-xl" marginBottom="24">
-          Related projects
-        </Heading>
-        <ProjectsView projects={getLeanProjects().filter((p) => p.slug !== post.slug)} />
-      </Column>
+      </ProjectDetail>
       <ScrollToHash />
-    </Column>
+    </>
   );
 }

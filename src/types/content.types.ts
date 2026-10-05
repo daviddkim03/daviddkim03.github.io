@@ -1,5 +1,5 @@
-import type { IconName } from "@/resources/icons";
 import type { zones } from "tzdata";
+import type { IconName } from "@/resources/icons";
 
 /**
  * IANA time zone string (e.g., 'Asia/Calcutta', 'Europe/Vienna').
@@ -29,19 +29,6 @@ export type Person = {
   displayLocation?: string;
   /** Languages spoken */
   languages?: string[];
-};
-
-/**
- * Newsletter Section
- * @description The below information will be displayed on the Home page in Newsletter block
- */
-export type Newsletter = {
-  /** Whether to display the newsletter section */
-  display: boolean;
-  /** Title of the newsletter   */
-  title: React.ReactNode;
-  /** Description of the newsletter */
-  description: React.ReactNode;
 };
 
 /**
@@ -93,16 +80,6 @@ export interface Home extends BasePageConfig {
    * The image needs to be put inside `/public/images/` directory
    */
   image: `/images/${string}` | string;
-  /** The headline of the home page */
-  headline: React.ReactNode;
-  /** Featured badge, which appears above the headline */
-  featured: {
-    display: boolean;
-    title: React.ReactNode;
-    href: string;
-  };
-  /** The sub text which appears below the headline */
-  subline: React.ReactNode;
 }
 
 /**

@@ -20,10 +20,6 @@ const nextConfig = {
       },
     ],
   },
-  sassOptions: {
-    compiler: "modern",
-    silenceDeprecations: ["legacy-js-api"],
-  },
 };
 
 export default withMDX(nextConfig);

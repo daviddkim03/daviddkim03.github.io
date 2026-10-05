@@ -1,213 +1,145 @@
 "use client";
 
+import { cn } from "cn";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-
-import { Fade, Flex, Icon, Line, Row, ToggleButton } from "@once-ui-system/core";
-
+import type { IconType } from "react-icons";
+import {
+  LuDumbbell,
+  LuGlobe,
+  LuHouse,
+  LuImage,
+  LuLayoutGrid,
+  LuRocket,
+  LuUserRound,
+} from "react-icons/lu";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { buttonVariants } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { about, display, freelance, gallery, person, routes, training, work } from "@/resources";
-import styles from "./Header.module.scss";
-import { ThemeToggle } from "./ThemeToggle";
 
-type TimeDisplayProps = {
-  timeZone: string;
-  locale?: string; // Optionally allow locale, defaulting to 'en-GB'
-};
+interface NavItem {
+  href: `/${string}`;
+  label: string;
+  icon: IconType;
+  /** Match only the exact path instead of the whole subtree. */
+  exact?: boolean;
+}
 
-const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = "en-GB" }) => {
-  const [currentTime, setCurrentTime] = useState("");
+const sections: NavItem[] = (
+  [
+    { href: "/about", label: about.label, icon: LuUserRound, exact: true },
+    { href: "/work", label: work.label, icon: LuLayoutGrid },
+    { href: "/freelance", label: freelance.label, icon: LuRocket },
+    { href: "/training", label: training.label, icon: LuDumbbell },
+    { href: "/gallery", label: gallery.label, icon: LuImage },
+  ] satisfies NavItem[]
+).filter((item) => routes[item.href]);
+
+function TimeDisplay({ timeZone, locale = "en-GB" }: { timeZone: string; locale?: string }) {
+  const [time, setTime] = useState("");
 
   useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const options: Intl.DateTimeFormatOptions = {
-        timeZone,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      };
-      const timeString = new Intl.DateTimeFormat(locale, options).format(now);
-      setCurrentTime(timeString);
-    };
-
-    updateTime();
-    const intervalId = setInterval(updateTime, 1000);
-
+    const format = new Intl.DateTimeFormat(locale, {
+      timeZone,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+    const update = () => setTime(format.format(new Date()));
+    update();
+    const intervalId = setInterval(update, 1000);
     return () => clearInterval(intervalId);
   }, [timeZone, locale]);
 
-  return <>{currentTime}</>;
-};
+  return <span className="tabular-nums">{time}</span>;
+}
 
-export default TimeDisplay;
+function NavLink({
+  item,
+  active,
+  iconOnly = false,
+}: {
+  item: NavItem;
+  active: boolean;
+  iconOnly?: boolean;
+}) {
+  const Icon = item.icon;
 
-export const Header = () => {
+  return (
+    <Link
+      href={item.href}
+      aria-current={active ? "page" : undefined}
+      className={cn(
+        buttonVariants({
+          variant: active ? "secondary" : "ghost",
+          size: iconOnly ? "icon" : "default",
+        }),
+        "rounded-full",
+        // Labels collapse to icons on small screens.
+        !iconOnly && "max-md:size-8 max-md:px-0",
+      )}
+    >
+      <Icon />
+      <span className={iconOnly ? "sr-only" : "sr-only md:not-sr-only"}>{item.label}</span>
+    </Link>
+  );
+}
+
+const navDivider = "mx-0.5 data-vertical:h-4 data-vertical:self-center";
+
+export function Header() {
   const pathname = usePathname() ?? "";
+  const isActive = (item: NavItem) =>
+    item.exact ? pathname === item.href : pathname.startsWith(item.href);
 
   return (
     <>
-      <Fade s={{ hide: true }} fillWidth position="fixed" height="80" zIndex={9} />
-      <Fade
-        hide
-        s={{ hide: false }}
-        fillWidth
-        position="fixed"
-        bottom="0"
-        to="top"
-        height="80"
-        zIndex={9}
+      {/* Fades page content out under the floating nav: top on desktop, bottom on mobile. */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-x-0 bottom-0 z-40 h-28 bg-linear-to-t from-background from-40% to-transparent md:top-0 md:bottom-auto md:h-24 md:bg-linear-to-b"
       />
-      <Row
-        fitHeight
-        className={styles.position}
-        position="sticky"
-        as="header"
-        zIndex={9}
-        fillWidth
-        padding="8"
-        horizontal="center"
-        data-border="rounded"
-        s={{
-          position: "fixed",
-        }}
-      >
-        <Row paddingLeft="40" fillWidth vertical="center" textVariant="body-default-s">
+      <header className="fixed inset-x-0 bottom-0 z-50 flex justify-center px-4 pb-6 md:sticky md:top-0 md:bottom-auto md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-4 md:px-6 md:py-4">
+        <div className="hidden min-w-0 items-center gap-2 text-sm text-muted-foreground md:flex">
           {display.location && (
-            <Row s={{ hide: true }} gap="8" vertical="center">
-              <Icon onBackground="brand-weak" name="globe" />
-              {person.displayLocation ?? person.location}
-            </Row>
+            <>
+              <LuGlobe className="size-4 shrink-0" />
+              <span className="truncate">{person.displayLocation ?? person.location}</span>
+            </>
           )}
-        </Row>
-        <Row fillWidth horizontal="center">
-          <Row
-            background="page"
-            border="neutral-alpha-weak"
-            radius="m-4"
-            shadow="l"
-            padding="4"
-            horizontal="center"
-            zIndex={1}
-          >
-            <Row gap="4" vertical="center" textVariant="body-default-s" suppressHydrationWarning>
-              {routes["/"] && (
-                <ToggleButton prefixIcon="home" href="/" selected={pathname === "/"} />
-              )}
-              <Line background="neutral-alpha-medium" vert maxHeight="24" />
-              {routes["/about"] && (
-                <>
-                  <Row s={{ hide: true }}>
-                    <ToggleButton
-                      prefixIcon="person"
-                      href="/about"
-                      label={about.label}
-                      selected={pathname === "/about"}
-                    />
-                  </Row>
-                  <Row hide s={{ hide: false }}>
-                    <ToggleButton
-                      prefixIcon="person"
-                      href="/about"
-                      selected={pathname === "/about"}
-                    />
-                  </Row>
-                </>
-              )}
-              {routes["/work"] && (
-                <>
-                  <Row s={{ hide: true }}>
-                    <ToggleButton
-                      prefixIcon="grid"
-                      href="/work"
-                      label={work.label}
-                      selected={pathname.startsWith("/work")}
-                    />
-                  </Row>
-                  <Row hide s={{ hide: false }}>
-                    <ToggleButton
-                      prefixIcon="grid"
-                      href="/work"
-                      selected={pathname.startsWith("/work")}
-                    />
-                  </Row>
-                </>
-              )}
-              {routes["/freelance"] && (
-                <>
-                  <Row s={{ hide: true }}>
-                    <ToggleButton
-                      prefixIcon="rocket"
-                      href="/freelance"
-                      label={freelance.label}
-                      selected={pathname.startsWith("/freelance")}
-                    />
-                  </Row>
-                  <Row hide s={{ hide: false }}>
-                    <ToggleButton
-                      prefixIcon="rocket"
-                      href="/freelance"
-                      selected={pathname.startsWith("/freelance")}
-                    />
-                  </Row>
-                </>
-              )}
-              {routes["/training"] && (
-                <>
-                  <Row s={{ hide: true }}>
-                    <ToggleButton
-                      prefixIcon="dumbbell"
-                      href="/training"
-                      label={training.label}
-                      selected={pathname.startsWith("/training")}
-                    />
-                  </Row>
-                  <Row hide s={{ hide: false }}>
-                    <ToggleButton
-                      prefixIcon="dumbbell"
-                      href="/training"
-                      selected={pathname.startsWith("/training")}
-                    />
-                  </Row>
-                </>
-              )}
-              {routes["/gallery"] && (
-                <>
-                  <Row s={{ hide: true }}>
-                    <ToggleButton
-                      prefixIcon="gallery"
-                      href="/gallery"
-                      label={gallery.label}
-                      selected={pathname.startsWith("/gallery")}
-                    />
-                  </Row>
-                  <Row hide s={{ hide: false }}>
-                    <ToggleButton
-                      prefixIcon="gallery"
-                      href="/gallery"
-                      selected={pathname.startsWith("/gallery")}
-                    />
-                  </Row>
-                </>
-              )}
-            </Row>
-          </Row>
-        </Row>
-        <Flex fillWidth horizontal="end" vertical="center">
-          <Flex
-            paddingRight="12"
-            horizontal="end"
-            vertical="center"
-            textVariant="body-default-s"
-            gap="20"
-          >
-            <Flex s={{ hide: true }}>
-              {display.time && <TimeDisplay timeZone={person.location} />}
-            </Flex>
-            {display.themeSwitcher && <ThemeToggle />}
-          </Flex>
-        </Flex>
-      </Row>
+        </div>
+        <nav
+          aria-label="Main"
+          className="flex items-center gap-1 rounded-full border bg-background/80 p-1 shadow-lg shadow-black/5 backdrop-blur-md"
+        >
+          {routes["/"] && (
+            <>
+              <NavLink
+                item={{ href: "/", label: "Home", icon: LuHouse }}
+                active={pathname === "/"}
+                iconOnly
+              />
+              <Separator orientation="vertical" className={navDivider} />
+            </>
+          )}
+          {sections.map((item) => (
+            <NavLink key={item.href} item={item} active={isActive(item)} />
+          ))}
+          {display.themeSwitcher && (
+            <>
+              <Separator orientation="vertical" className={cn(navDivider, "md:hidden")} />
+              <ThemeToggle className="md:hidden" />
+            </>
+          )}
+        </nav>
+        <div className="hidden items-center justify-end gap-4 text-sm text-muted-foreground md:flex">
+          {display.time && <TimeDisplay timeZone={person.location} />}
+          {display.themeSwitcher && <ThemeToggle />}
+        </div>
+      </header>
     </>
   );
-};
+}

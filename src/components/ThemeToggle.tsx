@@ -1,30 +1,25 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Row, ToggleButton, useTheme } from "@once-ui-system/core";
+import { cn } from "cn";
+import { useTheme } from "next-themes";
+import { LuMoon, LuSun } from "react-icons/lu";
+import { Button } from "@/components/ui/button";
 
-export const ThemeToggle: React.FC = () => {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState("light");
+export function ThemeToggle({ className }: { className?: string }) {
+  const { resolvedTheme, setTheme } = useTheme();
 
-  useEffect(() => {
-    setMounted(true);
-    setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
-  }, []);
-
-  useEffect(() => {
-    setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
-  }, [theme]);
-
-  const icon = currentTheme === "dark" ? "light" : "dark";
-  const nextTheme = currentTheme === "light" ? "dark" : "light";
-
+  // Both icons render and CSS picks one, so server and client markup match
+  // before the theme is known.
   return (
-    <ToggleButton
-      prefixIcon={icon}
-      onClick={() => setTheme(nextTheme)}
-      aria-label={`Switch to ${nextTheme} mode`}
-    />
+    <Button
+      variant="ghost"
+      size="icon"
+      className={cn("rounded-full", className)}
+      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+    >
+      <LuSun className="hidden dark:block" />
+      <LuMoon className="dark:hidden" />
+      <span className="sr-only">Toggle theme</span>
+    </Button>
   );
-};
+}

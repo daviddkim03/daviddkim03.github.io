@@ -1,185 +1,168 @@
 "use client";
 
+import { cn } from "cn";
+import { LuArrowUpRight, LuFileText, LuGlobe } from "react-icons/lu";
 import { useContent } from "@/components/content/ContentProvider";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import { about, person, social } from "@/resources";
-import { Avatar, Button, Column, Heading, Icon, Row, Tag, Text } from "@once-ui-system/core";
-import type React from "react";
+import { iconLibrary } from "@/resources/icons";
+import { monogram } from "@/utils/monogram";
 
-/** Build a 1-2 character monogram from a company/school name for the logo fallback. */
-function monogram(name: string): string {
-  const cleaned = name.replace(/\(.*?\)/g, " ").replace(/\b(LLC|Inc|Ltd|Co)\.?\b/gi, " ");
-  const words = cleaned.split(/\s+/).filter((w) => /[a-z0-9]/i.test(w));
-  if (words.length === 0) return "•";
-  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
-  return (words[0][0] + words[1][0]).toUpperCase();
+function Section({
+  id,
+  title,
+  children,
+}: {
+  id: string;
+  title: string;
+  children: React.ReactNode;
+}) {
+  const headingId = id.toLowerCase().replace(/\s+/g, "-");
+
+  return (
+    <section aria-labelledby={headingId} className="flex flex-col gap-6">
+      <h2 id={headingId} className="scroll-m-24 font-heading text-xl font-semibold tracking-tight">
+        {title}
+      </h2>
+      {children}
+    </section>
+  );
 }
 
-function SectionTitle({ id, children }: { id: string; children: React.ReactNode }) {
+function EntryLogo({ name, logo }: { name: string; logo?: string }) {
   return (
-    <Heading as="h2" id={id} variant="heading-strong-l" marginBottom="24">
-      {children}
-    </Heading>
+    <Avatar className="size-12">
+      {logo && <AvatarImage src={logo} alt="" />}
+      <AvatarFallback className="font-medium">{monogram(name)}</AvatarFallback>
+    </Avatar>
   );
 }
 
 export function AboutView() {
   const content = useContent();
+  const essentialLinks = social.filter((item) => item.essential && item.link);
 
   return (
-    <Column maxWidth={48} fillWidth horizontal="center" gap="xl" paddingTop="80" paddingBottom="80">
-      {/* Header: name/role/location on the left, avatar on the right */}
-      <Row
-        fillWidth
-        horizontal="between"
-        vertical="center"
-        gap="32"
-        s={{ direction: "column-reverse" }}
-      >
-        <Column flex={1} fillWidth gap="12">
-          <Heading variant="display-strong-l">{content.person.name}</Heading>
-          <Text variant="display-default-xs" onBackground="neutral-weak">
+    <div className="flex w-full max-w-3xl flex-col gap-14 pt-4 pb-20 md:pt-16">
+      {/* Name, role and location, with the avatar alongside */}
+      <section className="flex flex-col-reverse gap-8 md:flex-row md:items-center md:justify-between">
+        <div className="flex min-w-0 flex-col gap-3">
+          <h1 className="font-heading text-5xl font-semibold tracking-tight md:text-6xl">
+            {content.person.name}
+          </h1>
+          <p className="font-heading text-2xl text-muted-foreground md:text-3xl">
             {content.person.role}
-          </Text>
-          <Row gap="12" vertical="center" wrap paddingTop="4">
-            <Row gap="8" vertical="center">
-              <Icon onBackground="brand-weak" name="globe" />
-              <Text variant="body-default-s" onBackground="neutral-weak">
-                {content.person.location}
-              </Text>
-            </Row>
-            {content.person.languages.map((language, index) => (
-              <Tag key={index} size="s">
+          </p>
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            <span className="mr-1 inline-flex items-center gap-2 text-sm text-muted-foreground">
+              <LuGlobe className="size-4" />
+              {content.person.location}
+            </span>
+            {content.person.languages.map((language) => (
+              <Badge key={language} variant="outline">
                 {language}
-              </Tag>
+              </Badge>
             ))}
-          </Row>
-        </Column>
-        <Avatar src={person.avatar} size="xl" />
-      </Row>
+          </div>
+        </div>
+        <Avatar className="size-32 shrink-0 md:size-40">
+          <AvatarImage src={person.avatar} alt={content.person.name} />
+          <AvatarFallback className="text-3xl">{monogram(content.person.name)}</AvatarFallback>
+        </Avatar>
+      </section>
 
       {/* Social links + résumé */}
-      {social.length > 0 && (
-        <Row fillWidth gap="8" wrap data-border="rounded">
-          {social
-            .filter((item) => item.essential)
-            .map(
-              (item) =>
-                item.link && (
-                  <Button
-                    key={item.name}
-                    href={item.link}
-                    prefixIcon={item.icon}
-                    label={item.name}
-                    size="s"
-                    weight="default"
-                    variant="secondary"
-                  />
-                ),
-            )}
+      {(essentialLinks.length > 0 || (content.resume.display && content.resume.url)) && (
+        <div className="flex flex-wrap gap-2">
+          {essentialLinks.map((item) => {
+            const Icon = iconLibrary[item.icon];
+            const external = item.link.startsWith("http");
+            return (
+              <a
+                key={item.name}
+                href={item.link}
+                {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                className={cn(buttonVariants({ variant: "outline" }), "rounded-full")}
+              >
+                <Icon data-icon="inline-start" />
+                {item.name}
+              </a>
+            );
+          })}
           {content.resume.display && content.resume.url && (
-            <Button
+            <a
               href={content.resume.url}
               target="_blank"
               rel="noopener noreferrer"
-              prefixIcon="document"
-              suffixIcon="arrowUpRight"
-              label={content.resume.label}
-              size="s"
-              weight="default"
-              variant="primary"
-            />
+              className={cn(buttonVariants(), "rounded-full")}
+            >
+              <LuFileText data-icon="inline-start" />
+              {content.resume.label}
+              <LuArrowUpRight data-icon="inline-end" />
+            </a>
           )}
-        </Row>
+        </div>
       )}
 
-      {/* Intro */}
-      <Text variant="body-default-l" onBackground="neutral-weak" style={{ lineHeight: 1.7 }}>
-        {content.about.intro}
-      </Text>
+      <p className="text-lg/8 text-pretty text-muted-foreground">{content.about.intro}</p>
 
-      {/* Work Experience */}
       {content.about.work.length > 0 && (
-        <Column fillWidth>
-          <SectionTitle id={about.work.title}>{about.work.title}</SectionTitle>
-          <Column fillWidth gap="32">
-            {content.about.work.map((experience, index) => (
-              <Row key={`${experience.company}-${index}`} fillWidth gap="16" vertical="start">
-                <Avatar
-                  size="l"
-                  src={experience.logo}
-                  value={experience.logo ? undefined : monogram(experience.company)}
-                />
-                <Column flex={1} gap="8">
-                  <Row fillWidth horizontal="between" vertical="start" gap="12">
-                    <Column gap="2">
-                      <Text variant="heading-strong-s">{experience.company}</Text>
-                      <Text variant="body-default-s" onBackground="brand-weak">
-                        {experience.role}
-                      </Text>
-                    </Column>
-                    <Text
-                      variant="label-default-s"
-                      onBackground="neutral-weak"
-                      style={{ whiteSpace: "nowrap" }}
-                    >
-                      {experience.timeframe}
-                    </Text>
-                  </Row>
-                </Column>
-              </Row>
+        <Section id={about.work.title} title={about.work.title}>
+          <ul className="flex flex-col gap-7">
+            {content.about.work.map((experience) => (
+              <li key={`${experience.company}-${experience.timeframe}`} className="flex gap-4">
+                <EntryLogo name={experience.company} logo={experience.logo} />
+                <div className="flex min-w-0 flex-1 flex-col gap-1 sm:flex-row sm:justify-between sm:gap-6">
+                  <div className="flex min-w-0 flex-col gap-0.5">
+                    <h3 className="font-heading font-semibold">{experience.company}</h3>
+                    <p className="text-sm text-muted-foreground">{experience.role}</p>
+                  </div>
+                  <p className="shrink-0 text-xs text-muted-foreground tabular-nums sm:pt-1">
+                    {experience.timeframe}
+                  </p>
+                </div>
+              </li>
             ))}
-          </Column>
-        </Column>
+          </ul>
+        </Section>
       )}
 
-      {/* Education */}
       {content.about.studies.length > 0 && (
-        <Column fillWidth>
-          <SectionTitle id={about.studies.title}>{about.studies.title}</SectionTitle>
-          <Column fillWidth gap="24">
-            {content.about.studies.map((institution, index) => (
-              <Row key={`${institution.name}-${index}`} fillWidth gap="16" vertical="center">
-                <Avatar
-                  size="l"
-                  src={institution.logo}
-                  value={institution.logo ? undefined : monogram(institution.name)}
-                />
-                <Column flex={1} gap="2">
-                  <Row fillWidth horizontal="between" vertical="start" gap="12">
-                    <Text variant="heading-strong-s">{institution.name}</Text>
-                    {institution.timeframe && (
-                      <Text
-                        variant="label-default-s"
-                        onBackground="neutral-weak"
-                        style={{ whiteSpace: "nowrap" }}
-                      >
-                        {institution.timeframe}
-                      </Text>
-                    )}
-                  </Row>
-                  <Text variant="body-default-s" onBackground="neutral-weak">
-                    {institution.description}
-                  </Text>
-                </Column>
-              </Row>
+        <Section id={about.studies.title} title={about.studies.title}>
+          <ul className="flex flex-col gap-7">
+            {content.about.studies.map((institution) => (
+              <li key={institution.name} className="flex gap-4">
+                <EntryLogo name={institution.name} logo={institution.logo} />
+                <div className="flex min-w-0 flex-1 flex-col gap-1 sm:flex-row sm:justify-between sm:gap-6">
+                  <div className="flex min-w-0 flex-col gap-0.5">
+                    <h3 className="font-heading font-semibold">{institution.name}</h3>
+                    <p className="text-sm text-muted-foreground">{institution.description}</p>
+                  </div>
+                  {institution.timeframe && (
+                    <p className="shrink-0 text-xs text-muted-foreground tabular-nums sm:pt-1">
+                      {institution.timeframe}
+                    </p>
+                  )}
+                </div>
+              </li>
             ))}
-          </Column>
-        </Column>
+          </ul>
+        </Section>
       )}
 
-      {/* Skills */}
       {content.about.skills.length > 0 && (
-        <Column fillWidth>
-          <SectionTitle id={about.technical.title}>{about.technical.title}</SectionTitle>
-          <Row fillWidth wrap gap="8">
-            {content.about.skills.map((skill, index) => (
-              <Tag key={`${skill}-${index}`} size="l">
+        <Section id={about.technical.title} title={about.technical.title}>
+          <div className="flex flex-wrap gap-2">
+            {content.about.skills.map((skill) => (
+              <Badge key={skill} variant="outline" className="h-7 px-3 text-sm font-normal">
                 {skill}
-              </Tag>
+              </Badge>
             ))}
-          </Row>
-        </Column>
+          </div>
+        </Section>
       )}
-    </Column>
+    </div>
   );
 }

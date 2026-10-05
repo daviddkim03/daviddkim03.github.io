@@ -13,7 +13,8 @@ My personal portfolio website: software, automation, and estimation systems — 
 ## Tech
 
 - [Next.js](https://nextjs.org) (App Router, static export)
-- [Once UI](https://once-ui.com) design system
+- [Tailwind CSS](https://tailwindcss.com) + [shadcn/ui](https://ui.shadcn.com) with the [Neutral](https://ui.shadcn.com/colors) theme
+- [react-icons](https://react-icons.github.io/react-icons/) (Lucide set)
 - MDX for project case studies
 - Deployed to GitHub Pages via GitHub Actions on every push to `main`
 
@@ -21,10 +22,13 @@ My personal portfolio website: software, automation, and estimation systems — 
 
 ```bash
 npm install
-npm run dev
+npm run dev      # local dev server
+npm run lint     # Biome lint + format check
+npm run build    # static export to out/
+npm start        # serve the static export
 ```
 
-Content lives in `src/resources/content.tsx` and `src/app/work/projects/*.mdx`.
+Content lives in `src/lib/content.ts` (profile, home, about, résumé), `src/resources/content.tsx` (page titles and social links), and `src/app/work/projects/*.mdx` (case studies).
 
 ## Deployment
 
@@ -32,7 +36,7 @@ Pushing to `main` triggers `.github/workflows/deploy.yml`, which builds the stat
 
 ---
 
-Built on the [Magic Portfolio](https://github.com/once-ui-system/magic-portfolio) template by Once UI ([CC BY-NC 4.0](LICENSE)).
+Originally built on the [Magic Portfolio](https://github.com/once-ui-system/magic-portfolio) template by Once UI ([CC BY-NC 4.0](LICENSE)).
 
 ## Contact
 

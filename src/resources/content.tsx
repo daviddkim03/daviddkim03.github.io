@@ -4,13 +4,11 @@ import type {
   Blog,
   Gallery,
   Home,
-  Newsletter,
   Person,
   Social,
   Training,
   Work,
 } from "@/types";
-import { Line, Row, Text } from "@once-ui-system/core";
 
 const person: Person = {
   firstName: "David",
@@ -24,15 +22,9 @@ const person: Person = {
   languages: ["English", "Korean"], // optional: Leave the array empty if you don't want to display languages
 };
 
-const newsletter: Newsletter = {
-  display: false,
-  title: <>Subscribe to {person.firstName}'s Newsletter</>,
-  description: <>Occasional notes on automation, systems, and teaching math</>,
-};
-
 const social: Social = [
   // Links are automatically displayed.
-  // Import new icons in /once-ui/icons.ts
+  // Register new icons in src/resources/icons.ts
   // Set essentials: true for links you want to show on the about page
   {
     name: "GitHub",
@@ -60,30 +52,6 @@ const home: Home = {
   label: "Home",
   title: `${person.name}'s Portfolio`,
   description: `Portfolio website showcasing my work as a ${person.role}`,
-  headline: <>Software & automation</>,
-  featured: {
-    display: true,
-    title: (
-      <Row gap="12" vertical="center">
-        <strong className="ml-4">Takeoff Estimator</strong>{" "}
-        <Line background="brand-alpha-strong" vert height="20" />
-        <Text marginRight="4" onBackground="brand-medium">
-          Featured work
-        </Text>
-      </Row>
-    ),
-    href: "/work/takeoff-estimator",
-  },
-  subline: (
-    <>
-      I'm David, lead software developer at{" "}
-      <Text as="span" size="xl" weight="strong">
-        Young Corporation
-      </Text>{" "}
-      and founder of HyberTec, where I build web and automation systems. <br /> I also tutor SAT
-      Math and play all racket sports.
-    </>
-  ),
 };
 
 const about: About = {
@@ -351,4 +319,4 @@ const training: Training = {
   images: [],
 };
 
-export { person, social, newsletter, home, about, blog, work, freelance, gallery, training };
+export { about, blog, freelance, gallery, home, person, social, training, work };

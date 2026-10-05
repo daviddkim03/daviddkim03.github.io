@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 
+/** Smooth-scrolls to the element named by the URL hash once the page has mounted. */
 export function ScrollToHash() {
-  const router = useRouter();
-
   useEffect(() => {
     // Get the hash from the URL
     const hash = window.location.hash;
@@ -17,7 +15,7 @@ export function ScrollToHash() {
         element.scrollIntoView({ behavior: "smooth" });
       }
     }
-  }, [router]);
+  }, []);
 
   return null;
 }

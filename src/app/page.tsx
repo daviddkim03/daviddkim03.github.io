@@ -1,39 +1,27 @@
-import { Mailchimp } from "@/components";
+import { JsonLd } from "@/components";
 import { HomeView } from "@/components/home/HomeView";
 import { getLeanProjects } from "@/lib/projects";
-import { about, baseURL, home, person } from "@/resources";
-import { Column, Meta, Schema } from "@once-ui-system/core";
+import { pageMetadata } from "@/lib/seo";
+import { home } from "@/resources";
 
-export async function generateMetadata() {
-  return Meta.generate({
-    title: home.title,
-    description: home.description,
-    baseURL: baseURL,
-    path: home.path,
-    image: home.image,
-  });
-}
+export const metadata = pageMetadata({
+  title: home.title,
+  description: home.description,
+  path: home.path,
+  image: home.image,
+});
 
 export default function Home() {
-  const projects = getLeanProjects();
-
   return (
-    <Column fillWidth horizontal="center">
-      <Schema
-        as="webPage"
-        baseURL={baseURL}
+    <>
+      <JsonLd
+        type="WebPage"
         path={home.path}
         title={home.title}
         description={home.description}
-        image={"/images/og/home.jpg"}
-        author={{
-          name: person.name,
-          url: `${baseURL}${about.path}`,
-          image: `${baseURL}${person.avatar}`,
-        }}
+        image={home.image}
       />
-      <HomeView projects={projects} />
-      <Mailchimp />
-    </Column>
+      <HomeView projects={getLeanProjects()} />
+    </>
   );
 }

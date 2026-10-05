@@ -1,12 +1,12 @@
-"use client";
+// biome-ignore-all lint/suspicious/noArrayIndexKey: blocks and tokens are parsed from a static string and never reorder, so positional keys are stable
 
-import { Column, Heading, Text } from "@once-ui-system/core";
 import type { ReactNode } from "react";
+import { prose } from "@/components/prose";
 
 /**
- * Minimal Markdown renderer for admin-authored project bodies. The built-in
+ * Minimal Markdown renderer for code-authored project bodies. The built-in
  * MDX case studies compile at build time via `CustomMDX`; dynamic projects are
- * authored at runtime, so we render the small Markdown subset they use
+ * rendered on the client, so we render the small Markdown subset they use
  * (`##`/`###` headings, `-`/`*` bullet lists, blank-line paragraphs, and
  * inline `**bold**` / `` `code` ``) without pulling in a heavy MDX runtime.
  */
@@ -16,13 +16,17 @@ function inline(text: string): ReactNode[] {
   const tokens = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g).filter(Boolean);
   return tokens.map((tok, i) => {
     if (tok.startsWith("**") && tok.endsWith("**")) {
-      return <strong key={i}>{tok.slice(2, -2)}</strong>;
+      return (
+        <strong key={i} className={prose.strong}>
+          {tok.slice(2, -2)}
+        </strong>
+      );
     }
     if (tok.startsWith("`") && tok.endsWith("`")) {
       return (
-        <Text key={i} as="code" onBackground="brand-weak">
+        <code key={i} className={prose.code}>
           {tok.slice(1, -1)}
-        </Text>
+        </code>
       );
     }
     return <span key={i}>{tok}</span>;
@@ -41,45 +45,39 @@ export function Markdown({ source }: { source: string }) {
     .filter(Boolean);
 
   return (
-    <Column fillWidth gap="20">
+    <div className="w-full">
       {blocks.map((block, i) => {
         if (block.startsWith("### ")) {
           return (
-            <Heading key={i} as="h3" variant="heading-strong-l" marginTop="8">
+            <h3 key={i} className={prose.h3}>
               {inline(block.slice(4))}
-            </Heading>
+            </h3>
           );
         }
         if (block.startsWith("## ")) {
           return (
-            <Heading key={i} as="h2" variant="heading-strong-xl" marginTop="16">
+            <h2 key={i} className={prose.h2}>
               {inline(block.slice(3))}
-            </Heading>
+            </h2>
           );
         }
         if (block.split("\n").every(isBullet)) {
           return (
-            <Column key={i} as="ul" gap="8" paddingLeft="20">
+            <ul key={i} className={prose.ul}>
               {block.split("\n").map((line, j) => (
-                <Text
-                  key={j}
-                  as="li"
-                  variant="body-default-m"
-                  onBackground="neutral-weak"
-                  style={{ listStyle: "disc" }}
-                >
+                <li key={j} className={prose.li}>
                   {inline(line.replace(/^\s*[-*]\s+/, ""))}
-                </Text>
+                </li>
               ))}
-            </Column>
+            </ul>
           );
         }
         return (
-          <Text key={i} variant="body-default-m" onBackground="neutral-weak">
+          <p key={i} className={prose.p}>
             {inline(block)}
-          </Text>
+          </p>
         );
       })}
-    </Column>
+    </div>
   );
 }

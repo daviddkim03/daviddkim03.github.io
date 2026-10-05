@@ -1,46 +1,5 @@
 import { GenIcon, type IconType } from "react-icons";
-
-import {
-  HiArrowLeft,
-  HiArrowRight,
-  HiArrowTopRightOnSquare,
-  HiArrowUpRight,
-  HiCalendarDays,
-  HiEnvelope,
-  HiOutlineDocument,
-  HiOutlineEye,
-  HiOutlineEyeSlash,
-  HiOutlineGlobeAsiaAustralia,
-  HiOutlineLink,
-  HiOutlineRocketLaunch,
-  HiXMark,
-} from "react-icons/hi2";
-
-import {
-  PiBarbellDuotone,
-  PiBookBookmarkDuotone,
-  PiGridFourDuotone,
-  PiHouseDuotone,
-  PiImageDuotone,
-  PiUserCircleDuotone,
-} from "react-icons/pi";
-
-import { SiFigma, SiJavascript, SiNextdotjs } from "react-icons/si";
-
-import {
-  FaDiscord,
-  FaFacebook,
-  FaGithub,
-  FaInstagram,
-  FaLinkedin,
-  FaPinterest,
-  FaReddit,
-  FaTelegram,
-  FaThreads,
-  FaWhatsapp,
-  FaX,
-  FaXTwitter,
-} from "react-icons/fa6";
+import { LuGithub, LuLinkedin, LuMail } from "react-icons/lu";
 
 const HyberTecIcon: IconType = GenIcon({
   tag: "svg",
@@ -56,43 +15,15 @@ const HyberTecIcon: IconType = GenIcon({
   ],
 });
 
-export const iconLibrary: Record<string, IconType> = {
+/**
+ * Icons that content/config refer to by name (e.g. `social` links). UI code
+ * imports Lucide icons from `react-icons/lu` directly.
+ */
+export const iconLibrary = {
   hybertec: HyberTecIcon,
-  arrowUpRight: HiArrowUpRight,
-  arrowRight: HiArrowRight,
-  arrowLeft: HiArrowLeft,
-  close: HiXMark,
-  email: HiEnvelope,
-  globe: HiOutlineGlobeAsiaAustralia,
-  person: PiUserCircleDuotone,
-  grid: PiGridFourDuotone,
-  dumbbell: PiBarbellDuotone,
-  book: PiBookBookmarkDuotone,
-  openLink: HiOutlineLink,
-  calendar: HiCalendarDays,
-  home: PiHouseDuotone,
-  gallery: PiImageDuotone,
-  discord: FaDiscord,
-  eye: HiOutlineEye,
-  eyeOff: HiOutlineEyeSlash,
-  github: FaGithub,
-  linkedin: FaLinkedin,
-  x: FaX,
-  twitter: FaXTwitter,
-  threads: FaThreads,
-  arrowUpRightFromSquare: HiArrowTopRightOnSquare,
-  document: HiOutlineDocument,
-  rocket: HiOutlineRocketLaunch,
-  javascript: SiJavascript,
-  nextjs: SiNextdotjs,
-  figma: SiFigma,
-  facebook: FaFacebook,
-  pinterest: FaPinterest,
-  whatsapp: FaWhatsapp,
-  reddit: FaReddit,
-  telegram: FaTelegram,
-  instagram: FaInstagram,
-};
+  github: LuGithub,
+  linkedin: LuLinkedin,
+  email: LuMail,
+} satisfies Record<string, IconType>;
 
-export type IconLibrary = typeof iconLibrary;
-export type IconName = keyof IconLibrary;
+export type IconName = keyof typeof iconLibrary;
