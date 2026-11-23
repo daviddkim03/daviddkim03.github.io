@@ -197,7 +197,7 @@ const about: About = {
       },
       {
         name: "CompTIA Security+",
-        timeframe: "Expected Jul 2026",
+        timeframe: "Expected Jul 2027",
         description: <>Security certification</>,
       },
       {
