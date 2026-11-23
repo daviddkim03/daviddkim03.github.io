@@ -59,7 +59,13 @@ export default async function Project({ params }: { params: Params }) {
         publishedAt={post.metadata.publishedAt}
         team={post.metadata.team}
         image={post.metadata.images[0]}
-        related={<ProjectsView projects={getLeanProjects().filter((p) => p.slug !== post.slug)} />}
+        related={
+          <ProjectsView
+            projects={getLeanProjects()
+              .filter((p) => p.slug !== post.slug)
+              .slice(0, 3)}
+          />
+        }
       >
         <CustomMDX source={post.content} />
       </ProjectDetail>
