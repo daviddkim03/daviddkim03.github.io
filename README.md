@@ -6,7 +6,7 @@ My personal portfolio website: software, automation, and estimation systems - pl
 
 ## What's on it
 
-- **Work** - selected projects: inSAT, Hyber CRM, Typing Bible, Takeoff Estimator, and Report Generator
+- **Work** - selected projects from HyberTec and Prime Academy
 - **About** - experience (Young Corporation, HyberTec, Prime Academy, GTRI, NSF), education, and skills
 - **Freelance** - services and how to request a project
 

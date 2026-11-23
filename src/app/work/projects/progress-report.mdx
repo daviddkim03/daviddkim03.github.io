@@ -1,0 +1,32 @@
+---
+title: "ProgressReport"
+company: "Prime Academy"
+publishedAt: "2026-11-16"
+summary: "A reporting system that reads SAT practice results from ClassMarker, converts raw scores to scaled scores, and produces a report for each student."
+images:
+  - "/images/projects/progress-report.jpg"
+team:
+  - name: "David Kim"
+    role: "Lead Developer"
+    avatar: "/trademarks/icon.png"
+    linkedIn: "https://www.linkedin.com/in/daviddkim03/"
+---
+
+## Overview
+
+ProgressReport turns Prime Academy's ClassMarker results into SAT progress reports. Staff can view a student's report, download it as a PDF, or email it to the student and their parents.
+
+## Technical Highlights
+
+- **Webhook-first sync**: new results arrive within seconds without spending ClassMarker's limit of 30 API requests per hour.
+- **Cached reads**: pages are served from the server's cache and never wait for ClassMarker.
+- **Scoring sheets**: an importer reads Excel, CSV, or pasted tables and converts raw scores to scaled section scores.
+- **Programs and exams**: each exam maps its four sections to tests and the scoring sheet it uses.
+- **Bulk email**: reports go to many students at once, now or on a schedule.
+
+## Technologies Used
+
+- **React + Vite, Tailwind CSS, shadcn/ui**: staff interface
+- **Node.js + Express**: API and ClassMarker sync
+- **SQLite**: results store
+- **Puppeteer**: PDF rendering

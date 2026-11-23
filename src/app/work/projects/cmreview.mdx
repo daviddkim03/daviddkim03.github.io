@@ -1,0 +1,29 @@
+---
+title: "cmReview"
+company: "Prime Academy"
+publishedAt: "2026-06-10"
+summary: "A review tool that ranks ClassMarker questions from most missed to least missed, so instructors know what to cover first."
+images:
+  - "/images/projects/cmreview.jpg"
+team:
+  - name: "David Kim"
+    role: "Lead Developer"
+    avatar: "/trademarks/icon.png"
+    linkedIn: "https://www.linkedin.com/in/daviddkim03/"
+---
+
+## Overview
+
+cmReview helps instructors decide what to go over after a test. It drills down by group, subtest, and question, and ranks every question by how often students missed it.
+
+## Technical Highlights
+
+- **Question ranking**: incorrect and unanswered responses count as missed, and questions needing manual grading are excluded.
+- **Full detail**: question text, options, correct answer, answer distribution, and individual attempts.
+- **Incremental sync**: pulls only the results recorded since the last sync from a token-protected export.
+- **Local cache**: attempts and deduplicated question content are stored by the backend, with no direct ClassMarker access needed.
+
+## Technologies Used
+
+- **React + Vite**: review interface
+- **Node.js + Express**: sync, aggregation, and API
