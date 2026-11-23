@@ -5,7 +5,7 @@ import { prose } from "@/components/prose";
 
 /**
  * Minimal Markdown renderer for code-authored project bodies. The built-in
- * MDX case studies compile at build time via `CustomMDX`; dynamic projects are
+ * MDX project pages compile at build time via `CustomMDX`; dynamic projects are
  * rendered on the client, so we render the small Markdown subset they use
  * (`##`/`###` headings, `-`/`*` bullet lists, blank-line paragraphs, and
  * inline `**bold**` / `` `code` ``) without pulling in a heavy MDX runtime.

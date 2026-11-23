@@ -15,7 +15,7 @@ My personal portfolio website: software, automation, and estimation systems - pl
 - [Next.js](https://nextjs.org) (App Router, static export)
 - [Tailwind CSS](https://tailwindcss.com) + [shadcn/ui](https://ui.shadcn.com) with the [Neutral](https://ui.shadcn.com/colors) theme
 - [react-icons](https://react-icons.github.io/react-icons/) (Lucide set)
-- MDX for project case studies
+- MDX for project pages
 - Deployed to GitHub Pages via GitHub Actions on every push to `main`
 
 ## Development
@@ -28,7 +28,7 @@ npm run build    # static export to out/
 npm start        # serve the static export
 ```
 
-Content lives in `src/lib/content.ts` (profile, home, about, résumé), `src/resources/content.tsx` (page titles and social links), and `src/app/work/projects/*.mdx` (case studies).
+Content lives in `src/lib/content.ts` (profile, home, about, résumé), `src/resources/content.tsx` (page titles and social links), and `src/app/work/projects/*.mdx` (project pages).
 
 ## Deployment
 

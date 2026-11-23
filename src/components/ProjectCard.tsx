@@ -59,7 +59,7 @@ export function ProjectCard({
       )}
       <CardFooter className="mt-auto flex-wrap gap-2">
         <Link href={href} className={cn(buttonVariants({ variant: "outline" }))}>
-          Read case study
+          View details
           <LuArrowRight data-icon="inline-end" />
         </Link>
         {link && (

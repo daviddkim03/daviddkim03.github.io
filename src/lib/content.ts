@@ -9,7 +9,7 @@ export interface ProjectTeamMember {
 }
 
 /**
- * A code-authored project (as opposed to the built-in MDX case studies in
+ * A code-authored project (as opposed to the built-in MDX project pages in
  * `src/app/work/projects`). Add entries to `defaultContent.dynamicProjects` to
  * surface them. They appear in every project listing and render on a single
  * client route (`/work/p?slug=…`) since the static export can't pre-render
@@ -29,14 +29,14 @@ export interface DynamicProject {
   image: string;
   /** Optional external link shown on the card. */
   link: string;
-  /** Markdown case-study body rendered on the detail route. */
+  /** Markdown project body rendered on the detail route. */
   body: string;
   team: ProjectTeamMember[];
 }
 
 /**
  * The site's structured content. The values live in
- * `src/content/site.json`, which `/admin` edits by committing to the repo. Rich/JSX content (case-study bodies) stays in MDX; this is the
+ * `src/content/site.json`, which `/admin` edits by committing to the repo. Rich/JSX content (project bodies) stays in MDX; this is the
  * structured, frequently-edited subset.
  */
 export interface EditableContent {

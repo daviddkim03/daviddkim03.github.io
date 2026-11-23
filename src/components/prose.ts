@@ -1,5 +1,5 @@
 /**
- * Typography for long-form content (MDX case studies and Markdown project
+ * Typography for long-form content (MDX project pages and Markdown project
  * bodies), following the shadcn/ui typography styles. Shared so both
  * renderers stay visually identical.
  */

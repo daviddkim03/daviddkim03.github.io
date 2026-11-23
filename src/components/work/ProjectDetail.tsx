@@ -17,12 +17,12 @@ interface ProjectDetailProps {
   /** ISO date (YYYY-MM-DD). */
   publishedAt?: string;
   team: ProjectTeamMember[];
-  /** Cover image shown above the case study. */
+  /** Cover image shown above the project details. */
   image?: string;
   tech?: string[];
-  /** The case study body. */
+  /** The project body. */
   children: React.ReactNode;
-  /** Other projects listed under the case study. */
+  /** Other projects listed under the project details. */
   related: React.ReactNode;
 }
 
@@ -56,7 +56,7 @@ function Team({ members }: { members: ProjectTeamMember[] }) {
   );
 }
 
-/** Shared layout for a project case study page. */
+/** Shared layout for a project page. */
 export function ProjectDetail({
   title,
   company,
