@@ -39,7 +39,7 @@ function DynamicProjectView() {
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
-          <Link href="/work" className={cn(buttonVariants({ variant: "outline" }), "rounded-full")}>
+          <Link href="/work" className={cn(buttonVariants({ variant: "outline" }))}>
             <LuArrowLeft data-icon="inline-start" />
             Back to projects
           </Link>

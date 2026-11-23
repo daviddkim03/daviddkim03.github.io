@@ -4,6 +4,14 @@ import { LuArrowRight, LuArrowUpRight } from "react-icons/lu";
 import { ProjectMedia } from "@/components/ProjectMedia";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface ProjectCardProps {
   href: string;
@@ -17,8 +25,6 @@ interface ProjectCardProps {
   eager?: boolean;
 }
 
-const linkClass = cn(buttonVariants({ variant: "link" }), "h-auto px-0");
-
 export function ProjectCard({
   href,
   images,
@@ -29,39 +35,45 @@ export function ProjectCard({
   eager = false,
 }: ProjectCardProps) {
   return (
-    <article className="flex flex-col gap-6 md:flex-row md:items-center md:gap-10">
-      {images.length > 0 && (
-        <ProjectMedia
-          images={images}
-          alt={title}
-          sizes="(max-width: 768px) 100vw, 420px"
-          loading={eager ? "eager" : undefined}
-          className="w-full min-w-0 md:basis-5/12"
-        />
-      )}
-      <div className="flex min-w-0 flex-col gap-3 md:basis-7/12">
-        <div className="flex flex-wrap items-center gap-3">
-          <h2 className="font-heading text-xl font-semibold tracking-tight text-balance">
-            {title}
-          </h2>
-          {company && <Badge variant="outline">{company}</Badge>}
-        </div>
-        {description.trim() && (
-          <p className="text-sm/6 text-pretty text-muted-foreground">{description}</p>
+    <Card className="pt-0">
+      <ProjectMedia
+        images={images}
+        alt={title}
+        sizes="(max-width: 768px) 100vw, 512px"
+        loading={eager ? "eager" : undefined}
+      />
+      <CardHeader className={cn(images.length === 0 && "pt-(--card-spacing)")}>
+        <CardTitle>
+          <h2>{title}</h2>
+        </CardTitle>
+        {company && (
+          <CardAction>
+            <Badge variant="outline">{company}</Badge>
+          </CardAction>
         )}
-        <div className="flex flex-wrap gap-6 pt-1">
-          <Link href={href} className={linkClass}>
-            Read case study
-            <LuArrowRight data-icon="inline-end" />
-          </Link>
-          {link && (
-            <a href={link} target="_blank" rel="noopener noreferrer" className={linkClass}>
-              View project
-              <LuArrowUpRight data-icon="inline-end" />
-            </a>
-          )}
-        </div>
-      </div>
-    </article>
+      </CardHeader>
+      {description.trim() && (
+        <CardContent className="flex-1 leading-relaxed text-pretty text-muted-foreground">
+          {description}
+        </CardContent>
+      )}
+      <CardFooter className="mt-auto flex-wrap gap-2">
+        <Link href={href} className={cn(buttonVariants({ variant: "outline" }))}>
+          Read case study
+          <LuArrowRight data-icon="inline-end" />
+        </Link>
+        {link && (
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(buttonVariants({ variant: "ghost" }))}
+          >
+            View project
+            <LuArrowUpRight data-icon="inline-end" />
+          </a>
+        )}
+      </CardFooter>
+    </Card>
   );
 }

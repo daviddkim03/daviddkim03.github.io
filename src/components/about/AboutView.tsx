@@ -84,7 +84,7 @@ export function AboutView() {
                 key={item.name}
                 href={item.link}
                 {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className={cn(buttonVariants({ variant: "outline" }), "rounded-full")}
+                className={cn(buttonVariants({ variant: "outline" }))}
               >
                 <Icon data-icon="inline-start" />
                 {item.name}
@@ -96,7 +96,7 @@ export function AboutView() {
               href={content.resume.url}
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(buttonVariants(), "rounded-full")}
+              className={cn(buttonVariants())}
             >
               <LuFileText data-icon="inline-start" />
               {content.resume.label}

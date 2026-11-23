@@ -57,7 +57,7 @@ const home: Home = {
 const about: About = {
   path: "/about",
   label: "About",
-  title: `About – ${person.name}`,
+  title: `About - ${person.name}`,
   description: `Meet ${person.name}, ${person.role} from Atlanta / Duluth, Georgia`,
   tableOfContent: {
     display: true,
@@ -243,7 +243,7 @@ const blog: Blog = {
 const work: Work = {
   path: "/work",
   label: "Projects",
-  title: `Projects – ${person.name}`,
+  title: `Projects - ${person.name}`,
   description: `Automation, systems, and software projects by ${person.name}`,
   // Create new project pages by adding a new .mdx file to app/blog/posts
   // All projects will be listed on the /home and /work routes
@@ -252,14 +252,14 @@ const work: Work = {
 const freelance: BasePageConfig = {
   path: "/freelance",
   label: "Freelance",
-  title: `Freelance – ${person.name}`,
+  title: `Freelance - ${person.name}`,
   description: `Freelance software services by ${person.name} through HyberTec`,
 };
 
 const gallery: Gallery = {
   path: "/gallery",
   label: "Gallery",
-  title: `Photo gallery – ${person.name}`,
+  title: `Photo gallery - ${person.name}`,
   description: `A photo collection by ${person.name}`,
   // Images by https://lorant.one
   // These are placeholder images, replace with your own
@@ -310,7 +310,7 @@ const gallery: Gallery = {
 const training: Training = {
   path: "/training",
   label: "Training",
-  title: `Training – ${person.name}`,
+  title: `Training - ${person.name}`,
   description: `Gym and workout progress log by ${person.name}`,
   headline: <>Training log</>,
   intro: <>Tracking gym workouts and progress over time. Photos coming soon.</>,

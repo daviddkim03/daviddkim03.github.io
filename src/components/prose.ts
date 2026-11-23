@@ -21,7 +21,7 @@ export const prose = {
   pre: "my-6 overflow-x-auto rounded-xl border bg-muted/50 p-4 font-mono text-sm [&_code]:bg-transparent [&_code]:p-0 [&_code]:font-normal",
   hr: "mx-auto my-10 data-horizontal:w-10",
   table: "w-full",
-  tableWrapper: "my-6 w-full overflow-y-auto",
+  tableWrapper: "my-6 w-full overflow-x-auto",
   tr: "m-0 border-t p-0 even:bg-muted",
   th: "border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right",
   td: "border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right",

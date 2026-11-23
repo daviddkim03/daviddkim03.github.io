@@ -1,7 +1,7 @@
 import { cn } from "cn";
 import { buttonVariants } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { person, social } from "@/resources";
+import { display, person, social } from "@/resources";
 import { iconLibrary } from "@/resources/icons";
 
 const links = [
@@ -15,11 +15,11 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    // Extra bottom padding on mobile keeps the content clear of the floating nav.
-    <footer className="w-full px-6">
-      <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-3 pt-6 pb-28 md:flex-row md:justify-between md:pb-6">
+    <footer className="w-full border-t px-6">
+      <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-3 py-6 md:flex-row md:justify-between">
         <p className="text-sm text-muted-foreground">
           © {currentYear} / <span className="text-foreground">{person.name}</span>
+          {display.location && ` / ${person.displayLocation ?? person.location}`}
         </p>
         <div className="flex items-center gap-1 md:-mr-2">
           {links.map(({ name, href, icon: Icon }) => (
@@ -36,7 +36,7 @@ export function Footer() {
                 }
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "icon" }),
-                  "rounded-full text-muted-foreground hover:text-foreground",
+                  "text-muted-foreground hover:text-foreground",
                 )}
               >
                 <Icon />

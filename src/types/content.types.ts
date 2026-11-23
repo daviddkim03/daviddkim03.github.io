@@ -214,7 +214,7 @@ export interface Gallery extends BasePageConfig {
 
 /**
  * Training page configuration.
- * @description Configuration for the Training page — a log of gym/workout progress with a photo gallery.
+ * @description Configuration for the Training page - a log of gym/workout progress with a photo gallery.
  */
 export interface Training extends BasePageConfig {
   /** Headline shown at the top of the page */

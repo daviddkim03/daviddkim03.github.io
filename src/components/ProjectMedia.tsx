@@ -31,7 +31,7 @@ function Cover({
   loading?: "eager" | "lazy";
 }) {
   return (
-    <div className="relative aspect-video overflow-hidden rounded-xl border bg-muted">
+    <div className="relative aspect-video overflow-hidden border-b bg-muted">
       <Image src={src} alt={alt} fill sizes={sizes} loading={loading} className="object-cover" />
     </div>
   );

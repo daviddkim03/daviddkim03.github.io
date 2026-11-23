@@ -9,7 +9,7 @@ export default function NotFound() {
       <p className="font-heading text-7xl font-semibold tracking-tight md:text-8xl">404</p>
       <h1 className="font-heading text-2xl tracking-tight md:text-3xl">Page not found</h1>
       <p className="text-muted-foreground">The page you are looking for does not exist.</p>
-      <Link href="/" className={cn(buttonVariants({ variant: "outline" }), "mt-6 rounded-full")}>
+      <Link href="/" className={cn(buttonVariants({ variant: "outline" }), "mt-6")}>
         <LuArrowLeft data-icon="inline-start" />
         Back home
       </Link>

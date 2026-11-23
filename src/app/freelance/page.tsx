@@ -22,13 +22,13 @@ const services = [
   {
     title: "Full-stack web development",
     description:
-      "Custom web solutions built end to end — from data pipelines and APIs to the interface your team actually uses.",
+      "Custom web solutions built end to end, from data pipelines and APIs to the interface your team actually uses.",
     icon: LuCodeXml,
   },
   {
     title: "Data cleaning & reporting",
     description:
-      "Messy upstream inputs turned into clean, structured outputs — API integrations, scraping, and automated reports.",
+      "Messy upstream inputs turned into clean, structured outputs: API integrations, scraping, and automated reports.",
     icon: LuDatabase,
   },
 ];
@@ -44,24 +44,21 @@ export default function Freelance() {
       />
       <PageHeader
         title="Freelance requests"
-        description="I take on scoped freelance work through HyberTec — automation, estimation systems, and full-stack platforms for small teams. Short discovery call, scoped proposal, weekly demos, clean handoff."
+        description="I take on scoped freelance work through HyberTec: automation, estimation systems, and full-stack platforms for small teams. Short discovery call, scoped proposal, weekly demos, clean handoff."
       >
         <div className="flex flex-wrap justify-center gap-3 pt-3">
           <a
             href="https://hybertec.com"
             target="_blank"
             rel="noopener noreferrer"
-            className={cn(buttonVariants({ size: "lg" }), "h-10 rounded-full px-5")}
+            className={cn(buttonVariants({ size: "lg" }))}
           >
             Request a project at HyberTec
             <LuArrowRight data-icon="inline-end" />
           </a>
           <a
             href={`mailto:${person.email}`}
-            className={cn(
-              buttonVariants({ variant: "outline", size: "lg" }),
-              "h-10 rounded-full px-5",
-            )}
+            className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
           >
             <LuMail data-icon="inline-start" />
             Email me directly

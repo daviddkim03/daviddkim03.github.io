@@ -25,7 +25,7 @@ export function HomeView({ projects }: { projects: ClientProject[] }) {
           <Badge
             variant="outline"
             render={<Link href={projectHref(featured)} />}
-            className="mb-8 h-8 animate-page-reveal gap-3 bg-background/60 px-4 text-xs backdrop-blur-sm"
+            className="mb-6 h-7 gap-2.5 px-3"
           >
             <span className="font-semibold">{featured.title}</span>
             <Separator
@@ -35,31 +35,23 @@ export function HomeView({ projects }: { projects: ClientProject[] }) {
             <span className="text-muted-foreground">Featured work</span>
           </Badge>
         )}
-        <h1 className="animate-page-reveal font-heading text-5xl font-semibold tracking-tight text-balance md:text-6xl">
+        <h1 className="font-heading text-5xl font-semibold tracking-tight text-balance md:text-6xl">
           {content.home.headline}
         </h1>
-        <p className="mt-5 animate-page-reveal text-lg text-balance text-muted-foreground [animation-delay:100ms]">
-          {content.home.subline}
-        </p>
+        <p className="mt-5 text-lg text-balance text-muted-foreground">{content.home.subline}</p>
         <Link
           href={about.path}
-          className={cn(
-            buttonVariants({ variant: "outline", size: "lg" }),
-            "mt-10 h-10 animate-page-reveal gap-2.5 rounded-full pr-4 pl-1.5 [animation-delay:200ms]",
-          )}
+          className={cn(buttonVariants({ variant: "outline", size: "lg" }), "mt-8")}
         >
-          <Avatar>
+          <Avatar size="sm">
             <AvatarImage src={person.avatar} alt="" />
             <AvatarFallback>{monogram(content.person.name)}</AvatarFallback>
           </Avatar>
-          About – {content.person.name}
-          <LuArrowRight
-            data-icon="inline-end"
-            className="text-muted-foreground transition-transform group-hover/button:translate-x-0.5"
-          />
+          About {content.person.name}
+          <LuArrowRight data-icon="inline-end" />
         </Link>
       </section>
-      <div className="w-full animate-page-reveal [animation-delay:300ms]">
+      <div className="w-full">
         <SelectedWork projects={projects} />
       </div>
     </div>

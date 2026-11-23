@@ -1,11 +1,10 @@
 "use client";
 
-import { cn } from "cn";
 import { useTheme } from "next-themes";
 import { LuMoon, LuSun } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
 
-export function ThemeToggle({ className }: { className?: string }) {
+export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
 
   // Both icons render and CSS picks one, so server and client markup match
@@ -14,7 +13,6 @@ export function ThemeToggle({ className }: { className?: string }) {
     <Button
       variant="ghost"
       size="icon"
-      className={cn("rounded-full", className)}
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
     >
       <LuSun className="hidden dark:block" />

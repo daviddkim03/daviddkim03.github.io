@@ -5,19 +5,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { IconType } from "react-icons";
-import {
-  LuDumbbell,
-  LuGlobe,
-  LuHouse,
-  LuImage,
-  LuLayoutGrid,
-  LuRocket,
-  LuUserRound,
-} from "react-icons/lu";
+import { LuDumbbell, LuImage, LuLayoutGrid, LuMenu, LuRocket, LuUserRound } from "react-icons/lu";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { buttonVariants } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { about, display, freelance, gallery, person, routes, training, work } from "@/resources";
+import { monogram } from "@/utils/monogram";
 
 interface NavItem {
   href: `/${string}`;
@@ -57,89 +56,72 @@ function TimeDisplay({ timeZone, locale = "en-GB" }: { timeZone: string; locale?
   return <span className="tabular-nums">{time}</span>;
 }
 
-function NavLink({
-  item,
-  active,
-  iconOnly = false,
-}: {
-  item: NavItem;
-  active: boolean;
-  iconOnly?: boolean;
-}) {
-  const Icon = item.icon;
-
-  return (
-    <Link
-      href={item.href}
-      aria-current={active ? "page" : undefined}
-      className={cn(
-        buttonVariants({
-          variant: active ? "secondary" : "ghost",
-          size: iconOnly ? "icon" : "default",
-        }),
-        "rounded-full",
-        // Labels collapse to icons on small screens.
-        !iconOnly && "max-md:size-8 max-md:px-0",
-      )}
-    >
-      <Icon />
-      <span className={iconOnly ? "sr-only" : "sr-only md:not-sr-only"}>{item.label}</span>
-    </Link>
-  );
-}
-
-const navDivider = "mx-0.5 data-vertical:h-4 data-vertical:self-center";
-
 export function Header() {
   const pathname = usePathname() ?? "";
   const isActive = (item: NavItem) =>
     item.exact ? pathname === item.href : pathname.startsWith(item.href);
 
   return (
-    <>
-      {/* Fades page content out under the floating nav: top on desktop, bottom on mobile. */}
-      <div
-        aria-hidden
-        className="pointer-events-none fixed inset-x-0 bottom-0 z-40 h-28 bg-linear-to-t from-background from-40% to-transparent md:top-0 md:bottom-auto md:h-24 md:bg-linear-to-b"
-      />
-      <header className="fixed inset-x-0 bottom-0 z-50 flex justify-center px-4 pb-6 md:sticky md:top-0 md:bottom-auto md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-4 md:px-6 md:py-4">
-        <div className="hidden min-w-0 items-center gap-2 text-sm text-muted-foreground md:flex">
-          {display.location && (
-            <>
-              <LuGlobe className="size-4 shrink-0" />
-              <span className="truncate">{person.displayLocation ?? person.location}</span>
-            </>
-          )}
-        </div>
-        <nav
-          aria-label="Main"
-          className="flex items-center gap-1 rounded-full border bg-background/80 p-1 shadow-lg shadow-black/5 backdrop-blur-md"
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 px-6 backdrop-blur-sm">
+      <div className="mx-auto flex h-14 w-full max-w-5xl items-center gap-6">
+        <Link
+          href="/"
+          aria-current={pathname === "/" ? "page" : undefined}
+          className="flex items-center gap-2 rounded-md text-sm font-semibold outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
         >
-          {routes["/"] && (
-            <>
-              <NavLink
-                item={{ href: "/", label: "Home", icon: LuHouse }}
-                active={pathname === "/"}
-                iconOnly
-              />
-              <Separator orientation="vertical" className={navDivider} />
-            </>
-          )}
-          {sections.map((item) => (
-            <NavLink key={item.href} item={item} active={isActive(item)} />
-          ))}
-          {display.themeSwitcher && (
-            <>
-              <Separator orientation="vertical" className={cn(navDivider, "md:hidden")} />
-              <ThemeToggle className="md:hidden" />
-            </>
-          )}
+          <Avatar size="sm">
+            <AvatarImage src={person.avatar} alt="" />
+            <AvatarFallback>{monogram(person.name)}</AvatarFallback>
+          </Avatar>
+          {person.name}
+        </Link>
+        <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
+          {sections.map((item) => {
+            const active = isActive(item);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  buttonVariants({ variant: active ? "secondary" : "ghost" }),
+                  !active && "text-muted-foreground",
+                )}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
-        <div className="hidden items-center justify-end gap-4 text-sm text-muted-foreground md:flex">
+        <div className="-mr-2 ml-auto flex items-center gap-1 text-sm text-muted-foreground">
           {display.time && <TimeDisplay timeZone={person.location} />}
           {display.themeSwitcher && <ThemeToggle />}
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={<Button variant="ghost" size="icon" className="md:hidden" />}
+            >
+              <LuMenu />
+              <span className="sr-only">Open menu</span>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" sideOffset={8} className="w-48">
+              {sections.map((item) => {
+                const active = isActive(item);
+                const Icon = item.icon;
+                return (
+                  <DropdownMenuItem
+                    key={item.href}
+                    render={<Link href={item.href} aria-current={active ? "page" : undefined} />}
+                    className={cn("gap-2 px-2 py-2", active && "bg-accent font-medium")}
+                  >
+                    <Icon />
+                    {item.label}
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-      </header>
-    </>
+      </div>
+    </header>
   );
 }

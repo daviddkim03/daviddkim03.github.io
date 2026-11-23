@@ -6,6 +6,7 @@ import Link from "next/link";
 import { LuArrowRight } from "react-icons/lu";
 import { useContent } from "@/components/content/ContentProvider";
 import { buttonVariants } from "@/components/ui/button";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { type ClientProject, mergeProjects, projectHref } from "@/lib/clientProjects";
 
 function formatDate(dateStr: string): string {
@@ -37,36 +38,43 @@ export function SelectedWork({ projects }: { projects: ClientProject[] }) {
         </h2>
         <Link
           href="/work"
-          className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-muted-foreground")}
+          className={cn(
+            buttonVariants({ variant: "ghost", size: "sm" }),
+            "-mr-1.75 text-muted-foreground",
+          )}
         >
           View all
           <LuArrowRight data-icon="inline-end" />
         </Link>
       </div>
 
-      <div className="grid gap-x-6 gap-y-10 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2">
         {shown.map((post) => (
           <Link
             key={post.slug}
             href={projectHref(post)}
-            className="group flex flex-col gap-3 rounded-xl outline-none transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 focus-visible:ring-3 focus-visible:ring-ring/50 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+            className="rounded-xl outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
           >
-            <div className="relative aspect-video overflow-hidden rounded-xl border bg-muted">
-              {post.images[0] && (
-                <Image
-                  src={post.images[0]}
-                  alt={post.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  loading="eager"
-                  className="object-cover"
-                />
-              )}
-            </div>
-            <div className="flex flex-col gap-0.5 px-1">
-              <h3 className="font-heading font-semibold">{post.title}</h3>
-              <p className="text-sm text-muted-foreground">{formatDate(post.publishedAt)}</p>
-            </div>
+            <Card className="h-full pt-0 transition-colors hover:bg-muted/50">
+              <div className="relative aspect-video border-b bg-muted">
+                {post.images[0] && (
+                  <Image
+                    src={post.images[0]}
+                    alt=""
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    loading="eager"
+                    className="object-cover"
+                  />
+                )}
+              </div>
+              <CardHeader>
+                <CardTitle>
+                  <h3>{post.title}</h3>
+                </CardTitle>
+                <CardDescription>{formatDate(post.publishedAt)}</CardDescription>
+              </CardHeader>
+            </Card>
           </Link>
         ))}
       </div>

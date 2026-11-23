@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "cn";
 import { useContent } from "@/components/content/ContentProvider";
 import { ProjectCard } from "@/components/ProjectCard";
 import { type ClientProject, mergeProjects, projectHref } from "@/lib/clientProjects";
@@ -16,7 +17,13 @@ export function ProjectsView({
   const allProjects = mergeProjects(projects, content.dynamicProjects);
 
   return (
-    <div className="flex w-full flex-col gap-16 md:gap-20">
+    <div
+      className={cn(
+        "grid w-full gap-6 md:grid-cols-2",
+        // Avoid an orphan in the last row.
+        allProjects.length % 3 === 0 && "lg:grid-cols-3",
+      )}
+    >
       {allProjects.map((post, index) => {
         const override = content.projects[post.slug];
         return (
