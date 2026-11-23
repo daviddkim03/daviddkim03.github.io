@@ -26,9 +26,9 @@ const services = [
     icon: LuCodeXml,
   },
   {
-    title: "Data cleaning & reporting",
+    title: "CRM & data",
     description:
-      "Messy upstream inputs turned into clean, structured outputs: API integrations, scraping, and automated reports.",
+      "Custom CRMs that keep clients, scheduling, and records in one place, with data cleaning, API integrations, scraping, and automated reports built in.",
     icon: LuDatabase,
   },
 ];

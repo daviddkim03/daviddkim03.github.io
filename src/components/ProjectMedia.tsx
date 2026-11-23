@@ -32,7 +32,7 @@ function Cover({
 }) {
   return (
     <div className="relative aspect-video overflow-hidden border-b bg-muted">
-      <Image src={src} alt={alt} fill sizes={sizes} loading={loading} className="object-cover" />
+      <Image src={src} alt={alt} fill sizes={sizes} loading={loading} className="object-cover object-top" />
     </div>
   );
 }

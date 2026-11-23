@@ -101,7 +101,7 @@ export function ProjectDetail({
             fill
             preload
             sizes="(max-width: 1024px) 100vw, 1024px"
-            className="object-cover"
+            className="object-cover object-top"
           />
         </div>
       )}

@@ -91,9 +91,9 @@ export const defaultContent: EditableContent = {
   home: {
     headline: "Software & automation",
     subline:
-      "I'm David, lead software developer at Young Corporation and founder of HyberTec, where I build web and automation systems. I also tutor SAT Math and play all racket sports.",
+      "I'm David, DevOps engineer at Young Corporation and founder of HyberTec, where I build web and automation systems. I also tutor SAT Math and play all racket sports.",
     featuredSlug: "takeoff-estimator",
-    selectedSlugs: ["takeoff-estimator", "report-generator"],
+    selectedSlugs: ["insat", "hybercrm"],
   },
   about: {
     intro:
@@ -101,7 +101,7 @@ export const defaultContent: EditableContent = {
     work: [
       {
         company: "Young Corporation",
-        role: "Lead Software Developer",
+        role: "DevOps Engineer",
         timeframe: "May 2026 - Present",
         achievements: [
           "Architect an automated estimation system to support and marketize proprietary construction products.",
@@ -121,7 +121,7 @@ export const defaultContent: EditableContent = {
       },
       {
         company: "Prime Academy",
-        role: "Software Engineer Intern",
+        role: "Lead Developer",
         timeframe: "Jan 2026 - May 2026",
         achievements: [
           "Designed and maintained internal software systems supporting student performance analytics.",

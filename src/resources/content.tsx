@@ -94,7 +94,7 @@ const about: About = {
       {
         company: "Young Corporation",
         timeframe: "May 2026 - Present",
-        role: "Lead Software Developer",
+        role: "DevOps Engineer",
         achievements: [
           <>
             Architect an automated estimation system to support and marketize proprietary
@@ -134,7 +134,7 @@ const about: About = {
       {
         company: "Prime Academy",
         timeframe: "Jan 2026 - May 2026",
-        role: "Software Engineer Intern",
+        role: "Lead Developer",
         achievements: [
           <>
             Designed and maintained internal software systems supporting student performance

@@ -64,7 +64,7 @@ export function SelectedWork({ projects }: { projects: ClientProject[] }) {
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
                     loading="eager"
-                    className="object-cover"
+                    className="object-cover object-top"
                   />
                 )}
               </div>

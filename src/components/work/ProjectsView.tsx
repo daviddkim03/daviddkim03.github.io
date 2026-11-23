@@ -23,7 +23,7 @@ export function ProjectsView({
         // A lone card stays centered instead of sitting in half of a row.
         allProjects.length === 1 ? "mx-auto max-w-lg" : "md:grid-cols-2",
         // Avoid an orphan in the last row.
-        allProjects.length % 3 === 0 && "lg:grid-cols-3",
+        allProjects.length >= 3 && allProjects.length !== 4 && "lg:grid-cols-3",
       )}
     >
       {allProjects.map((post, index) => {
