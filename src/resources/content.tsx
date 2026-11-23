@@ -1,3 +1,4 @@
+import site from "@/content/site.json";
 import type {
   About,
   BasePageConfig,
@@ -13,13 +14,13 @@ import type {
 const person: Person = {
   firstName: "David",
   lastName: "Kim",
-  name: `David Kim`,
-  role: "Lead Software Developer",
+  name: site.person.name,
+  role: site.person.role,
   avatar: "/trademarks/icon.png",
   email: "daviddkim03@gmail.com",
   location: "America/New_York", // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
-  displayLocation: "Atlanta / Duluth, GA", // Human-readable location shown in the header and about page
-  languages: ["English", "Korean"], // optional: Leave the array empty if you don't want to display languages
+  displayLocation: site.person.location, // Human-readable location shown in the header and about page
+  languages: site.person.languages, // optional: Leave the array empty if you don't want to display languages
 };
 
 const social: Social = [
@@ -70,164 +71,17 @@ const about: About = {
     display: false,
     link: "https://cal.com",
   },
-  resume: {
-    display: true,
-    link: "/resumes/david-kim-main.pdf",
-    label: "Résumé",
-  },
-  intro: {
-    display: true,
-    title: "Introduction",
-    description: (
-      <>
-        David is an Atlanta-based software developer and Georgia Tech Computer Science graduate. He
-        leads estimation-automation software at Young Corporation and founded HyberTec LLC, building
-        SaaS products and custom solutions for small businesses across full-stack web, automation,
-        and embedded security.
-      </>
-    ),
-  },
   work: {
     display: true, // set to false to hide this section
     title: "Work Experience",
-    experiences: [
-      {
-        company: "Young Corporation",
-        timeframe: "May 2026 - Present",
-        role: "DevOps Engineer",
-        achievements: [
-          <>
-            Architect an automated estimation system to support and marketize proprietary
-            construction products.
-          </>,
-          <>
-            Build software that automates construction processes, reducing manual staff workload and
-            increasing efficiency.
-          </>,
-          <>
-            Design internal tools integrating AI-assisted workflows for estimation and operational
-            automation.
-          </>,
-        ],
-        images: [],
-      },
-      {
-        company: "HyberTec LLC",
-        timeframe: "Apr 2026 - Present",
-        role: "Founder and Lead Developer",
-        achievements: [
-          <>
-            Founded and lead a software services company delivering SaaS products and custom
-            solutions to businesses.
-          </>,
-          <>
-            Engineer platforms including POS systems, waitlist managers, scheduling tools, and
-            business automation.
-          </>,
-          <>
-            Develop full-stack web solutions for restaurants, salons, real estate agents, and
-            education businesses.
-          </>,
-        ],
-        images: [],
-      },
-      {
-        company: "Prime Academy",
-        timeframe: "Jan 2026 - May 2026",
-        role: "Lead Developer",
-        achievements: [
-          <>
-            Designed and maintained internal software systems supporting student performance
-            analytics.
-          </>,
-          <>Built tools to process assessment data and automate academic reporting.</>,
-        ],
-        images: [],
-      },
-      {
-        company: "Georgia Tech Research Institute (GTRI)",
-        timeframe: "Aug 2024 - Dec 2025",
-        role: "Embedded Systems Intern",
-        achievements: [
-          <>
-            Reverse engineered embedded firmware using Ghidra to reconstruct high-level logic from
-            compiled binaries.
-          </>,
-          <>
-            Conducted side-channel attack research to identify unintended information leakage during
-            hardware execution.
-          </>,
-          <>
-            Evaluated mitigation strategies against physical attack vectors affecting embedded
-            systems security.
-          </>,
-        ],
-        images: [],
-      },
-      {
-        company: "National Science Foundation",
-        timeframe: "Aug 2023 - Dec 2023",
-        role: "Data Analyst Intern",
-        achievements: [
-          <>
-            Modeled and simulated geospatial soil datasets to analyze environmental conditions in
-            Turkey.
-          </>,
-          <>
-            Applied machine learning techniques to identify anomalies and outliers in ground motion
-            datasets.
-          </>,
-          <>
-            Processed and evaluated large-scale environmental data to support predictive analysis
-            using Python scripts.
-          </>,
-        ],
-        images: [],
-      },
-    ],
   },
   studies: {
     display: true, // set to false to hide this section
     title: "Education",
-    institutions: [
-      {
-        name: "Georgia Institute of Technology",
-        timeframe: "Dec 2025",
-        description: <>B.S. Computer Science · 3.65 GPA</>,
-      },
-      {
-        name: "CompTIA Security+",
-        timeframe: "Expected Jul 2027",
-        description: <>Security certification</>,
-      },
-      {
-        name: "CompTIA Linux+",
-        timeframe: "Expected Dec 2026",
-        description: <>Linux certification</>,
-      },
-    ],
   },
   technical: {
     display: true, // set to false to hide this section
     title: "Skills",
-    skills: [
-      "Python",
-      "Java",
-      "C",
-      "JavaScript",
-      "SQL",
-      "Bash",
-      "Assembly",
-      "HTML/CSS",
-      "Node.js",
-      "Rust",
-      "Tauri",
-      "Linux",
-      "Ghidra",
-      "Software Engineering",
-      "Cybersecurity",
-      "Networking",
-    ],
   },
 };
 

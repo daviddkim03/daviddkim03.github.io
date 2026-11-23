@@ -106,54 +106,12 @@ export interface About extends BasePageConfig {
     /** Link to the calendar */
     link: string;
   };
-  /** Résumé download configuration */
-  resume: {
-    /** Whether to display the résumé download button */
-    display: boolean;
-    /** Path to the résumé PDF (served from /public) */
-    link: string;
-    /** Label shown on the button */
-    label: string;
-  };
-  /** Introduction section */
-  intro: {
-    /** Whether to display the introduction */
-    display: boolean;
-    /** Title of the introduction section */
-    title: string;
-    /** Description of the introduction section */
-    description: React.ReactNode;
-  };
   /** Work experience section */
   work: {
     /** Whether to display work experience */
     display: boolean;
     /** Title for the work experience section */
     title: string;
-    /** List of work experiences */
-    experiences: Array<{
-      /** Company name */
-      company: string;
-      /** Optional logo image path (falls back to a monogram of the company name) */
-      logo?: string;
-      /** Timeframe of employment */
-      timeframe: string;
-      /** Role or job title */
-      role: string;
-      /** Achievements at the company */
-      achievements: React.ReactNode[];
-      /** Images related to the experience */
-      images?: Array<{
-        /** Image source path */
-        src: string;
-        /** Image alt text */
-        alt: string;
-        /** Image width ratio */
-        width: number;
-        /** Image height ratio */
-        height: number;
-      }>;
-    }>;
   };
   /** Studies/education section */
   studies: {
@@ -161,17 +119,6 @@ export interface About extends BasePageConfig {
     display: boolean;
     /** Title for the studies section */
     title: string;
-    /** List of institutions attended */
-    institutions: Array<{
-      /** Institution name */
-      name: string;
-      /** Optional logo image path (falls back to a monogram of the institution name) */
-      logo?: string;
-      /** Timeframe / graduation date */
-      timeframe?: string;
-      /** Description of studies */
-      description: React.ReactNode;
-    }>;
   };
   /** Skills section (rendered as a row of pills) */
   technical: {
@@ -179,8 +126,6 @@ export interface About extends BasePageConfig {
     display: boolean;
     /** Title for the skills section */
     title: string;
-    /** Flat list of skill labels shown as pills */
-    skills: string[];
   };
 }
 

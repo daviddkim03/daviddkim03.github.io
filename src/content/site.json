@@ -1,0 +1,116 @@
+{
+  "person": {
+    "name": "David Kim",
+    "role": "Lead Software Developer",
+    "location": "Atlanta / Duluth, GA",
+    "languages": [
+      "English",
+      "Korean"
+    ]
+  },
+  "home": {
+    "headline": "Software & automation",
+    "subline": "I'm David, DevOps engineer at Young Corporation and founder of HyberTec, where I build web and automation systems. I also tutor SAT Math and play all racket sports.",
+    "featuredSlug": "hybertec-web",
+    "selectedSlugs": [
+      "hybertec-web",
+      "edubud"
+    ]
+  },
+  "about": {
+    "intro": "David is an Atlanta-based software developer and Georgia Tech Computer Science graduate. He leads estimation-automation software at Young Corporation and founded HyberTec LLC, building SaaS products and custom solutions for small businesses across full-stack web, automation, and embedded security.",
+    "work": [
+      {
+        "company": "Young Corporation",
+        "role": "DevOps Engineer",
+        "timeframe": "May 2026 - Present",
+        "achievements": [
+          "Architect an automated estimation system to support and marketize proprietary construction products.",
+          "Build software that automates construction processes, reducing manual staff workload and increasing efficiency.",
+          "Design internal tools integrating AI-assisted workflows for estimation and operational automation."
+        ]
+      },
+      {
+        "company": "HyberTec LLC",
+        "role": "Founder and Lead Developer",
+        "timeframe": "Apr 2026 - Present",
+        "achievements": [
+          "Founded and lead a software services company delivering SaaS products and custom solutions to businesses.",
+          "Engineer platforms including POS systems, waitlist managers, scheduling tools, and business automation.",
+          "Develop full-stack web solutions for restaurants, salons, real estate agents, and education businesses."
+        ]
+      },
+      {
+        "company": "Prime Academy",
+        "role": "Lead Developer",
+        "timeframe": "Jan 2026 - May 2026",
+        "achievements": [
+          "Designed and maintained internal software systems supporting student performance analytics.",
+          "Built tools to process assessment data and automate academic reporting."
+        ]
+      },
+      {
+        "company": "Georgia Tech Research Institute (GTRI)",
+        "role": "Embedded Systems Intern",
+        "timeframe": "Aug 2024 - Dec 2025",
+        "achievements": [
+          "Reverse engineered embedded firmware using Ghidra to reconstruct high-level logic from compiled binaries.",
+          "Conducted side-channel attack research to identify unintended information leakage during hardware execution.",
+          "Evaluated mitigation strategies against physical attack vectors affecting embedded systems security."
+        ]
+      },
+      {
+        "company": "National Science Foundation",
+        "role": "Data Analyst Intern",
+        "timeframe": "Aug 2023 - Dec 2023",
+        "achievements": [
+          "Modeled and simulated geospatial soil datasets to analyze environmental conditions in Turkey.",
+          "Applied machine learning techniques to identify anomalies and outliers in ground motion datasets.",
+          "Processed and evaluated large-scale environmental data to support predictive analysis using Python scripts."
+        ]
+      }
+    ],
+    "studies": [
+      {
+        "name": "Georgia Institute of Technology",
+        "timeframe": "Dec 2025",
+        "description": "B.S. Computer Science · 3.65 GPA"
+      },
+      {
+        "name": "CompTIA Security+",
+        "timeframe": "Expected Jul 2027",
+        "description": "Security certification"
+      },
+      {
+        "name": "CompTIA Linux+",
+        "timeframe": "Expected Dec 2026",
+        "description": "Linux certification"
+      }
+    ],
+    "skills": [
+      "Python",
+      "Java",
+      "C",
+      "JavaScript",
+      "SQL",
+      "Bash",
+      "Assembly",
+      "HTML/CSS",
+      "Node.js",
+      "Rust",
+      "Tauri",
+      "Linux",
+      "Ghidra",
+      "Software Engineering",
+      "Cybersecurity",
+      "Networking"
+    ]
+  },
+  "resume": {
+    "display": true,
+    "label": "Résumé",
+    "url": "/resumes/david-kim-main.pdf"
+  },
+  "projects": {},
+  "dynamicProjects": []
+}

@@ -7,6 +7,9 @@ import { routes } from "@/resources";
 const checkRouteEnabled = (pathname: string | null): boolean => {
   if (!pathname) return false;
 
+  // Unlisted: kept out of `routes` so it stays off the sitemap and nav.
+  if (pathname === "/admin") return true;
+
   if (pathname in routes) {
     return routes[pathname as keyof typeof routes];
   }
