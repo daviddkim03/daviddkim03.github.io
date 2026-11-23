@@ -1,14 +1,14 @@
-# David Kim — Portfolio
+# David Kim - Portfolio
 
-My personal portfolio website: software, automation, and estimation systems — plus the freelance work I take on through [HyberTec](https://hybertec.com).
+My personal portfolio website: software, automation, and estimation systems - plus the freelance work I take on through [HyberTec](https://hybertec.com).
 
 **Live site:** [daviddkim03.github.io](https://daviddkim03.github.io)
 
 ## What's on it
 
-- **Work** — selected projects: Takeoff Estimator, Report Generator, and RestBroker
-- **About** — experience (Young Corporation, HyberTec, Prime Academy, GTRI, NSF), education, and skills
-- **Freelance** — services and how to request a project
+- **Work** - selected projects: Takeoff Estimator and Report Generator
+- **About** - experience (Young Corporation, HyberTec, Prime Academy, GTRI, NSF), education, and skills
+- **Freelance** - services and how to request a project
 
 ## Tech
 

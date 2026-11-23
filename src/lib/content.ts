@@ -93,7 +93,7 @@ export const defaultContent: EditableContent = {
     subline:
       "I'm David, lead software developer at Young Corporation and founder of HyberTec, where I build web and automation systems. I also tutor SAT Math and play all racket sports.",
     featuredSlug: "takeoff-estimator",
-    selectedSlugs: ["restbroker", "takeoff-estimator"],
+    selectedSlugs: ["takeoff-estimator", "report-generator"],
   },
   about: {
     intro:

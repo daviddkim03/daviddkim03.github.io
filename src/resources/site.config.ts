@@ -9,7 +9,7 @@ const routes: RoutesConfig = {
   "/about": true,
   "/work": true,
   "/freelance": true,
-  "/training": true,
+  "/training": false,
   "/blog": false,
   "/gallery": false,
 };
