@@ -4,27 +4,13 @@ import { useCallback, useEffect, useState } from "react";
 import { AdminEditor } from "@/components/admin/AdminEditor";
 import { AdminSignIn } from "@/components/admin/AdminSignIn";
 import { Spinner } from "@/components/ui/spinner";
-import type { EditableContent } from "@/lib/content";
-import { assertWriteAccess, GitHubError, readText } from "@/lib/github";
+import { type LiveContent, loadContent, StoreError, signIn } from "@/lib/siteStore";
 
-export const CONTENT_PATH = "src/content/site.json";
-// Session storage: the token is dropped when the tab closes.
-const TOKEN_KEY = "admin:github-token";
-
-interface Session {
-  token: string;
-  content: EditableContent;
-  sha: string;
-}
-
-async function openSession(token: string): Promise<Session> {
-  await assertWriteAccess(token);
-  const { text, sha } = await readText(token, CONTENT_PATH);
-  return { token, content: JSON.parse(text), sha };
-}
+// Session storage: the sign-in ends when the tab closes.
+const TOKEN_KEY = "admin:session";
 
 export function AdminView() {
-  const [session, setSession] = useState<Session | null>(null);
+  const [session, setSession] = useState<{ token: string; live: LiveContent } | null>(null);
   const [restoring, setRestoring] = useState(true);
   const [restoreError, setRestoreError] = useState("");
 
@@ -34,22 +20,21 @@ export function AdminView() {
       setRestoring(false);
       return;
     }
-    openSession(token)
-      .then(setSession)
-      .catch((error) => {
-        // Keep the token on a network failure so a reload can retry.
-        if (error instanceof GitHubError) sessionStorage.removeItem(TOKEN_KEY);
+    loadContent()
+      .then((live) => setSession({ token, live }))
+      .catch((error) =>
         setRestoreError(
-          error instanceof GitHubError ? error.message : "Couldn't reach GitHub. Try again.",
-        );
-      })
+          error instanceof StoreError ? error.message : "Couldn't connect. Try again.",
+        ),
+      )
       .finally(() => setRestoring(false));
   }, []);
 
-  const signIn = useCallback(async (token: string) => {
-    const next = await openSession(token);
+  const submit = useCallback(async (password: string) => {
+    const token = await signIn(password);
+    const live = await loadContent();
     sessionStorage.setItem(TOKEN_KEY, token);
-    setSession(next);
+    setSession({ token, live });
   }, []);
 
   const signOut = useCallback(() => {
@@ -65,13 +50,6 @@ export function AdminView() {
       </div>
     );
   }
-  if (!session) return <AdminSignIn onSignIn={signIn} initialError={restoreError} />;
-  return (
-    <AdminEditor
-      token={session.token}
-      initialContent={session.content}
-      initialSha={session.sha}
-      onSignOut={signOut}
-    />
-  );
+  if (!session) return <AdminSignIn onSignIn={submit} initialError={restoreError} />;
+  return <AdminEditor token={session.token} initial={session.live} onSignOut={signOut} />;
 }

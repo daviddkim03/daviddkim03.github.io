@@ -1,17 +1,13 @@
 # Admin
 
 `/admin` edits the site's profile, home intro, work experience, education, skills, and résumé.
-It commits `src/content/site.json` (or the résumé PDF) to `main` through the GitHub API, and the
-deploy workflow publishes the change. There is no database or server.
+Sign in with the admin password. Saves go live immediately, without a deploy.
 
-## Sign in
-
-1. Create a [fine-grained personal access token](https://github.com/settings/personal-access-tokens/new).
-2. Repository access: only `daviddkim03/daviddkim03.github.io`.
-3. Permissions: **Contents** read and write. Set a short expiry.
-4. Open `/admin` and paste the token. It is kept in the tab's session storage and is forgotten when
-   the tab closes.
-
-Anyone can open the page, but nothing can be changed without a token that can write to the repo.
-
-Projects are MDX files in `src/app/work/projects`.
+- Firebase project: `dkim-portfolio-8689bc` (free plan). Documents: `site/content`, `site/resume`.
+- The password belongs to the `admin@daviddkim03.github.io` account. Change it in the Firebase
+  console under Authentication. It is never stored in this repo.
+- `firestore.rules` lets anyone read and only that account write. Deploy it with
+  `firebase deploy --only firestore:rules`.
+- Pages are built from `src/content/site.json` and then updated in the browser with the saved
+  content. Page titles and search previews keep the built-in values until that file is changed.
+- Projects are MDX files in `src/app/work/projects`.

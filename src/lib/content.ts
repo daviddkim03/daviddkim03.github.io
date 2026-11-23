@@ -35,8 +35,8 @@ export interface DynamicProject {
 }
 
 /**
- * The site's structured content. The values live in
- * `src/content/site.json`, which `/admin` edits by committing to the repo. Rich/JSX content (project bodies) stays in MDX; this is the
+ * The site's structured content. Starts from
+ * `src/content/site.json`; `/admin` saves changes to Firestore (`siteStore.ts`). Rich/JSX content (project bodies) stays in MDX; this is the
  * structured, frequently-edited subset.
  */
 export interface EditableContent {

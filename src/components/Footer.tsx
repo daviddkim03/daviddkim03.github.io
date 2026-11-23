@@ -1,7 +1,10 @@
+"use client";
+
 import { cn } from "cn";
+import { useContent } from "@/components/content/ContentProvider";
 import { buttonVariants } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { display, person, social } from "@/resources";
+import { display, social } from "@/resources";
 import { iconLibrary } from "@/resources/icons";
 
 const links = [
@@ -12,14 +15,15 @@ const links = [
 ];
 
 export function Footer() {
+  const { name, location } = useContent().person;
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="w-full border-t px-6">
       <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-3 py-6 md:flex-row md:justify-between">
         <p className="text-sm text-muted-foreground">
-          © {currentYear} / <span className="text-foreground">{person.name}</span>
-          {display.location && ` / ${person.displayLocation ?? person.location}`}
+          © {currentYear} / <span className="text-foreground">{name}</span>
+          {display.location && ` / ${location}`}
         </p>
         <div className="flex items-center gap-1 md:-mr-2">
           {links.map(({ name, href, icon: Icon }) => (

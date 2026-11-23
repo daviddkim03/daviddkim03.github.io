@@ -3,7 +3,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { LuArrowDown, LuArrowUp, LuPlus, LuTrash2, LuUpload } from "react-icons/lu";
 import { toast } from "sonner";
-import { CONTENT_PATH } from "@/components/admin/AdminView";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
@@ -12,10 +11,10 @@ import { Spinner } from "@/components/ui/spinner";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import type { EditableContent } from "@/lib/content";
-import { findSha, GitHubError, writeFile } from "@/lib/github";
+import { type LiveContent, StoreError, saveContent, saveResume } from "@/lib/siteStore";
 
-const RESUME_PATH = "resumes/david-kim-main.pdf";
-const MAX_RESUME_BYTES = 10 * 1024 * 1024;
+// Firestore documents are limited to 1 MiB.
+const MAX_RESUME_BYTES = 900 * 1024;
 
 type Experience = EditableContent["about"]["work"][number];
 type Study = EditableContent["about"]["studies"][number];
@@ -32,7 +31,7 @@ const lines = (text: string) =>
     .filter(Boolean);
 
 const errorMessage = (error: unknown) =>
-  error instanceof GitHubError ? error.message : "Couldn't reach GitHub. Try again.";
+  error instanceof StoreError ? error.message : "Couldn't connect. Try again.";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -164,21 +163,20 @@ function EntryList<T>({
 
 export function AdminEditor({
   token,
-  initialContent,
-  initialSha,
+  initial,
   onSignOut,
 }: {
   token: string;
-  initialContent: EditableContent;
-  initialSha: string;
+  initial: LiveContent;
   onSignOut: () => void;
 }) {
+  const { content: initialContent } = initial;
   const [content, setContent] = useState(initialContent);
   const [work, setWork] = useState(() => withKeys<Experience>(initialContent.about.work));
   const [studies, setStudies] = useState(() => withKeys<Study>(initialContent.about.studies));
   const [skills, setSkills] = useState(() => initialContent.about.skills.join("\n"));
   const [languages, setLanguages] = useState(() => initialContent.person.languages.join("\n"));
-  const [sha, setSha] = useState(initialSha);
+  const [version, setVersion] = useState(initial.version);
   const [saved, setSaved] = useState(() => JSON.stringify(initialContent));
   const [busy, setBusy] = useState<"save" | "resume" | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
@@ -214,10 +212,9 @@ export function AdminEditor({
     event.preventDefault();
     setBusy("save");
     try {
-      const text = `${JSON.stringify(draft, null, 2)}\n`;
-      setSha(await writeFile(token, CONTENT_PATH, text, "content: update site content", sha));
+      setVersion(await saveContent(token, draft, version));
       setSaved(JSON.stringify(draft));
-      toast.success("Saved. The site updates in about a minute.");
+      toast.success("Saved. The site is updated.");
     } catch (error) {
       toast.error(errorMessage(error));
     } finally {
@@ -230,16 +227,13 @@ export function AdminEditor({
     event.target.value = "";
     if (!file) return;
     if (file.type !== "application/pdf" || file.size > MAX_RESUME_BYTES) {
-      toast.error("Choose a PDF smaller than 10 MB.");
+      toast.error("Choose a PDF smaller than 900 KB.");
       return;
     }
     setBusy("resume");
     try {
-      const path = `public/${RESUME_PATH}`;
-      const bytes = new Uint8Array(await file.arrayBuffer());
-      const current = await findSha(token, path);
-      await writeFile(token, path, bytes, "content: update resume", current);
-      toast.success("Résumé uploaded. The site updates in about a minute.");
+      setVersion(await saveResume(token, new Uint8Array(await file.arrayBuffer())));
+      toast.success("Résumé uploaded.");
     } catch (error) {
       toast.error(errorMessage(error));
     } finally {
@@ -406,7 +400,9 @@ export function AdminEditor({
             )}
             Replace PDF
           </Button>
-          <p className="text-sm text-muted-foreground">Publishes as soon as you pick a file.</p>
+          <p className="text-sm text-muted-foreground">
+            Up to 900 KB. Publishes as soon as you pick a file.
+          </p>
         </div>
       </Section>
 

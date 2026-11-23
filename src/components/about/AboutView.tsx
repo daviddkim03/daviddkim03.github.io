@@ -1,11 +1,13 @@
 "use client";
 
 import { cn } from "cn";
+import { useEffect, useState } from "react";
 import { LuArrowUpRight, LuFileText, LuGlobe } from "react-icons/lu";
-import { useContent } from "@/components/content/ContentProvider";
+import { useContent, useResumeUploaded } from "@/components/content/ContentProvider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
+import { loadResume } from "@/lib/siteStore";
 import { about, person, social } from "@/resources";
 import { iconLibrary } from "@/resources/icons";
 import { monogram } from "@/utils/monogram";
@@ -40,8 +42,35 @@ function EntryLogo({ name, logo }: { name: string; logo?: string }) {
   );
 }
 
+/** The résumé uploaded in `/admin` when there is one, otherwise the given file. */
+function useResumeUrl(fallback: string): string {
+  const uploaded = useResumeUploaded();
+  const [url, setUrl] = useState<string>();
+
+  useEffect(() => {
+    if (!uploaded) return;
+    let objectUrl: string | undefined;
+    let cancelled = false;
+    loadResume().then(
+      (blob) => {
+        if (cancelled) return;
+        objectUrl = URL.createObjectURL(blob);
+        setUrl(objectUrl);
+      },
+      () => {},
+    );
+    return () => {
+      cancelled = true;
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [uploaded]);
+
+  return url ?? fallback;
+}
+
 export function AboutView() {
   const content = useContent();
+  const resumeUrl = useResumeUrl(content.resume.url);
   const essentialLinks = social.filter((item) => item.essential && item.link);
 
   return (
@@ -93,7 +122,7 @@ export function AboutView() {
           })}
           {content.resume.display && content.resume.url && (
             <a
-              href={content.resume.url}
+              href={resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
               className={cn(buttonVariants())}

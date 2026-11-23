@@ -1,0 +1,13 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Public site content. Only the admin account can change it: sign-up is
+    // open on the project, so being signed in is not enough.
+    match /site/{doc} {
+      allow get: if doc in ['content', 'resume'];
+      allow create, update: if doc in ['content', 'resume']
+        && request.auth != null
+        && request.auth.uid == 'Eul6qnTCbNQGnG4qdvz1fxUh0Fj2';
+    }
+  }
+}

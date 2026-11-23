@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { IconType } from "react-icons";
 import { LuDumbbell, LuImage, LuLayoutGrid, LuMenu, LuRocket, LuUserRound } from "react-icons/lu";
+import { useContent } from "@/components/content/ContentProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -57,6 +58,7 @@ function TimeDisplay({ timeZone, locale = "en-GB" }: { timeZone: string; locale?
 }
 
 export function Header() {
+  const { name } = useContent().person;
   const pathname = usePathname() ?? "";
   const isActive = (item: NavItem) =>
     item.exact ? pathname === item.href : pathname.startsWith(item.href);
@@ -71,9 +73,9 @@ export function Header() {
         >
           <Avatar size="sm">
             <AvatarImage src={person.avatar} alt="" />
-            <AvatarFallback>{monogram(person.name)}</AvatarFallback>
+            <AvatarFallback>{monogram(name)}</AvatarFallback>
           </Avatar>
-          {person.name}
+          {name}
         </Link>
         <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
           {sections.map((item) => {
